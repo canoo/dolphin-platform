@@ -101,6 +101,13 @@ public class ControllerHandler {
         }
     }
 
+    /**
+     * Invokes a DP action
+     * @param controllerId unique id of the controller instance
+     * @param actionName name of the action
+     * @param actionId unique id of the action call
+     * @throws InvokeActionException
+     */
     public void invokeAction(String controllerId, String actionName, String actionId) throws InvokeActionException {
         try {
             Object controller = controllers.get(controllerId);
@@ -145,6 +152,16 @@ public class ControllerHandler {
         return foundMethod;
     }
 
+    /**
+     * Invokes a DP action
+     * @param instance the controller instance
+     * @param method the method that defines the action
+     * @param actionId the unique id of the action call
+     * @param paramNames list of all param names
+     * @param dolphin the dolphin
+     * @throws InvocationTargetException on error
+     * @throws IllegalAccessException on error
+     */
     private void invokeMethodWithParams(Object instance, Method method, String actionId, List<String> paramNames, ServerDolphin dolphin) throws InvocationTargetException, IllegalAccessException {
         Object[] args = getParam(dolphin, actionId, paramNames);
         ReflectionHelper.invokePrivileged(method, instance, args);
@@ -171,7 +188,7 @@ public class ControllerHandler {
     /**
      * This methods returns an array of all params that were passed by the client when calling the given action.
      * @param dolphin the dolphin
-     * @param actionId the unique id of the called actions
+     * @param actionId the unique id of the actions call
      * @param names names of all needed params that are specified by the action
      * @return array of all param values. The order of the array is defined by the order of the names list param
      */

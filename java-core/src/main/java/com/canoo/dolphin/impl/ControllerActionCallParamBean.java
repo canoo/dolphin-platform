@@ -40,7 +40,7 @@ public class ControllerActionCallParamBean {
     private Property valueType;
 
     /**
-     * Unique id of the action. See {@link ControllerActionCallBean#id}
+     * Unique id of the action call. See {@link ControllerActionCallBean#id}
      */
     private Property<String> actionId;
 

@@ -18,6 +18,8 @@ package com.canoo.dolphin.impl;
 import com.canoo.dolphin.mapping.DolphinBean;
 import com.canoo.dolphin.mapping.Property;
 
+//TODO: ControllerActionCallBean can contain a list of ControllerActionCallParamBean
+
 @DolphinBean(PlatformConstants.CONTROLLER_ACTION_CALL_BEAN_NAME)
 public class ControllerActionCallBean {
 
@@ -25,6 +27,9 @@ public class ControllerActionCallBean {
 
     private Property<String> actionName;
 
+    /**
+     * Defines a unique id of teh action call that is described by this PM.
+     */
     private Property<String> id;
 
     public String getControllerId() {
