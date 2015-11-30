@@ -16,17 +16,17 @@
 package com.canoo.dolphin.server.controller;
 
 import com.canoo.dolphin.BeanManager;
-import com.canoo.dolphin.impl.*;
+import com.canoo.dolphin.impl.ClassRepositoryImpl;
+import com.canoo.dolphin.impl.ControllerActionCallParamBean;
+import com.canoo.dolphin.impl.DolphinUtils;
+import com.canoo.dolphin.impl.ReflectionHelper;
 import com.canoo.dolphin.internal.BeanRepository;
 import com.canoo.dolphin.server.DolphinAction;
 import com.canoo.dolphin.server.DolphinModel;
 import com.canoo.dolphin.server.Param;
 import com.canoo.dolphin.server.container.ContainerManager;
 import com.canoo.dolphin.server.container.ModelInjector;
-import org.opendolphin.core.Attribute;
-import org.opendolphin.core.Tag;
 import org.opendolphin.core.server.ServerDolphin;
-import org.opendolphin.core.server.ServerPresentationModel;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -101,12 +101,12 @@ public class ControllerHandler {
         }
     }
 
-    public void invokeAction(String controllerId, String actionName) throws InvokeActionException {
+    public void invokeAction(String controllerId, String actionName, String actionId) throws InvokeActionException {
         try {
             Object controller = controllers.get(controllerId);
             Method actionMethod = getActionMethod(controller, actionName);
             List<String> paramNames = getParamNames(actionMethod);
-            invokeMethodWithParams(controller, actionMethod, paramNames, dolphin);
+            invokeMethodWithParams(controller, actionMethod, actionId, paramNames, dolphin);
         } catch (Exception e) {
             throw new InvokeActionException(e);
         } finally {
@@ -145,8 +145,8 @@ public class ControllerHandler {
         return foundMethod;
     }
 
-    private void invokeMethodWithParams(Object instance, Method method, List<String> paramNames, ServerDolphin dolphin) throws InvocationTargetException, IllegalAccessException {
-        Object[] args = getParam(dolphin, paramNames);
+    private void invokeMethodWithParams(Object instance, Method method, String actionId, List<String> paramNames, ServerDolphin dolphin) throws InvocationTargetException, IllegalAccessException {
+        Object[] args = getParam(dolphin, actionId, paramNames);
         ReflectionHelper.invokePrivileged(method, instance, args);
     }
 
@@ -168,22 +168,42 @@ public class ControllerHandler {
         return paramNames;
     }
 
-    private Object[] getParam(ServerDolphin dolphin, List<String> names) {
+    /**
+     * This methods returns an array of all params that were passed by the client when calling the given action.
+     * @param dolphin the dolphin
+     * @param actionId the unique id of the called actions
+     * @param names names of all needed params that are specified by the action
+     * @return array of all param values. The order of the array is defined by the order of the names list param
+     */
+    private Object[] getParam(ServerDolphin dolphin, String actionId, List<String> names) {
         final List<Object> result = new ArrayList<>();
-        final List<ServerPresentationModel> presentationModels = dolphin.findAllPresentationModelsByType(PlatformConstants.DOLPHIN_PARAMETER);
-        if (!presentationModels.isEmpty()) {
-            final ServerPresentationModel parameterModel = presentationModels.get(0);
-            for (final String name : names) {
-                final Attribute valueAttribute = parameterModel.findAttributeByPropertyNameAndTag(name, Tag.VALUE);
-                final Attribute typeAttribute = parameterModel.findAttributeByPropertyNameAndTag(name, Tag.VALUE_TYPE);
-                if (valueAttribute == null || typeAttribute == null) {
-                    throw new IllegalArgumentException(String.format("Invoking DolphinAction requires parameter '%s', but it was not send", name));
-                }
-                final ClassRepositoryImpl.FieldType fieldType = DolphinUtils.mapFieldTypeFromDolphin(typeAttribute.getValue());
-                result.add(beanRepository.mapDolphinToObject(valueAttribute.getValue(), fieldType));
+
+        List<ControllerActionCallParamBean> paramBeans = beanManager.findAll(ControllerActionCallParamBean.class);
+
+        //some checks
+        for(ControllerActionCallParamBean paramBean : paramBeans) {
+            if(paramBean.getActionId() == null || !paramBean.getActionId().equals(actionId)) {
+                throw new RuntimeException("Dolphin Platform internal error! Param actionI != actionId");
             }
-            dolphin.removeAllPresentationModelsOfType(PlatformConstants.DOLPHIN_PARAMETER);
+            if(paramBean.getParamName() == null) {
+                throw new RuntimeException("Dolphin Platform internal error! Param name == null");
+            }
         }
+
+        for (final String name : names) {
+            boolean paramFound = false;
+            for(ControllerActionCallParamBean paramBean : paramBeans) {
+                if(paramBean.getParamName().equals(name)) {
+                    if(paramFound) {
+                        throw new RuntimeException("Dolphin Platform internal error! Multiple params with same name");
+                    }
+                    final ClassRepositoryImpl.FieldType fieldType = DolphinUtils.mapFieldTypeFromDolphin(paramBean.getValueType());
+                    result.add(beanRepository.mapDolphinToObject(paramBean.getValue(), fieldType));
+                    paramFound = true;
+                }
+            }
+        }
+        beanManager.removeAll(ControllerActionCallParamBean.class);
         return result.toArray(new Object[result.size()]);
     }
 

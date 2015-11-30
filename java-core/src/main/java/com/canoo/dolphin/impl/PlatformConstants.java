@@ -49,8 +49,6 @@ public interface PlatformConstants {
     public static final String LIST_DEL = "@@@ LIST_DEL @@@";
     public static final String LIST_SET = "@@@ LIST_SET @@@";
 
-    public static final String DOLPHIN_PARAMETER = "@@@ DOLPHIN_PARAMETER @@@";
-
     public static final String CONTROLLER_ACTION_CALL_ERROR_BEAN_NAME = "@@@ CONTROLLER_ACTION_CALL_ERROR_BEAN @@@";
 
     public static final String CONTROLLER_ACTION_CALL_BEAN_NAME = "@@@ CONTROLLER_ACTION_CALL_BEAN @@@";

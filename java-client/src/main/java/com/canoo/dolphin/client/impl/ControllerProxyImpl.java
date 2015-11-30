@@ -86,6 +86,7 @@ public class ControllerProxyImpl<T> implements ControllerProxy<T> {
                 ControllerActionCallParamBean paramBean = context.getBeanManager().create(ControllerActionCallParamBean.class);
                 final ClassRepositoryImpl.FieldType type = DolphinUtils.getFieldType(param.getValue());
                 final Object value = type == DOLPHIN_BEAN ? beanRepository.getDolphinId(param.getValue()) : param.getValue();
+                paramBean.setParamName(param.getName());
                 paramBean.setValue(value);
                 paramBean.setValueType(DolphinUtils.mapFieldTypeToDolphin(type));
                 paramBean.setActionId(actionId);

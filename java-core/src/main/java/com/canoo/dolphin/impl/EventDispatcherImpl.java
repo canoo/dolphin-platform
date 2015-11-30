@@ -72,7 +72,6 @@ public abstract class EventDispatcherImpl implements EventDispatcher {
         final String type = model.getPresentationModelType();
         switch (type) {
             case PlatformConstants.DOLPHIN_BEAN:
-            case PlatformConstants.DOLPHIN_PARAMETER:
                 // ignore
                 break;
             case PlatformConstants.LIST_ADD:
@@ -102,7 +101,6 @@ public abstract class EventDispatcherImpl implements EventDispatcher {
         final String type = model.getPresentationModelType();
         switch (type) {
             case PlatformConstants.DOLPHIN_BEAN:
-            case PlatformConstants.DOLPHIN_PARAMETER:
             case PlatformConstants.LIST_ADD:
             case PlatformConstants.LIST_DEL:
             case PlatformConstants.LIST_SET:

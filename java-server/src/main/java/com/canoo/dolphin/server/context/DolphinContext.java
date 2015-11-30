@@ -201,7 +201,7 @@ public class DolphinContext {
 
     private void onInvokeControllerAction() throws InvokeActionException {
         ControllerActionCallBean bean = beanManager.findAll(ControllerActionCallBean.class).get(0);
-        controllerHandler.invokeAction(bean.getControllerId(), bean.getActionName());
+        controllerHandler.invokeAction(bean.getControllerId(), bean.getActionName(), bean.getId());
     }
 
     private void onPollEventBus() {

@@ -18,13 +18,30 @@ package com.canoo.dolphin.impl;
 import com.canoo.dolphin.mapping.DolphinBean;
 import com.canoo.dolphin.mapping.Property;
 
+/**
+ * Internal PM that is used to define params for an action call
+ */
 @DolphinBean(PlatformConstants.CONTROLLER_ACTION_CALL_PARAM_BEAN_NAME)
 public class ControllerActionCallParamBean {
 
+    /**
+     * Name of the param
+     */
+    private Property<String> paramName;
+
+    /**
+     * value of the param (if the value is a PM this contains the unique PM id)
+     */
     private Property value;
 
+    /**
+     * Type of the param (see the ordinal value of {@link ClassRepositoryImpl.FieldType})
+     */
     private Property valueType;
 
+    /**
+     * Unique id of the action. See {@link ControllerActionCallBean#id}
+     */
     private Property<String> actionId;
 
     public Object getValue() {
@@ -51,5 +68,11 @@ public class ControllerActionCallParamBean {
         this.actionId.set(actionId);
     }
 
+    public String getParamName() {
+        return paramName.get();
+    }
 
+    public void setParamName(String paramName) {
+        this.paramName.set(paramName);
+    }
 }
