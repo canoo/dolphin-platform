@@ -130,16 +130,13 @@ public class DolphinContext {
                             ControllerActionCallErrorBean errorBean = beanManager.create(ControllerActionCallErrorBean.class);
                             String controllerId = null;
                             String actionName = null;
-                            String actionid = null;
                             try {
                                 ControllerActionCallBean bean = beanManager.findAll(ControllerActionCallBean.class).get(0);
                                 controllerId = bean.getControllerId();
                                 actionName = bean.getActionName();
-                                actionid = bean.getId();
                             } finally {
                                 errorBean.setControllerid(controllerId);
                                 errorBean.setActionName(actionName);
-                                errorBean.setActionId(actionid);
                             }
                         }
                     }

@@ -16,8 +16,6 @@
 package com.canoo.dolphin.server.context;
 
 import com.canoo.dolphin.server.container.ContainerManager;
-import com.canoo.dolphin.server.controller.ControllerHandler;
-import com.canoo.dolphin.server.controller.ControllerRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -52,7 +50,6 @@ public class DolphinContextHandler {
         }
 
     }
-
 
     public void handle(HttpServletRequest request, HttpServletResponse response) {
         //This will refactored later to support a client scope (tab based in browser)
