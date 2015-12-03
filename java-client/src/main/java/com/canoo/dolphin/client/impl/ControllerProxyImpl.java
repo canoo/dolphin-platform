@@ -20,7 +20,6 @@ import com.canoo.dolphin.client.ControllerActionException;
 import com.canoo.dolphin.client.ControllerProxy;
 import com.canoo.dolphin.client.Param;
 import com.canoo.dolphin.impl.*;
-import com.canoo.dolphin.impl.ControllerActionCallBean;
 import com.canoo.dolphin.internal.BeanRepository;
 import org.opendolphin.StringUtil;
 import org.opendolphin.core.client.ClientDolphin;
@@ -29,7 +28,6 @@ import org.opendolphin.core.client.comm.OnFinishedHandler;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import static com.canoo.dolphin.impl.ClassRepositoryImpl.FieldType.DOLPHIN_BEAN;
@@ -78,9 +76,6 @@ public class ControllerProxyImpl<T> implements ControllerProxy<T> {
         if (destroyed) {
             throw new IllegalStateException("The controller was already destroyed");
         }
-
-        final String actionId = UUID.randomUUID().toString();
-
         if (params != null && params.length > 0) {
             for (final Param param : params) {
                 ControllerActionCallParamBean paramBean = context.getBeanManager().create(ControllerActionCallParamBean.class);
@@ -89,15 +84,12 @@ public class ControllerProxyImpl<T> implements ControllerProxy<T> {
                 paramBean.setParamName(param.getName());
                 paramBean.setValue(value);
                 paramBean.setValueType(DolphinUtils.mapFieldTypeToDolphin(type));
-                paramBean.setActionId(actionId);
             }
         }
 
         ControllerActionCallBean bean = context.getBeanManager().findAll(ControllerActionCallBean.class).get(0);
         bean.setControllerId(controllerId);
         bean.setActionName(actionName);
-        bean.setId(actionId);
-
 
         final CompletableFuture<Void> result = new CompletableFuture<>();
         dolphin.send(PlatformConstants.CALL_CONTROLLER_ACTION_COMMAND_NAME, new OnFinishedHandler() {

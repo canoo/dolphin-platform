@@ -105,15 +105,14 @@ public class ControllerHandler {
      * Invokes a DP action
      * @param controllerId unique id of the controller instance
      * @param actionName name of the action
-     * @param actionId unique id of the action call
      * @throws InvokeActionException
      */
-    public void invokeAction(String controllerId, String actionName, String actionId) throws InvokeActionException {
+    public void invokeAction(String controllerId, String actionName) throws InvokeActionException {
         try {
             Object controller = controllers.get(controllerId);
             Method actionMethod = getActionMethod(controller, actionName);
             List<String> paramNames = getParamNames(actionMethod);
-            invokeMethodWithParams(controller, actionMethod, actionId, paramNames, dolphin);
+            invokeMethodWithParams(controller, actionMethod, paramNames, dolphin);
         } catch (Exception e) {
             throw new InvokeActionException(e);
         } finally {
@@ -156,14 +155,13 @@ public class ControllerHandler {
      * Invokes a DP action
      * @param instance the controller instance
      * @param method the method that defines the action
-     * @param actionId the unique id of the action call
      * @param paramNames list of all param names
      * @param dolphin the dolphin
      * @throws InvocationTargetException on error
      * @throws IllegalAccessException on error
      */
-    private void invokeMethodWithParams(Object instance, Method method, String actionId, List<String> paramNames, ServerDolphin dolphin) throws InvocationTargetException, IllegalAccessException {
-        Object[] args = getParam(dolphin, actionId, paramNames);
+    private void invokeMethodWithParams(Object instance, Method method, List<String> paramNames, ServerDolphin dolphin) throws InvocationTargetException, IllegalAccessException {
+        Object[] args = getParam(dolphin, paramNames);
         ReflectionHelper.invokePrivileged(method, instance, args);
     }
 
@@ -188,20 +186,16 @@ public class ControllerHandler {
     /**
      * This methods returns an array of all params that were passed by the client when calling the given action.
      * @param dolphin the dolphin
-     * @param actionId the unique id of the actions call
      * @param names names of all needed params that are specified by the action
      * @return array of all param values. The order of the array is defined by the order of the names list param
      */
-    private Object[] getParam(ServerDolphin dolphin, String actionId, List<String> names) {
+    private Object[] getParam(ServerDolphin dolphin, List<String> names) {
         final List<Object> result = new ArrayList<>();
 
         List<ControllerActionCallParamBean> paramBeans = beanManager.findAll(ControllerActionCallParamBean.class);
 
         //some checks
         for(ControllerActionCallParamBean paramBean : paramBeans) {
-            if(paramBean.getActionId() == null || !paramBean.getActionId().equals(actionId)) {
-                throw new RuntimeException("Dolphin Platform internal error! Param actionI != actionId");
-            }
             if(paramBean.getParamName() == null) {
                 throw new RuntimeException("Dolphin Platform internal error! Param name == null");
             }

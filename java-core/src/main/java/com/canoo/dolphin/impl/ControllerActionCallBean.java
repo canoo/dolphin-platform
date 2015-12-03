@@ -27,11 +27,6 @@ public class ControllerActionCallBean {
 
     private Property<String> actionName;
 
-    /**
-     * Defines a unique id of teh action call that is described by this PM.
-     */
-    private Property<String> id;
-
     public String getControllerId() {
         return controllerId.get();
     }
@@ -48,11 +43,4 @@ public class ControllerActionCallBean {
         this.actionName.set(actionName);
     }
 
-    public String getId() {
-        return id.get();
-    }
-
-    public void setId(String id) {
-        this.id.set(id);
-    }
 }
