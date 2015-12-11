@@ -18,6 +18,7 @@ package com.canoo.dolphin.impl;
 import com.canoo.dolphin.event.Subscription;
 import com.canoo.dolphin.event.ValueChangeEvent;
 import com.canoo.dolphin.event.ValueChangeListener;
+import com.canoo.dolphin.internal.util.Assert;
 import com.canoo.dolphin.mapping.Property;
 import com.canoo.dolphin.internal.info.PropertyInfo;
 import org.opendolphin.core.Attribute;
@@ -40,6 +41,8 @@ public class PropertyImpl<T> implements Property<T> {
 
 
     public PropertyImpl(Attribute attribute, final PropertyInfo propertyInfo) {
+        Assert.requireNonNull(attribute, "attribute");
+        Assert.requireNonNull(propertyInfo, "propertyInfo");
         this.attribute = attribute;
         this.propertyInfo = propertyInfo;
 

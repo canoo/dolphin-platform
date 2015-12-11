@@ -19,6 +19,7 @@ import com.canoo.dolphin.collections.ObservableList;
 import com.canoo.dolphin.internal.BeanRepository;
 import com.canoo.dolphin.internal.ClassRepository;
 import com.canoo.dolphin.internal.PresentationModelBuilder;
+import com.canoo.dolphin.internal.util.Assert;
 import com.canoo.dolphin.mapping.Property;
 import com.canoo.dolphin.internal.info.ClassInfo;
 import com.canoo.dolphin.impl.info.ClassPropertyInfo;
@@ -46,6 +47,9 @@ public class ClassRepositoryImpl implements ClassRepository {
     private final Map<String, ClassInfo> modelTypeToClassInfoMap = new HashMap<>();
 
     public ClassRepositoryImpl(Dolphin dolphin, BeanRepository beanRepository, PresentationModelBuilderFactory builderFactory) {
+        Assert.requireNonNull(dolphin, "dolphin");
+        Assert.requireNonNull(beanRepository, "beanRepository");
+        Assert.requireNonNull(builderFactory, "builderFactory");
         this.builderFactory = builderFactory;
         this.initialConverter = new Converters(beanRepository).getUnknownTypeConverter();
 
@@ -83,6 +87,7 @@ public class ClassRepositoryImpl implements ClassRepository {
     }
 
     private PresentationModel createPresentationModelForClass(Class<?> beanClass) {
+        Assert.requireNonNull(beanClass, "beanClass");
         final String id = DolphinUtils.getDolphinPresentationModelTypeForClass(beanClass);
         final PresentationModelBuilder builder = builderFactory.createBuilder()
                 .withId(id)

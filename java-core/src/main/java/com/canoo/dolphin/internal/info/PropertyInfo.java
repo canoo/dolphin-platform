@@ -19,6 +19,7 @@ import com.canoo.dolphin.impl.ClassRepositoryImpl;
 import com.canoo.dolphin.impl.Converters;
 import com.canoo.dolphin.impl.DolphinUtils;
 import com.canoo.dolphin.impl.ReflectionHelper;
+import com.canoo.dolphin.internal.util.Assert;
 import org.opendolphin.core.Attribute;
 
 import java.beans.PropertyChangeEvent;
@@ -36,6 +37,9 @@ public abstract class PropertyInfo implements PropertyChangeListener {
     private Converters.Converter converter;
 
     public PropertyInfo(Attribute attribute, String attributeName, Converters.Converter converter) {
+        Assert.requireNonNull(attribute, "attribute");
+        Assert.requireNonNull(converter, "converter");
+
         this.attribute = attribute;
         this.attributeName = attributeName;
         this.converter = converter;

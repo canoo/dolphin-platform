@@ -17,6 +17,7 @@ package com.canoo.dolphin.impl;
 
 import com.canoo.dolphin.impl.ClassRepositoryImpl.FieldType;
 import com.canoo.dolphin.internal.BeanRepository;
+import com.canoo.dolphin.internal.util.Assert;
 
 import static com.canoo.dolphin.impl.ClassRepositoryImpl.FieldType.*;
 
@@ -55,6 +56,7 @@ public class Converters {
     }
 
     protected Converters(BeanRepository beanRepository) {
+        Assert.requireNonNull(beanRepository, "beanRepository");
         this.beanRepository = beanRepository;
     }
 

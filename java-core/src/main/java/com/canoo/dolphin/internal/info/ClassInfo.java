@@ -16,6 +16,7 @@
 package com.canoo.dolphin.internal.info;
 
 import com.canoo.dolphin.impl.DolphinUtils;
+import com.canoo.dolphin.internal.util.Assert;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -29,6 +30,10 @@ public class ClassInfo {
     private final Map<String, PropertyInfo> observableListInfoMap;
 
     public ClassInfo(Class<?> beanClass, Collection<PropertyInfo> propertyInfos, Collection<PropertyInfo> observableListInfos) {
+        Assert.requireNonNull(beanClass, "beanClass");
+        Assert.requireNonNull(propertyInfos, "propertyInfos");
+        Assert.requireNonNull(observableListInfos, "observableListInfos");
+
         this.beanClass = beanClass;
         modelType = DolphinUtils.getDolphinPresentationModelTypeForClass(beanClass);
 

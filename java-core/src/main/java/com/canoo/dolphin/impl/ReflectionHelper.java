@@ -15,6 +15,7 @@
  */
 package com.canoo.dolphin.impl;
 
+import com.canoo.dolphin.internal.util.Assert;
 import com.canoo.dolphin.mapping.Property;
 
 import java.beans.PropertyDescriptor;
@@ -32,6 +33,8 @@ public class ReflectionHelper {
 
 
     public static Object getPrivileged(final Field field, final Object bean) {
+        Assert.requireNonNull(field, "field");
+        Assert.requireNonNull(bean, "bean");
         return AccessController.doPrivileged(new PrivilegedAction<Object>() {
             @Override
             public Object run() {
@@ -51,6 +54,8 @@ public class ReflectionHelper {
 
     public static void setPrivileged(final Field field, final Object bean,
                                      final Object value) {
+        Assert.requireNonNull(field, "field");
+        Assert.requireNonNull(bean, "bean");
         AccessController.doPrivileged(new PrivilegedAction<Void>() {
             @Override
             public Void run() {
@@ -69,14 +74,16 @@ public class ReflectionHelper {
         });
     }
 
-    public static void invokePrivileged(final Method method, final Object obj, final Object... args) {
+    public static void invokePrivileged(final Method method, final Object instance, final Object... args) {
+        Assert.requireNonNull(method, "method");
+        Assert.requireNonNull(instance, "instance");
         AccessController.doPrivileged(new PrivilegedAction<Void>() {
             @Override
             public Void run() {
                 boolean wasAccessible = method.isAccessible();
                 try {
                     method.setAccessible(true);
-                    method.invoke(obj, args);
+                    method.invoke(instance, args);
                     return null; // return nothing...
                 } catch (InvocationTargetException | IllegalAccessException ex) {
                     throw new IllegalStateException("Cannot invoke method: "
@@ -109,6 +116,7 @@ public class ReflectionHelper {
     }
 
     public static boolean isProperty(PropertyDescriptor descriptor) {
+        Assert.requireNonNull(descriptor, "descriptor");
         return isProperty(descriptor.getPropertyType());
     }
 
@@ -117,6 +125,7 @@ public class ReflectionHelper {
     }
 
     public static boolean isEnumType(Class<?> cls) {
+        Assert.requireNonNull(cls, "cls");
         return cls.isEnum();
     }
 
@@ -125,10 +134,12 @@ public class ReflectionHelper {
     }
 
     public static boolean isBasicType(Class<?> cls) {
+        Assert.requireNonNull(cls, "cls");
         return cls.isPrimitive() || cls.equals(String.class) || cls.equals(Boolean.class) || cls.equals(Byte.class) || Number.class.isAssignableFrom(cls);
     }
 
     public static boolean isProxyInstance(Object bean) {
+        Assert.requireNonNull(bean, "bean");
         return Proxy.isProxyClass(bean.getClass());
     }
 }
