@@ -39,6 +39,7 @@ import java.io.Serializable;
  * easily be shared and edited between several clients in realtime.
  *</p>
  */
+@Deprecated
 public interface TaskExecutor extends Serializable {
 
     public <T> void execute(Class<T> controllerClass, ControllerTask<T> task);

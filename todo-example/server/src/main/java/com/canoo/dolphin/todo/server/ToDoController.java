@@ -19,7 +19,9 @@ import com.canoo.dolphin.BeanManager;
 import com.canoo.dolphin.server.DolphinAction;
 import com.canoo.dolphin.server.DolphinController;
 import com.canoo.dolphin.server.DolphinModel;
-import com.canoo.dolphin.server.event.TaskExecutor;
+import com.canoo.dolphin.server.Param;
+import com.canoo.dolphin.server.event.DolphinEventBus;
+import com.canoo.dolphin.server.event.Topic;
 import com.canoo.dolphin.todo.pm.ToDoItem;
 import com.canoo.dolphin.todo.pm.ToDoList;
 
@@ -30,17 +32,33 @@ import javax.inject.Inject;
 @DolphinController("ToDoController")
 public class ToDoController {
 
+    private final static Topic<String> ITEM_MARK_CHANGED = Topic.create("item_mark_changed");
+
+    private final static Topic<String> ITEM_ADDED = Topic.create("item_added");
+
     @Inject
     private BeanManager beanManager;
 
     @Inject
-    private TaskExecutor taskExecutor;
+    private DolphinEventBus eventBus;
 
     @DolphinModel
     private ToDoList toDoList;
 
     @PostConstruct
     public void onInit() {
+        eventBus.subscribe(ITEM_MARK_CHANGED,
+                m -> {
+                    toDoList.getItems().stream().filter(i -> i.getText().equals(m.getData())).forEach(i -> i.setCompleted(!i.isCompleted()));
+                }
+        );
+
+        eventBus.subscribe(ITEM_ADDED,
+                m -> {
+                    onAdded(m.getData());
+                }
+        );
+
         System.out.println("Init");
     }
 
@@ -53,7 +71,12 @@ public class ToDoController {
     public void add() {
         final String newItemText = toDoList.getNewItemText().get();
         toDoList.getNewItemText().set("");
-        taskExecutor.execute(ToDoController.class, c -> c.onAdded(newItemText));
+        eventBus.publish(ITEM_ADDED, newItemText);
+    }
+
+    @DolphinAction
+    public void markChanged(@Param("itemName") String name) {
+        eventBus.publish(ITEM_MARK_CHANGED, name);
     }
 
     private void onAdded(String text) {

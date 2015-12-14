@@ -4,6 +4,7 @@ import com.canoo.dolphin.event.Subscription;
 import com.canoo.dolphin.server.event.DolphinEventBus;
 import com.canoo.dolphin.server.event.Message;
 import com.canoo.dolphin.server.event.MessageListener;
+import com.canoo.dolphin.server.event.Topic;
 import org.testng.annotations.Test;
 
 import java.util.HashSet;
@@ -17,12 +18,19 @@ import static org.testng.Assert.assertTrue;
 
 public class TestDolphinEventBusImpl {
 
+    private static final Topic<String> NO_MATTER = Topic.create("noMatter");
+
+    private static final Topic<String> CHAT_ABOUT_DOLPHIN = Topic.create("chatAboutDolphin");
+
+    private static final Topic<String> CHAT_ABOUT_SWING = Topic.create("chatAboutSwing");
+
+
     @Test(expectedExceptions = {IllegalStateException.class})
     public void testSubscribeWithoutDolphinSession() {
         DolphinEventBus dolphinEventBus = createBus(null);
-        dolphinEventBus.subscribe("noMatter", new MessageListener() {
+        dolphinEventBus.subscribe(NO_MATTER, new MessageListener<String>() {
             @Override
-            public void onMessage(Message message) {
+            public void onMessage(Message<String> message) {
 
             }
         });
@@ -40,24 +48,24 @@ public class TestDolphinEventBusImpl {
 
         final CountDownLatch latch = new CountDownLatch(2);
         final Set<Object> messsages = new HashSet<>();
-        horst.subscribe("chatAboutDolphin", new MessageListener() {
+        horst.subscribe(CHAT_ABOUT_DOLPHIN, new MessageListener() {
             @Override
             public void onMessage(Message message) {
-                assertEquals("chatAboutDolphin", message.getTopic());
+                assertEquals(CHAT_ABOUT_DOLPHIN, message.getTopic());
                 messsages.add(message.getData());
                 latch.countDown();
             }
         });
-        horst.subscribe("chatAboutSwing", new MessageListener() {
+        horst.subscribe(CHAT_ABOUT_SWING, new MessageListener() {
             @Override
             public void onMessage(Message message) {
-                assertEquals("chatAboutSwing", message.getTopic());
+                assertEquals(CHAT_ABOUT_SWING, message.getTopic());
                 messsages.add(message.getData());
                 latch.countDown();
             }
         });
-        horst.publish("chatAboutSwing", "old school");
-        horst.publish("chatAboutDolphin", "trendy");
+        horst.publish(CHAT_ABOUT_SWING, "old school");
+        horst.publish(CHAT_ABOUT_DOLPHIN, "trendy");
 
         latch.await(500, MILLISECONDS);
 
@@ -71,25 +79,25 @@ public class TestDolphinEventBusImpl {
         final DolphinEventBus horst = createAndStartLongPoll("session1");
 
         final AtomicInteger atomicInteger = new AtomicInteger();
-        Subscription subscription = horst.subscribe("chatAboutDolphin", new MessageListener() {
+        Subscription subscription = horst.subscribe(CHAT_ABOUT_DOLPHIN, new MessageListener() {
             @Override
             public void onMessage(Message message) {
-                assertEquals("chatAboutDolphin", message.getTopic());
+                assertEquals(CHAT_ABOUT_DOLPHIN, message.getTopic());
                 atomicInteger.incrementAndGet();
             }
         });
 
-        horst.publish("chatAboutDolphin", "trendy");
+        horst.publish(CHAT_ABOUT_DOLPHIN, "trendy");
         Thread.sleep(200);
         assertEquals(1, atomicInteger.get());
 
-        horst.publish("chatAboutDolphin", "trendy");
+        horst.publish(CHAT_ABOUT_DOLPHIN, "trendy");
         Thread.sleep(200);
         assertEquals(2, atomicInteger.get());
 
         subscription.unsubscribe();
 
-        horst.publish("chatAboutDolphin", "trendy");
+        horst.publish(CHAT_ABOUT_DOLPHIN, "trendy");
         Thread.sleep(200);
         assertEquals(2, atomicInteger.get());
 
@@ -100,19 +108,19 @@ public class TestDolphinEventBusImpl {
         final DolphinEventBusImpl horst = createAndStartLongPoll("session1");
 
         final AtomicInteger atomicInteger = new AtomicInteger();
-        horst.subscribe("chatAboutDolphin", new MessageListener() {
+        horst.subscribe(CHAT_ABOUT_DOLPHIN, new MessageListener() {
             @Override
             public void onMessage(Message message) {
-                assertEquals("chatAboutDolphin", message.getTopic());
+                assertEquals(CHAT_ABOUT_DOLPHIN, message.getTopic());
                 atomicInteger.incrementAndGet();
             }
         });
-        horst.publish("chatAboutDolphin", "trendy");
+        horst.publish(CHAT_ABOUT_DOLPHIN, "trendy");
         Thread.sleep(200);
         assertEquals(1, atomicInteger.get());
 
         horst.unsubscribeSession("session1");
-        horst.publish("chatAboutDolphin", "trendy");
+        horst.publish(CHAT_ABOUT_DOLPHIN, "trendy");
         Thread.sleep(200);
         assertEquals(1, atomicInteger.get());
     }

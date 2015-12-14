@@ -18,11 +18,10 @@ package com.canoo.dolphin.server.event.impl;
 import com.canoo.dolphin.event.Subscription;
 import com.canoo.dolphin.server.event.Message;
 import com.canoo.dolphin.server.event.MessageListener;
+import com.canoo.dolphin.server.event.Topic;
 import groovyx.gpars.dataflow.DataflowQueue;
-import org.opendolphin.StringUtil;
 import org.opendolphin.core.server.EventBus;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,15 +34,15 @@ public class Receiver {
 
     DataflowQueue receiverQueue;
 
-    Map<String, List<MessageListener>> listenersPerTopic = new HashMap<>();
+    Map<Topic, List<MessageListener>> listenersPerTopic = new HashMap<>();
 
     public DataflowQueue getReceiverQueue() {
         return receiverQueue;
     }
 
-    public Subscription subscribe(final String topic, final MessageListener handler) {
-        if(StringUtil.isBlank(topic)) {
-            throw new IllegalArgumentException("topic mustn't be empty!");
+    public <T> Subscription subscribe(final Topic<T> topic, final MessageListener<T> handler) {
+        if(topic == null) {
+            throw new IllegalArgumentException("topic mustn't be null!");
         }
         if(handler == null) {
             throw new IllegalArgumentException("handler mustn't be empty!");

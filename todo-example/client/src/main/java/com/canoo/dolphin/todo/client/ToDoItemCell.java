@@ -17,25 +17,35 @@ package com.canoo.dolphin.todo.client;
 
 import com.canoo.dolphin.client.javafx.FXBinder;
 import com.canoo.dolphin.todo.pm.ToDoItem;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListCell;
+import javafx.scene.text.Text;
+
+import java.util.function.Consumer;
 
 public class ToDoItemCell extends ListCell<ToDoItem> {
 
-    private CheckBox doneCheckbox;
+    public ToDoItemCell(Consumer<ToDoItem> actionConsumer) {
+        Text itemNameText = new Text();
 
-    public ToDoItemCell() {
-        doneCheckbox = new CheckBox();
-        doneCheckbox.visibleProperty().bind(emptyProperty().not());
-        setGraphic(doneCheckbox);
-    }
+        itemNameText.visibleProperty().bind(emptyProperty().not());
+        setGraphic(itemNameText);
 
-    @Override
-    protected void updateItem(ToDoItem item, boolean empty) {
-        super.updateItem(item, empty);
-        if(item != null) {
-            FXBinder.bind(textProperty()).to(item.getTextProperty());
-            FXBinder.bind(doneCheckbox.selectedProperty()).bidirectionalTo(item.getCompletedProperty());
-        }
+        itemProperty().addListener((obs, oldVal, newVal) -> {
+            itemNameText.textProperty().unbind();
+            itemNameText.strikethroughProperty().unbind();
+            if(newVal != null) {
+                FXBinder.bind(itemNameText.textProperty()).to(newVal.getTextProperty());
+                FXBinder.bind(itemNameText.strikethroughProperty()).bidirectionalTo(newVal.getCompletedProperty());
+            }
+        });
+
+        setOnMouseClicked(e -> {
+            if(getItem() != null) {
+                actionConsumer.accept(getItem());
+            }
+        });
+
+        setStyle("-fx-background-color: white");
+        itemNameText.setStyle("-fx-font-size: 24px");
     }
 }

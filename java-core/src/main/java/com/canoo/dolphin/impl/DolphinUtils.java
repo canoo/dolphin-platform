@@ -15,6 +15,7 @@
  */
 package com.canoo.dolphin.impl;
 
+import com.canoo.dolphin.internal.util.Assert;
 import com.canoo.dolphin.mapping.DolphinBean;
 import com.canoo.dolphin.mapping.DolphinProperty;
 import com.canoo.dolphin.mapping.Property;
@@ -34,6 +35,7 @@ public class DolphinUtils {
     }
 
     public static String getDolphinAttributeName(PropertyDescriptor descriptor) {
+        Assert.requireNonNull(descriptor, "descriptor");
         if (ReflectionHelper.isProperty(descriptor)) {
             return descriptor.getName().substring(0, descriptor.getName().length() - "Property".length());
         }
@@ -41,6 +43,7 @@ public class DolphinUtils {
     }
 
     public static String getDolphinAttributePropertyNameForField(Field propertyField) {
+        Assert.requireNonNull(propertyField, "propertyField");
         String attributeName = propertyField.getName();
         DolphinProperty propertyAnnotation = propertyField.getAnnotation(DolphinProperty.class);
         if (propertyAnnotation != null && !propertyAnnotation.value().isEmpty()) {
@@ -50,11 +53,14 @@ public class DolphinUtils {
     }
 
     public static String getDolphinPresentationModelTypeForClass(Class<?> beanClass) {
+        Assert.requireNonNull(beanClass, "beanClass");
         final DolphinBean beanAnnotation = beanClass.getAnnotation(DolphinBean.class);
         return beanAnnotation == null || beanAnnotation.value().isEmpty() ? beanClass.getName() : beanAnnotation.value();
     }
 
     public static <T> Property<T> getProperty(Object bean, String name) throws IllegalAccessException {
+        Assert.requireNonNull(bean, "bean");
+        Assert.requireNonNull(name, "name");
         for (Field field : ReflectionHelper.getInheritedDeclaredFields(bean.getClass())) {
             if (Property.class.isAssignableFrom(field.getType()) && name.equals(getDolphinAttributePropertyNameForField(field))) {
                 return (Property<T>) ReflectionHelper.getPrivileged(field, bean);
@@ -64,6 +70,7 @@ public class DolphinUtils {
     }
 
     public static Object mapFieldTypeToDolphin(ClassRepositoryImpl.FieldType fieldType) {
+        Assert.requireNonNull(fieldType, "fieldType");
         return fieldType.ordinal();
     }
 

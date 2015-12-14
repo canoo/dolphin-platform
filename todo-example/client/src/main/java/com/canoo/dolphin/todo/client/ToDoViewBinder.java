@@ -15,10 +15,10 @@
  */
 package com.canoo.dolphin.todo.client;
 
+import com.canoo.dolphin.client.ClientContext;
+import com.canoo.dolphin.client.Param;
 import com.canoo.dolphin.client.javafx.AbstractViewBinder;
 import com.canoo.dolphin.client.javafx.FXBinder;
-import com.canoo.dolphin.client.ClientContext;
-import com.canoo.dolphin.client.ControllerProxy;
 import com.canoo.dolphin.client.javafx.FXWrapper;
 import com.canoo.dolphin.todo.pm.ToDoItem;
 import com.canoo.dolphin.todo.pm.ToDoList;
@@ -50,7 +50,7 @@ public class ToDoViewBinder extends AbstractViewBinder<ToDoList> {
         itemList = new ListView<>();
         VBox vBox = new VBox(createComponent, itemList);
         root = new StackPane(vBox);
-        itemList.setCellFactory(c -> new ToDoItemCell());
+        itemList.setCellFactory(c -> new ToDoItemCell(i -> invoke("markChanged", new Param("itemName", i.getText()))));
     }
 
 

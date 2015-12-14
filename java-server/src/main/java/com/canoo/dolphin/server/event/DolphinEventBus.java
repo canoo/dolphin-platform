@@ -34,7 +34,7 @@ public interface DolphinEventBus {
      *
      * @param data the data of the message
      */
-    void publish(String address, Object data);
+    <T> void publish(Topic<T> topic, T data);
 
     /**
      * Register as a handler / listener for a given address. All messages that will be published for the given address
@@ -43,5 +43,5 @@ public interface DolphinEventBus {
      * @param topic   the topic
      * @param handler the handler
      */
-    Subscription subscribe(String topic, MessageListener handler);
+    <T> Subscription subscribe(Topic<T> topic, MessageListener<T> handler);
 }
