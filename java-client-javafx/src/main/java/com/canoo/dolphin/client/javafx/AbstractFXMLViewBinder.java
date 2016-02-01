@@ -17,7 +17,7 @@ package com.canoo.dolphin.client.javafx;
 
 import com.canoo.dolphin.client.ClientContext;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
+import javafx.scene.Parent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -35,7 +35,7 @@ import java.net.URL;
  */
 public abstract class AbstractFXMLViewBinder<M> extends AbstractViewBinder<M> {
 
-    private Node rootNode;
+    private Parent rootNode;
 
     /**
      * Constructor
@@ -56,7 +56,7 @@ public abstract class AbstractFXMLViewBinder<M> extends AbstractViewBinder<M> {
      * Returns the root node of the view as it's define dby the FXML.
      * @return the root node.
      */
-    public Node getRootNode() {
+    public Parent getRootNode() {
         return rootNode;
     }
 }
