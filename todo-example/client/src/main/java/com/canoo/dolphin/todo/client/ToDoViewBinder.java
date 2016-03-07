@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Canoo Engineering AG.
+ * Copyright 2015-2016 Canoo Engineering AG.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,54 +17,40 @@ package com.canoo.dolphin.todo.client;
 
 import com.canoo.dolphin.client.ClientContext;
 import com.canoo.dolphin.client.Param;
-import com.canoo.dolphin.client.javafx.AbstractViewBinder;
+import com.canoo.dolphin.client.javafx.AbstractFXMLViewBinder;
 import com.canoo.dolphin.client.javafx.FXBinder;
-import com.canoo.dolphin.client.javafx.FXWrapper;
+import com.canoo.dolphin.todo.TodoConstants;
 import com.canoo.dolphin.todo.pm.ToDoItem;
 import com.canoo.dolphin.todo.pm.ToDoList;
-import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 
-/**
- * Created by hendrikebbers on 16.09.15.
- */
-public class ToDoViewBinder extends AbstractViewBinder<ToDoList> {
+import java.io.IOException;
 
-    private final TextField createField;
-    private final Button createButton;
-    private final ListView<ToDoItem> itemList;
-    private final StackPane root;
+public class ToDoViewBinder extends AbstractFXMLViewBinder<ToDoList> {
 
-    public ToDoViewBinder(ClientContext clientContext) {
-        super(clientContext, "ToDoController");
+    @FXML
+    private TextField createField;
 
-        createField = new TextField();
-        createButton = new Button("Create");
-        createButton.setDisable(true);
-        HBox createComponent = new HBox(createField, createButton);
-        itemList = new ListView<>();
-        VBox vBox = new VBox(createComponent, itemList);
-        root = new StackPane(vBox);
-        itemList.setCellFactory(c -> new ToDoItemCell(i -> invoke("markChanged", new Param("itemName", i.getText()))));
-    }
+    @FXML
+    private Button createButton;
 
+    @FXML
+    private ListView<ToDoItem> itemList;
 
-    public StackPane getRoot() {
-        return root;
+    public ToDoViewBinder(ClientContext clientContext) throws IOException {
+        super(clientContext, TodoConstants.TODO_CONTROLLER_NAME, ToDoViewBinder.class.getResource("view.fxml"));
     }
 
     @Override
     protected void init() {
+        itemList.setCellFactory(c -> new ToDoItemCell(i -> invoke(TodoConstants.MARK_ACTION, new Param(TodoConstants.ITEM_NAME_PARAM, i.getText()))));
+
         FXBinder.bind(createField.textProperty()).bidirectionalTo(getModel().getNewItemText());
-        ObservableList<ToDoItem> items = FXWrapper.wrapList(getModel().getItems());
-        itemList.setItems(items);
-        createButton.setDisable(false);
-        createButton.setOnAction(event -> invoke("add"));
+        FXBinder.bind(itemList.getItems()).to(getModel().getItems());
+        createButton.setOnAction(event -> invoke(TodoConstants.ADD_ACTION));
     }
 
 }
