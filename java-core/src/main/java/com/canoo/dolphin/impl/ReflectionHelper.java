@@ -16,12 +16,13 @@
 package com.canoo.dolphin.impl;
 
 import com.canoo.dolphin.mapping.Property;
-
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
+import java.lang.reflect.Type;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
@@ -130,5 +131,15 @@ public class ReflectionHelper {
 
     public static boolean isProxyInstance(Object bean) {
         return Proxy.isProxyClass(bean.getClass());
+    }
+
+    public static Class getNestingType(Type type) {
+        if (type instanceof  ParameterizedType) {
+            ParameterizedType pType = (ParameterizedType) type;
+            if (pType.getActualTypeArguments().length > 0) {
+                return (Class) pType.getActualTypeArguments()[0];
+            }
+        }
+        return null;
     }
 }

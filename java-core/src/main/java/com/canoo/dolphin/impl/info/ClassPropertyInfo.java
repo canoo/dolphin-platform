@@ -18,6 +18,7 @@ package com.canoo.dolphin.impl.info;
 import com.canoo.dolphin.impl.Converters;
 import com.canoo.dolphin.impl.ReflectionHelper;
 import com.canoo.dolphin.internal.info.PropertyInfo;
+import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation;
 import org.opendolphin.core.Attribute;
 
 import java.lang.reflect.Field;
@@ -25,10 +26,16 @@ import java.lang.reflect.Field;
 public class ClassPropertyInfo extends PropertyInfo {
 
     private final Field field;
+    private final Class nestingType;
 
     public ClassPropertyInfo(Attribute attribute, String attributeName, Converters.Converter converter, Field field) {
+        this(attribute, attributeName, converter, field, null);
+    }
+
+    public ClassPropertyInfo(Attribute attribute, String attributeName, Converters.Converter converter, Field field, Class nestingType) {
         super(attribute, attributeName, converter);
         this.field = field;
+        this.nestingType = nestingType;
     }
 
     @Override
@@ -41,4 +48,20 @@ public class ClassPropertyInfo extends PropertyInfo {
         ReflectionHelper.setPrivileged(field, bean, value);
     }
 
+    @Override
+    public Object convertFromDolphin(Object value) {
+        value = super.convertFromDolphin(value);
+        if (nestingType != null) {
+            value = DefaultTypeTransformation.castToType(value, nestingType);
+        }
+        return value;
+    }
+
+    @Override
+    public Object convertToDolphin(Object value) {
+        if (nestingType != null) {
+            value = DefaultTypeTransformation.castToType(value, nestingType);
+        }
+        return super.convertToDolphin(value);
+    }
 }
