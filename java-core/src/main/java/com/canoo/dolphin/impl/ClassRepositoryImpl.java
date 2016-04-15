@@ -106,15 +106,17 @@ public class ClassRepositoryImpl implements ClassRepository {
 
         for (Field field : ReflectionHelper.getInheritedDeclaredFields(beanClass)) {
             PropertyType type = null;
+            Class nestingType = null;
             if (Property.class.isAssignableFrom(field.getType())) {
                 type = PropertyType.PROPERTY;
+                nestingType = ReflectionHelper.getNestingType(field.getGenericType());
             } else if (ObservableList.class.isAssignableFrom(field.getType())) {
                 type = PropertyType.OBSERVABLE_LIST;
             }
             if (type != null) {
                 final String attributeName = DolphinUtils.getDolphinAttributePropertyNameForField(field);
                 final Attribute attribute = model.findAttributeByPropertyName(attributeName);
-                final PropertyInfo propertyInfo = new ClassPropertyInfo(attribute, attributeName, initialConverter, field);
+                final PropertyInfo propertyInfo = new ClassPropertyInfo(attribute, attributeName, initialConverter, field, nestingType);
                 if (type == PropertyType.PROPERTY) {
                     propertyInfos.add(propertyInfo);
                 } else {
