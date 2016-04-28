@@ -1,0 +1,7 @@
+dependencies {
+    compile project(':dolphin-platform-core')
+    compile "org.open-dolphin:dolphin-server:$dolphinVersion"
+    compile 'org.reflections:reflections:0.9.10'
+    testCompile "org.open-dolphin:dolphin-combined:$dolphinVersion"
+    compileOnly "javax.servlet:javax.servlet-api:$servletApiVersion"
+}

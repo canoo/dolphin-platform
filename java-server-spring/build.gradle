@@ -1,0 +1,4 @@
+dependencies {
+    compile project(':dolphin-platform-server')
+    compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+}

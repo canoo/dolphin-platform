@@ -1,5 +1,10 @@
 .idea
-**/*.iml
-**/target/
-**/dist/
-**/node_modules/
+*.iml
+*.ipr
+*.iws
+build/
+.gradle/
+out/
+target/
+dist/
+node_modules/

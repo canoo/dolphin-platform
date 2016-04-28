@@ -1,0 +1,94 @@
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'net.nemerosa.versioning'
+
+def pomConfig = {
+    name project.name
+    description project.project_description
+    url project.project_website
+    inceptionYear '2015'
+    licenses {
+        license([:]) {
+            name 'The Apache Software License, Version 2.0'
+            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+            distribution 'repo'
+        }
+    }
+    scm {
+        url project.project_scm
+    }
+    developers {
+        [
+            'Hendrik Ebbers': 'hendrik.ebbers@canoo.com',
+            'Michael Heinrichs': 'michael.heinrichs@canoo.com'
+        ].each { devName, devEmail ->
+            developer {
+                name devName
+                email devEmail
+                organization 'Canoo Engineering AG'
+                organizationUrl 'http://www.canoo.com'
+                roles {
+                    role 'Developer'
+                }
+            }
+        }
+    }
+}
+
+publishing {
+    publications {
+        mavenCustom(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+
+            pom.withXml {
+                // all dependencies should use the default scope (compile) but
+                // Gradle insists in using runtime as default
+                asNode().dependencies.dependency.each { dep ->
+                    if (dep.scope.text() == 'runtime') {
+                        dep.remove(dep.scope)
+                    }
+                }
+                asNode().children().last() + pomConfig
+                asNode().appendNode('description', project.project_description)
+            }
+        }
+    }
+}
+jar {
+    manifest {
+        attributes(
+            'Built-By': System.properties['user.name'],
+            'Created-By': System.properties['java.version'] + " (" + System.properties['java.vendor'] + " " + System.properties['java.vm.version'] + ")",
+            'Build-Date': project.buildDate,
+            'Build-Time': project.buildTime,
+            'Build-Revision': versioning.info.commit,
+            'Specification-Title': project.name,
+            'Specification-Version': project.version,
+            'Implementation-Title': project.name,
+            'Implementation-Version': project.version,
+        )
+    }
+}
+
+if (!project.hasProperty('bintrayUsername')) ext.bintrayUsername = ''
+if (!project.hasProperty('bintrayApiKey')) ext.bintrayApiKey = ''
+
+bintray {
+    user = project.bintrayUsername
+    key = project.bintrayApiKey
+    publications = ['mavenCustom']
+    pkg {
+        repo = 'maven'
+        userOrg = 'canoo'
+        name = project.name
+        desc = project.project_description
+        licenses = ['Apache-2.0']
+        labels = ['']
+        websiteUrl = project.project_website
+        issueTrackerUrl = project.project_issues
+        vcsUrl = project.project_scm
+        publicDownloadNumbers = true
+    }
+}

@@ -1,0 +1,5 @@
+dependencies {
+    compile project(':dolphin-platform-core')
+    compile "org.open-dolphin:dolphin-client:$dolphinVersion"
+    testCompile "org.open-dolphin:dolphin-combined:$dolphinVersion"
+}

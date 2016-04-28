@@ -1,0 +1,28 @@
+rootProject.name = 'dolphin-platform'
+include ':dolphin-platform-core'
+include ':dolphin-platform-client'
+include ':dolphin-platform-server'
+include ':dolphin-platform-server-javaee'
+include ':dolphin-platform-server-spring'
+include ':dolphin-platform-client-javafx'
+include ':dolphin-platform-bean-validation'
+include ':todo-example-common'
+include ':todo-example-server'
+include ':todo-example-server-spring'
+include ':todo-example-server-javaee'
+include ':todo-example-client'
+include ':dolphin-platform-documentation'
+
+project(':dolphin-platform-core').projectDir = "$rootDir/java-core" as File
+project(':dolphin-platform-client').projectDir = "$rootDir/java-client" as File
+project(':dolphin-platform-server').projectDir = "$rootDir/java-server" as File
+project(':dolphin-platform-server-javaee').projectDir = "$rootDir/java-server-javaee" as File
+project(':dolphin-platform-server-spring').projectDir = "$rootDir/java-server-spring" as File
+project(':dolphin-platform-client-javafx').projectDir = "$rootDir/java-client-javafx" as File
+project(':dolphin-platform-bean-validation').projectDir = "$rootDir/java-bean-validation" as File
+project(':todo-example-common').projectDir = "$rootDir/todo-example/common" as File
+project(':todo-example-server').projectDir = "$rootDir/todo-example/server" as File
+project(':todo-example-server-spring').projectDir = "$rootDir/todo-example/server-spring" as File
+project(':todo-example-server-javaee').projectDir = "$rootDir/todo-example/server-javaee" as File
+project(':todo-example-client').projectDir = "$rootDir/todo-example/client" as File
+project(':dolphin-platform-documentation').projectDir = "$rootDir/documentation" as File

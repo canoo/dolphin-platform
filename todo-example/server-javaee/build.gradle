@@ -1,0 +1,11 @@
+apply plugin: 'application'
+
+mainClassName = 'com.canoo.dolphin.todo.server.ServerStart'
+
+dependencies {
+  compile project(':todo-example-server')
+  compile project(':dolphin-platform-server-javaee')
+    compile group: 'com.kumuluz.ee', name: 'kumuluzee-core', version:'1.0.0'
+    compile group: 'com.kumuluz.ee', name: 'kumuluzee-servlet-jetty', version:'1.0.0'
+    compile group: 'com.kumuluz.ee', name: 'kumuluzee-cdi', version:'1.0.0'
+}

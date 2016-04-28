@@ -1,0 +1,51 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.3'
+    }
+}
+
+apply plugin: 'org.asciidoctor.convert'
+
+repositories {
+    jcenter()
+}
+
+asciidoctorj {
+    version = '1.5.4'
+}
+
+asciidoctor {
+    options doctype: 'book'
+
+    backends = ['html5']
+
+    attributes = [
+        'source-highlighter'   : 'coderay',
+        'coderay-linenums-mode': 'table',
+        icon                   : 'font',
+        toc                    : 'left',
+        doctype                : 'book',
+        icons                  : 'font',
+        encoding               : 'utf-8',
+        sectlink               : true,
+        sectanchors            : true,
+        numbered               : true,
+        linkattrs              : true,
+        imagesdir              : 'images',
+        linkcss                : true,
+    ]
+
+    sources {
+        include 'index.adoc'
+    }
+
+    resources {
+        from(file('src/docs/asciidoc/images')) {
+            into 'images'
+        }
+    }
+}

@@ -1,0 +1,8 @@
+apply plugin: 'application'
+
+mainClassName = 'com.canoo.dolphin.todo.server.ToDoServer'
+
+dependencies {
+  compile project(':todo-example-server')
+  compile project(':dolphin-platform-server-spring')
+}

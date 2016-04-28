@@ -1,0 +1,6 @@
+
+description = ''
+dependencies {
+  compile project(':todo-example-common')
+  compile project(':dolphin-platform-server')
+}

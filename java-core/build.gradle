@@ -1,0 +1,5 @@
+dependencies {
+    compile "org.open-dolphin:dolphin-shared:$dolphinVersion"
+    compile 'com.google.guava:guava:18.0'
+    compile 'com.google.code.gson:gson:2.6.1'
+}
