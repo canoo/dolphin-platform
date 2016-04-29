@@ -1,14 +1,7 @@
 language: java
-sudo: false
-script: mvn clean verify
+install: true
 jdk: oraclejdk8
+sudo: false
+script: ./gradlew clean build jacocoTestReport jacocoRootMergeReport
 after_success:
-      - mvn clean test jacoco:report coveralls:report
-      - zip -r release . -i java-*/target/*.jar -i release/readme.txt
-deploy:
-  provider: releases
-  api_key: "$github_api_token_upload_release"
-  file: 'release.zip'
-  skip_cleanup: true
-  on:
-    tags
+  - ./gradlew coveralls
