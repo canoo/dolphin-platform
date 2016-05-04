@@ -119,6 +119,75 @@ public class FXWrapper {
     }
 
     /**
+     * Create a JavaFX {@link javafx.beans.property.ObjectProperty} as a wrapper for a dolphin platform property.
+     * A converter is used to convert between the 2 properties.
+     * @param dolphinProperty the Dolphin Platform property
+     * @param converter the converter
+     * @param <T> type of the JavaFX property
+     * @param <U> type of the Dolphin Platform property
+     * @return the JavaFX property
+     */
+    public static <T, U> ObjectProperty<T> wrapObjectProperty(final Property<U> dolphinProperty, BidirectionalConverter<U, T> converter) {
+        final ObjectProperty<T> property = new SimpleObjectProperty<>();
+        FXBinder.bind(property).bidirectionalTo(dolphinProperty, converter);
+        return property;
+    }
+
+    /**
+     * Create a JavaFX (Number) {@link javafx.beans.property.ObjectProperty} as a wrapper for a dolphin platform (Double) property.
+     * @param dolphinProperty the Dolphin Platform property
+     * @return the JavaFX property
+     */
+    public static javafx.beans.property.Property<Number> wrapDoubleInNumberProperty(final Property<Double> dolphinProperty) {
+        final javafx.beans.property.Property<Number> property = new SimpleDoubleProperty();
+        FXBinder.bind(property).bidirectionalTo(dolphinProperty, new BidirectionalConverter<Double, Number>() {
+            @Override
+            public Double convertBack(Number value) {
+                if(value == null) {
+                    return null;
+                }
+                return value.doubleValue();
+            }
+
+            @Override
+            public Number convert(Double value) {
+                return value;
+            }
+        });
+        if(dolphinProperty.get() == null) {
+            dolphinProperty.set(property.getValue().doubleValue());
+        }
+        return property;
+    }
+
+    /**
+     * Create a JavaFX (Number) {@link javafx.beans.property.ObjectProperty} as a wrapper for a dolphin platform (Integer) property.
+     * @param dolphinProperty the Dolphin Platform property
+     * @return the JavaFX property
+     */
+    public static javafx.beans.property.Property<Number> wrapIntegerInNumberProperty(final Property<Integer> dolphinProperty) {
+        final javafx.beans.property.Property<Number> property = new SimpleIntegerProperty();
+        FXBinder.bind(property).bidirectionalTo(dolphinProperty, new BidirectionalConverter<Integer, Number>() {
+            @Override
+            public Integer convertBack(Number value) {
+                if(value == null) {
+                    return null;
+                }
+                return value.intValue();
+            }
+
+            @Override
+            public Number convert(Integer value) {
+                return value;
+            }
+        });
+        if(dolphinProperty.get() == null) {
+            dolphinProperty.set(property.getValue().intValue());
+        }
+        return property;
+    }
+
+    /**
      * Create a JavaFX {@link javafx.collections.ObservableList} wrapper for a dolphin platform list
      *
      * @param dolphinList the dolphin platform list
