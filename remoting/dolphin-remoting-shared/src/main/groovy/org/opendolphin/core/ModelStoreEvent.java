@@ -13,12 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opendolphin.core.comm
+package org.opendolphin.core;
 
-public interface Codec {
+import lombok.Data;
 
-    String encode(List<Command> commands)
+@Data
+public class ModelStoreEvent<A extends Attribute, P extends PresentationModel<A>> {
+    public enum Type {
+        ADDED,
+        REMOVED
+    }
 
-    List<Command> decode(String transmitted)
+    private final Type type;
+    private final P presentationModel;
 
+    public String toString() {
+        return new StringBuilder()
+            .append("PresentationModel ")
+            .append(type == Type.ADDED ? "ADDED" : "REMOVED")
+            .append(" ")
+            .append(presentationModel.getId())
+            .toString();
+    }
 }

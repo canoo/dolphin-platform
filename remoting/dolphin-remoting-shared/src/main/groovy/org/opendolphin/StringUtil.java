@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opendolphin
+package org.opendolphin;
 
-class StringUtil {
+public class StringUtil {
     /**
      * <p>Determines whether a given string is <code>null</code>, empty,
      * or only contains whitespace. If it contains anything other than
@@ -23,8 +23,9 @@ class StringUtil {
      * method returns <code>false</code>.</p>
      *
      * @param str The string to test.
+     *
      * @return <code>true</code> if the string is <code>null</code>, or
-     *         blank.
+     * blank.
      */
     public static boolean isBlank(String str) {
         if (str == null || str.length() == 0) {

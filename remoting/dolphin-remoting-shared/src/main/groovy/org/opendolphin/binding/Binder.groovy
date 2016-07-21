@@ -23,6 +23,7 @@ import org.opendolphin.core.Tag
 import java.beans.Introspector
 import java.beans.PropertyChangeEvent
 import java.beans.PropertyChangeListener
+import java.util.function.Function
 import java.util.logging.Level
 import java.util.logging.Logger
 
@@ -197,7 +198,7 @@ class BindToAble {
     }
 
     BindToAble using(Closure converter) {
-        using(new ConverterAdapter(converter))
+        using(new ConverterAdapter(converter as Function))
     }
 
     BindToAble using(Converter converter) {
@@ -239,7 +240,7 @@ class BindTargetOfAble {
 
     @Deprecated // TODO (DOL-93) remove legacy code
     void of(Object target, Closure converter) {
-        of target, new ConverterAdapter(converter)
+        of target, new ConverterAdapter(converter as Function)
     }
 
     @Deprecated // TODO (DOL-93) remove legacy code
@@ -284,7 +285,7 @@ class BindPojoToAble {
     }
 
     BindPojoToAble using(Closure converter) {
-        using(new ConverterAdapter(converter))
+        using(new ConverterAdapter(converter as Function))
     }
 
     BindPojoToAble using(Converter converter) {
@@ -321,7 +322,7 @@ class BindPojoTargetOfAble {
 
     @Deprecated // TODO (DOL-93) remove legacy code
     void of(Object target, Closure converter) {
-        of target, new ConverterAdapter(converter)
+        of target, new ConverterAdapter(converter as Function)
     }
     @Deprecated // TODO (DOL-93) remove legacy code
     void of(Object target, Converter converter) {
@@ -334,7 +335,7 @@ class BindPojoTargetOfAble {
     }
     @Deprecated // TODO (DOL-93) remove legacy code
     void of(PresentationModel target, Closure converter) {
-        of target, new ConverterAdapter(converter)
+        of target, new ConverterAdapter(converter as Function)
     }
     @Deprecated // TODO (DOL-93) remove legacy code
     void of(PresentationModel target, Converter converter) {

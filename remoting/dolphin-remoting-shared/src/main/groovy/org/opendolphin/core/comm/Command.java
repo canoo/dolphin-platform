@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opendolphin.core.comm
+package org.opendolphin.core.comm;
 // todo dk: go through all subtypes and apply the new naming convention
+
+import lombok.Getter;
 
 /**
  * Commands come in two flavors: *Command (active voice) and *Notification (passive voice).
@@ -27,14 +29,22 @@ package org.opendolphin.core.comm
  * The receiving side is responsible for finding the appropriate action.
  */
 
-//CompileStatic
-class Command {
+public class Command {
+    @Getter
+    private final String id = idFor(getClass());
 
-    String getId() { idFor this.class }
-
-    static String idFor(Class commandClass) {
-        commandClass.name - commandClass.package.name - "." - "Command" - "Notification"
+    public static String idFor(Class commandClass) {
+        String commandClassName = commandClass.getSimpleName();
+        if (commandClassName.endsWith("Command")) {
+            return commandClassName.substring(0, commandClassName.length() - "Command".length());
+        } else if (commandClassName.endsWith("Notification")) {
+            return commandClassName.substring(0, commandClassName.length() - "Notification".length());
+        } else {
+            return commandClassName;
+        }
     }
 
-    String toString() { "Command: $id" }
+    public String toString() {
+        return "Command: " + getId();
+    }
 }

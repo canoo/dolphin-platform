@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2016 Canoo Engineering AG.
+ * Copyright 2015-2016 Canoo Engineering AG.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.opendolphin.core.comm;
 
-dependencies {
-    compileOnly "org.projectlombok:lombok:$lombokVersion"
+import java.util.List;
 
-    compile "org.codehaus.groovy:groovy-json:$groovyVersion"
-    compile "org.codehaus.gpars:gpars:$gparsVersion"
+public interface Codec {
+    String encode(List<Command> commands);
+
+    List<Command> decode(String transmitted);
 }

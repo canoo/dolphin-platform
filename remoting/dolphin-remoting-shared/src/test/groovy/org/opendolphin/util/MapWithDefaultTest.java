@@ -13,18 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opendolphin.binding
+package org.opendolphin.util;
 
-import groovy.transform.Canonical
+import org.junit.Test;
 
-@Canonical
-class ConverterAdapter implements Converter {
+import java.util.HashMap;
+import java.util.Map;
 
-    Closure converter
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertThat;
 
-    @Override
-    Object convert(Object value) {
-        return converter == null ? value : converter(value)
+public class MapWithDefaultTest {
+    @Test
+    public void valueShouldBeGenerated() {
+        // given:
+        Map<Integer, Integer> map = MapWithDefault.newInstance(new HashMap<>(), k -> k * 2);
+
+        // when:
+        map.put(1,3);
+
+        // then:
+        assertThat(map.get(1), equalTo(3));
+        assertThat(map.get(2), equalTo(4));
+        assertThat(map.size(), equalTo(2));
     }
-
 }

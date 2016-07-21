@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2016 Canoo Engineering AG.
+ * Copyright 2015-2016 Canoo Engineering AG.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,10 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.opendolphin.binding;
 
-dependencies {
-    compileOnly "org.projectlombok:lombok:$lombokVersion"
+import lombok.Data;
 
-    compile "org.codehaus.groovy:groovy-json:$groovyVersion"
-    compile "org.codehaus.gpars:gpars:$gparsVersion"
+import java.util.function.Function;
+
+@Data
+public class ConverterAdapter<S, T> implements Converter<S, T> {
+    private final Function<S, T> converter;
+
+    @Override
+    public T convert(S value) {
+        // TODO: watch out, blind cast from S to T may cause CCE
+        return converter == null ? (T) value : converter.apply(value);
+    }
 }

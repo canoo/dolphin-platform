@@ -16,6 +16,8 @@
 
 import java.text.SimpleDateFormat
 
+apply from: 'gradle/idea.gradle'
+
 buildscript {
     repositories {
         jcenter()
