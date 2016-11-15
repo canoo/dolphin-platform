@@ -36,6 +36,8 @@ public interface ControllerUnderTest<T> {
      */
     void invoke(String actionName, Param... params);
 
+    void sync();
+
     /**
      * Destroys the controller
      */

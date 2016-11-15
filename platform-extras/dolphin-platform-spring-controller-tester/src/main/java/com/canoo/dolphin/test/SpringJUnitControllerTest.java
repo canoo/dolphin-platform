@@ -15,7 +15,7 @@
  */
 package com.canoo.dolphin.test;
 
-import com.canoo.dolphin.client.ClientContext;
+import com.canoo.dolphin.test.impl.ClientContextForTests;
 import com.canoo.dolphin.test.impl.ClientTestFactory;
 import com.canoo.dolphin.test.impl.DolphinPlatformSpringTestBootstrap;
 import com.canoo.dolphin.util.Assert;
@@ -37,7 +37,7 @@ import javax.inject.Inject;
 public abstract class SpringJUnitControllerTest extends AbstractJUnit4SpringContextTests implements ControllerTest {
 
     @Inject
-    private ClientContext clientContext;
+    private ClientContextForTests clientContext;
 
     @Rule
     public ExternalResource clientConnector = new ExternalResource() {

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.opendolphin.core.client.comm
+
 import groovy.util.logging.Log
 import org.codehaus.groovy.runtime.DefaultGroovyMethods
 import org.opendolphin.core.client.ClientDolphin
@@ -26,8 +27,8 @@ import org.slf4j.LoggerFactory
 public class InMemoryClientConnector extends AbstractClientConnector {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InMemoryClientConnector.class);
-
     private final ServerConnector serverConnector;
+
 
     private long sleepMillis = 0;
 
@@ -66,6 +67,7 @@ public class InMemoryClientConnector extends AbstractClientConnector {
 
         return result;
     }
+
 
     public long getSleepMillis() {
         return sleepMillis;

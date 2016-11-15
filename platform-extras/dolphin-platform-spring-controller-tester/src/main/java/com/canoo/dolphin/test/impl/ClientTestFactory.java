@@ -15,7 +15,6 @@
  */
 package com.canoo.dolphin.test.impl;
 
-import com.canoo.dolphin.client.ClientContext;
 import com.canoo.dolphin.client.ControllerProxy;
 import com.canoo.dolphin.client.Param;
 import com.canoo.dolphin.test.ControllerTestException;
@@ -24,7 +23,7 @@ import com.canoo.dolphin.util.Assert;
 
 public class ClientTestFactory {
 
-    public static <T> ControllerUnderTest<T> createController(ClientContext clientContext, String controllerName) {
+    public static <T> ControllerUnderTest<T> createController(final ClientContextForTests clientContext, final String controllerName) {
         Assert.requireNonNull(clientContext, "clientContext");
         Assert.requireNonBlank(controllerName, "controllerName");
         try {
@@ -42,6 +41,11 @@ public class ClientTestFactory {
                     } catch (Exception e) {
                         throw new ControllerTestException("Error in action invocation", e);
                     }
+                }
+
+                @Override
+                public void sync() {
+                    clientContext.sync();
                 }
 
                 @Override

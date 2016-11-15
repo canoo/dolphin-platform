@@ -25,6 +25,8 @@ import com.canoo.dolphin.util.Assert;
 import groovyx.gpars.dataflow.DataflowQueue;
 import org.opendolphin.StringUtil;
 import org.opendolphin.core.server.EventBus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,8 +35,11 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class DolphinEventBusImpl implements DolphinEventBus {
 
-    private static final int MAX_POLL_DURATION = 100;
-    public static final int TIMEOUT = 20;
+    private static final int MAX_POLL_DURATION = 500;
+
+    public static final int TIMEOUT = 100;
+
+    private static final Logger LOG = LoggerFactory.getLogger(DolphinEventBusImpl.class);
 
     private final EventBus eventBus = new EventBus();
 
@@ -107,98 +112,41 @@ public class DolphinEventBusImpl implements DolphinEventBus {
         if (dolphinId == null) {
             throw new IllegalStateException("longPoll was called outside a dolphin session");
         }
-        //TODO replace by log
-//        System.out.println("long poll call from dolphin session " + dolphinId);
+        LOG.debug("long poll call for dolphin session {}", dolphinId);
         final Receiver receiverInSession = getOrCreateReceiverInSession(dolphinId);
         if (!receiverInSession.isListeningToEventBus()) {
             receiverInSession.register(eventBus);
         }
         final DataflowQueue receiverQueue = receiverInSession.getReceiverQueue();
 
-        boolean somethingHandled = false;
-
-        while (!somethingHandled) {
-            //blocking call
-            Object val = receiverQueue.getVal();
-
-            final long startTime = System.currentTimeMillis();
-
-            while (val != null) {
+        final long maxTime = System.currentTimeMillis() + MAX_POLL_DURATION;
+        while (System.currentTimeMillis() < maxTime) {
+            try {
+                Object val = receiverQueue.getVal(TIMEOUT, MILLISECONDS);
                 if (val == releaseVal) {
                     return;
                 }
                 if (val instanceof Message) {
-                    final Message event = (Message) val;
-                    //TODO replace by log
-//                    System.out.println("handle event for dolphinId: " + dolphinId);
-                    somethingHandled |= receiverInSession.handle(event);
+                    final Message message = (Message) val;
+                    LOG.debug("Handle Event Bus Message for topic {} in context {}", message.getTopic(), dolphinId);
+                    receiverInSession.handle(message);
                 }
-
-                //if there are many events we would loop forever -> additional exit condition
-                if (System.currentTimeMillis() - startTime <= MAX_POLL_DURATION) {
-                    val = receiverQueue.getVal(TIMEOUT, MILLISECONDS);
-                } else {
-                    val = null;
-                }
+            } catch (InterruptedException e) {
+                //Interrupt is ok, maybe we do not have a new message...
             }
         }
+        LOG.debug("long poll released for dolphin session {}", dolphinId);
     }
 
-    /**
-     * TODO we must release per session!!!
-     */
-    @SuppressWarnings("unchecked")
     public void release() {
-//        //TODO the release should happen in the context of a dolphin session.
-//        //TODO this piece of code should be used then
-//        String dolphinId = getId();
-//        if (dolphinId == null) {
-//            //TODO replace by log
-//            System.out.println("warning: release was called outside dolphin session");
-//            //TODO warn or throw exception?
-//            return;
-//        }
-//        Receiver receiver = receiverPerSession.get(dolphinId);
-//        if (receiver != null && receiver.isListeningToEventBus()) {
-//            receiver.getReceiverQueue().leftShift(releaseVal);
-//        }
-
-
-        //TODO remove
-        for (Receiver receiver : receiverPerSession.values()) {
-            if (receiver.isListeningToEventBus()) {
-                receiver.getReceiverQueue().leftShift(releaseVal);
-            }
-        }
-    }
-
-    private final static class MessageImpl<T> implements Message<T> {
-
-        private final Topic<T> topic;
-
-        private final T data;
-
-        private final long timestamp;
-
-        private MessageImpl(Topic<T> topic, T data) {
-            this.topic = topic;
-            this.data = data;
-            this.timestamp = System.currentTimeMillis();
+        String dolphinId = getDolphinId();
+        if (dolphinId == null) {
+            throw new IllegalStateException("release was called outside a dolphin session");
         }
 
-        @Override
-        public Topic<T> getTopic() {
-            return topic;
-        }
-
-        @Override
-        public T getData() {
-            return data;
-        }
-
-        @Override
-        public long getSendTimestamp() {
-            return timestamp;
+        Receiver receiver = receiverPerSession.get(dolphinId);
+        if (receiver != null && receiver.isListeningToEventBus()) {
+            receiver.getReceiverQueue().leftShift(releaseVal);
         }
     }
 }

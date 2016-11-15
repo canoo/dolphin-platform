@@ -15,6 +15,8 @@
  */
 package com.canoo.dolphin.test;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -23,6 +25,9 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class TestNGDemoTest extends SpringTestNGControllerTest {
+
+    private static final Logger LOG = LoggerFactory.getLogger(TestNGDemoTest.class);
+
 
     private ControllerUnderTest<TestModel> controller;
 
@@ -51,17 +56,10 @@ public class TestNGDemoTest extends SpringTestNGControllerTest {
         assertEquals(controller.getModel().getInternModels().get(0).getValue(), "I'm a subbean");
     }
 
-   // @Test
-   // public void testEventBus() {
-   //     controller.invoke("sendEvent");
-
-        //Still a workaround to wait till next request
-   //     try {
-   //         Thread.sleep(1000);
-   //     } catch (InterruptedException e) {
-   //         e.printStackTrace();
-   //     }
-
-   //     assertEquals(controller.getModel().getValue(), "changed by eventBus!");
-   // }
+    @Test(enabled = false)
+    public void testEventBus() {
+        controller.invoke("sendEvent");
+        controller.sync();
+        assertEquals(controller.getModel().getValue(), "changed by eventBus!");
+    }
 }
