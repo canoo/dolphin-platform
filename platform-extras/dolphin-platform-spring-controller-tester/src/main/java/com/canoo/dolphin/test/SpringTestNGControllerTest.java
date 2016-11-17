@@ -19,13 +19,12 @@ import com.canoo.dolphin.client.ClientContext;
 import com.canoo.dolphin.test.impl.ClientTestFactory;
 import com.canoo.dolphin.test.impl.DolphinPlatformSpringTestBootstrap;
 import com.canoo.dolphin.util.Assert;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.testng.annotations.AfterMethod;
-
-import javax.inject.Inject;
 
 /**
  * Base class for TestNG based controller tests in Spring. This class can be extended to write custom controller tests.
@@ -35,7 +34,7 @@ import javax.inject.Inject;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public abstract class SpringTestNGControllerTest extends AbstractTestNGSpringContextTests implements ControllerTest {
 
-    @Inject
+    @Autowired
     private ClientContext clientContext;
 
     @AfterMethod(alwaysRun = true)

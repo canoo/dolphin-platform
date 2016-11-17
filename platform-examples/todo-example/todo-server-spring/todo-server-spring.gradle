@@ -14,9 +14,16 @@
  * limitations under the License.
  */
 
-apply plugin: 'application'
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:1.3.6.RELEASE")
+  }
+}
 
-mainClassName = 'com.canoo.dolphin.todo.server.ToDoServer'
+apply plugin: 'spring-boot'
 
 dependencies {
   compile project(':todo-server')

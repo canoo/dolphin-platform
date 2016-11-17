@@ -21,6 +21,7 @@ include 'platform-examples/todo-example/todo-server-javaee'
 include 'platform-examples/todo-example/todo-client'
 include 'documentation/dolphin-platform-documentation'
 include 'documentation/dolphin-remoting-documentation'
+include 'integration-tests'
 
 rootProject.children.each { project ->
     int slash = project.name.lastIndexOf('/')

@@ -1,0 +1,32 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath "com.avast.gradle:docker-compose-gradle-plugin:0.3.13"
+    }
+}
+
+apply plugin: 'docker-compose'
+
+dependencies {
+    compile project(':dolphin-platform-client')
+    testCompile "org.testng:testng:$testngVersion"
+    testCompile 'org.hamcrest:java-hamcrest:2.0.0.0'
+    testCompile "org.jmockit:jmockit:$jmockitVersion"
+    testCompile "org.slf4j:slf4j-simple:$slf4jVersion"
+    testCompile project(':todo-common')
+}
+
+dockerCompose {
+    useComposeFiles = ['docker-compose.yml']
+    captureContainersOutput = true
+}
+
+task integrationTest(type: Test) {
+    useTestNG()
+    outputs.upToDateWhen { false }
+}
+
+dockerCompose.isRequiredBy(integrationTest)

@@ -29,7 +29,12 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
-@DolphinController("ToDoController")
+import static com.canoo.dolphin.todo.TodoAppConstants.ADD_ACTION;
+import static com.canoo.dolphin.todo.TodoAppConstants.CONTROLLER_NAME;
+import static com.canoo.dolphin.todo.TodoAppConstants.ITEM_PARAM;
+import static com.canoo.dolphin.todo.TodoAppConstants.MARK_ACTION;
+
+@DolphinController(CONTROLLER_NAME)
 public class ToDoController {
 
     private final static Topic<String> ITEM_MARK_CHANGED = Topic.create("item_mark_changed");
@@ -67,15 +72,15 @@ public class ToDoController {
         System.out.println("Destroyed");
     }
 
-    @DolphinAction
+    @DolphinAction(ADD_ACTION)
     public void add() {
         final String newItemText = toDoList.getNewItemText().get();
         toDoList.getNewItemText().set("");
         eventBus.publish(ITEM_ADDED, newItemText);
     }
 
-    @DolphinAction
-    public void markChanged(@Param("itemName") String name) {
+    @DolphinAction(MARK_ACTION)
+    public void markChanged(@Param(ITEM_PARAM) String name) {
         eventBus.publish(ITEM_MARK_CHANGED, name);
     }
 

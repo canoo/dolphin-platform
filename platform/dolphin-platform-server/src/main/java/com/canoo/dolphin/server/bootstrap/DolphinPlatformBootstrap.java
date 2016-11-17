@@ -32,6 +32,7 @@ import com.canoo.dolphin.server.impl.ClasspathScanner;
 import com.canoo.dolphin.server.mbean.MBeanRegistry;
 import com.canoo.dolphin.server.servlet.CrossSiteOriginFilter;
 import com.canoo.dolphin.server.servlet.DolphinPlatformServlet;
+import com.canoo.dolphin.server.servlet.HealthCheckServlet;
 import com.canoo.dolphin.util.Assert;
 import org.opendolphin.server.adapter.InvalidationServlet;
 import org.slf4j.LoggerFactory;
@@ -56,6 +57,8 @@ public class DolphinPlatformBootstrap implements DolphinContextProvider {
 
     public static final String DOLPHIN_CROSS_SITE_FILTER_NAME = "dolphinCrossSiteFilter";
 
+    public static final String DOLPHIN_HEALTH_CHECK_SERVLET_NAME = "dolphinHealthCheckServlet";
+
     public static final String DOLPHIN_INVALIDATION_SERVLET_NAME = "dolphin-platform-invalidation-servlet";
 
     public static final String DOLPHIN_CLIENT_ID_FILTER_NAME = "dolphin-platform-client-id-filter";
@@ -63,6 +66,8 @@ public class DolphinPlatformBootstrap implements DolphinContextProvider {
     public static final String DEFAULT_DOLPHIN_INVALIDATION_SERVLET_MAPPING = "/dolphininvalidate";
 
     private final DolphinEventBusImpl dolphinEventBus;
+
+    private boolean up = false;
 
     private DolphinPlatformBootstrap() {
         dolphinEventBus = new DolphinEventBusImpl(this);
@@ -81,9 +86,9 @@ public class DolphinPlatformBootstrap implements DolphinContextProvider {
         LOG.debug("Dolphin Platform starts with value for dolphinPlatformServletMapping=" + configuration.getDolphinPlatformServletMapping());
         LOG.debug("Dolphin Platform starts with value for openDolphinLogLevel=" + configuration.getOpenDolphinLogLevel());
 
-final ClasspathScanner classpathScanner = new ClasspathScanner(configuration.getRootPackageForClasspathScan());
+        final ClasspathScanner classpathScanner = new ClasspathScanner(configuration.getRootPackageForClasspathScan());
 
-MBeanRegistry.getInstance().setMbeanSupport(configuration.isMBeanRegistration());
+        MBeanRegistry.getInstance().setMbeanSupport(configuration.isMBeanRegistration());
 
         final ContainerManager containerManager = findManager();
         containerManager.init(servletContext);
@@ -100,6 +105,9 @@ MBeanRegistry.getInstance().setMbeanSupport(configuration.isMBeanRegistration())
         if (configuration.isUseCrossSiteOriginFilter()) {
             servletContext.addFilter(DOLPHIN_CROSS_SITE_FILTER_NAME, new CrossSiteOriginFilter()).addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
         }
+        if (configuration.isUseHealthCheck()) {
+            servletContext.addServlet(DOLPHIN_HEALTH_CHECK_SERVLET_NAME, new HealthCheckServlet()).addMapping(configuration.getDolphinHealthCheckServletMapping());
+        }
 
         servletContext.addFilter(DOLPHIN_CLIENT_ID_FILTER_NAME, new DolphinContextFilter(configuration, containerManager, dolphinContextFactory, dolphinSessionListenerProvider)).addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, configuration.getIdFilterUrlMappings().toArray(new String[configuration.getIdFilterUrlMappings().size()]));
 
@@ -112,6 +120,7 @@ MBeanRegistry.getInstance().setMbeanSupport(configuration.isMBeanRegistration())
 
         java.util.logging.Logger openDolphinLogger = Logger.getLogger("org.opendolphin");
         openDolphinLogger.setLevel(configuration.getOpenDolphinLogLevel());
+        up = true;
     }
 
     public DolphinContext getCurrentContext() {
@@ -146,5 +155,9 @@ MBeanRegistry.getInstance().setMbeanSupport(configuration.isMBeanRegistration())
 
     public DolphinEventBusImpl getDolphinEventBus() {
         return dolphinEventBus;
+    }
+
+    public boolean isUp() {
+        return up;
     }
 }

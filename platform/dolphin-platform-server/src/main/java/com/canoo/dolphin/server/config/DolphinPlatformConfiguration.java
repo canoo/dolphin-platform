@@ -31,9 +31,13 @@ public class DolphinPlatformConfiguration {
 
     private boolean useCrossSiteOriginFilter = true;
 
+    private boolean useHealthCheck = true;
+
     private boolean mBeanRegistration = true;
 
     private String dolphinPlatformServletMapping = "/dolphin";
+
+    private String dolphinHealthCheckServletMapping = "/health";
 
     private String rootPackageForClasspathScan = null;
 
@@ -117,4 +121,19 @@ public class DolphinPlatformConfiguration {
         this.rootPackageForClasspathScan = rootPackageForClasspathScan;
     }
 
+    public boolean isUseHealthCheck() {
+        return useHealthCheck;
+    }
+
+    public void setUseHealthCheck(boolean useHealthCheck) {
+        this.useHealthCheck = useHealthCheck;
+    }
+
+    public String getDolphinHealthCheckServletMapping() {
+        return dolphinHealthCheckServletMapping;
+    }
+
+    public void setDolphinHealthCheckServletMapping(String dolphinHealthCheckServletMapping) {
+        this.dolphinHealthCheckServletMapping = dolphinHealthCheckServletMapping;
+    }
 }
