@@ -1,5 +1,6 @@
 package com.canoo.dolphin.util;
 
+import com.canoo.implementation.dolphin.util.Assert;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;

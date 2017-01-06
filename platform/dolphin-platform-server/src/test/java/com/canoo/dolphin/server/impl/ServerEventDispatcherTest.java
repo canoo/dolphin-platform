@@ -15,9 +15,10 @@
  */
 package com.canoo.dolphin.server.impl;
 
-import com.canoo.dolphin.impl.PlatformConstants;
-import com.canoo.dolphin.server.context.DefaultOpenDolphinFactory;
-import com.canoo.dolphin.server.context.OpenDolphinFactory;
+import com.canoo.implementation.dolphin.PlatformConstants;
+import com.canoo.implementation.dolphin.server.context.DefaultOpenDolphinFactory;
+import com.canoo.implementation.dolphin.server.context.OpenDolphinFactory;
+import com.canoo.implementation.dolphin.server.ServerEventDispatcher;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;

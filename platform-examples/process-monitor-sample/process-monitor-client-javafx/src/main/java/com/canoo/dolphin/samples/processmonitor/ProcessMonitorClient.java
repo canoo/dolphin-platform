@@ -16,8 +16,8 @@
 package com.canoo.dolphin.samples.processmonitor;
 
 import com.canoo.dolphin.client.ClientContext;
-import com.canoo.dolphin.client.ClientInitializationException;
-import com.canoo.dolphin.client.DolphinRuntimeException;
+import com.canoo.implementation.dolphin.client.ClientInitializationException;
+import com.canoo.implementation.dolphin.client.DolphinRuntimeException;
 import com.canoo.dolphin.client.javafx.DolphinPlatformApplication;
 import javafx.application.Application;
 import javafx.application.Platform;

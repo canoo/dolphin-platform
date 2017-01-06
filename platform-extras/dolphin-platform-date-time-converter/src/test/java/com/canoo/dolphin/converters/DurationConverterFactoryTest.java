@@ -17,8 +17,9 @@ package com.canoo.dolphin.converters;
 
 import com.canoo.dolphin.converter.Converter;
 import com.canoo.dolphin.converter.ValueConverterException;
-import com.canoo.dolphin.impl.Converters;
-import com.canoo.dolphin.internal.BeanRepository;
+import com.canoo.implementation.dolphin.Converters;
+import com.canoo.implementation.dolphin.BeanRepository;
+import com.canoo.implementation.dolphin.converters.ValueFieldTypes;
 import mockit.Mocked;
 import org.testng.annotations.Test;
 

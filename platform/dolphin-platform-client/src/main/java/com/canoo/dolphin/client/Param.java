@@ -15,7 +15,7 @@
  */
 package com.canoo.dolphin.client;
 
-import com.canoo.dolphin.util.Assert;
+import com.canoo.implementation.dolphin.util.Assert;
 
 /**
  * The class defines a param that can be used as a action param when calling a action on the server side

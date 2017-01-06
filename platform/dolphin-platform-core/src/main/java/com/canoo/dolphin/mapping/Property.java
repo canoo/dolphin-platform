@@ -17,13 +17,14 @@ package com.canoo.dolphin.mapping;
 
 import com.canoo.dolphin.event.Subscription;
 import com.canoo.dolphin.event.ValueChangeListener;
+import com.canoo.dolphin.BeanManager;
 
 /**
  * Defines a property that can be part of a model (see {@link DolphinBean}). Since Java has no native property system this is needed to provide
  * listener / observer support to properties.
  *
  * The public API of Dolphin Platform don't contain an implementation of this interface since the lifecycle of all
- * models must be managed by the {@link com.canoo.dolphin.BeanManager}. By using the {@link Property} interface a small
+ * models must be managed by the {@link BeanManager}. By using the {@link Property} interface a small
  * Dolphin Platform model will look like this:
  *
  * <blockquote>

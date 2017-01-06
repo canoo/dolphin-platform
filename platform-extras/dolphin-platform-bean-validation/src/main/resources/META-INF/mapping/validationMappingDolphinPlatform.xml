@@ -23,37 +23,37 @@
 
     <constraint-definition annotation="javax.validation.constraints.AssertFalse">
         <validated-by include-existing-validators="true">
-            <value>com.canoo.dolphin.validation.AssertFalsePropertyValidator</value>
+            <value>com.canoo.implementation.dolphin.validation.AssertFalsePropertyValidator</value>
         </validated-by>
     </constraint-definition>
 
     <constraint-definition annotation="javax.validation.constraints.AssertTrue">
         <validated-by include-existing-validators="true">
-            <value>com.canoo.dolphin.validation.AssertTruePropertyValidator</value>
+            <value>com.canoo.implementation.dolphin.validation.AssertTruePropertyValidator</value>
         </validated-by>
     </constraint-definition>
 
     <constraint-definition annotation="javax.validation.constraints.DecimalMax">
         <validated-by include-existing-validators="true">
-            <value>com.canoo.dolphin.validation.DecimalMaxPropertyValidatorForNumber</value>
+            <value>com.canoo.implementation.dolphin.validation.DecimalMaxPropertyValidatorForNumber</value>
         </validated-by>
     </constraint-definition>
 
     <constraint-definition annotation="javax.validation.constraints.DecimalMin">
         <validated-by include-existing-validators="true">
-            <value>com.canoo.dolphin.validation.DecimalMinPropertyValidatorForNumber</value>
+            <value>com.canoo.implementation.dolphin.validation.DecimalMinPropertyValidatorForNumber</value>
         </validated-by>
     </constraint-definition>
 
     <constraint-definition annotation="javax.validation.constraints.NotNull">
         <validated-by include-existing-validators="true">
-            <value>com.canoo.dolphin.validation.NotNullPropertyValidator</value>
+            <value>com.canoo.implementation.dolphin.validation.NotNullPropertyValidator</value>
         </validated-by>
     </constraint-definition>
     
     <constraint-definition annotation="javax.validation.constraints.Null">
         <validated-by include-existing-validators="true">
-            <value>com.canoo.dolphin.validation.NullPropertyValidator</value>
+            <value>com.canoo.implementation.dolphin.validation.NullPropertyValidator</value>
         </validated-by>
     </constraint-definition>
 

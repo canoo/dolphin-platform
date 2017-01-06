@@ -16,8 +16,8 @@
 package com.canoo.dolphin.server;
 
 import com.canoo.dolphin.BeanManager;
-import com.canoo.dolphin.impl.PlatformConstants;
-import com.canoo.dolphin.impl.converters.DolphinBeanConverterFactory;
+import com.canoo.implementation.dolphin.PlatformConstants;
+import com.canoo.implementation.dolphin.converters.DolphinBeanConverterFactory;
 import com.canoo.dolphin.server.util.AbstractDolphinBasedTest;
 import com.canoo.dolphin.server.util.ListReferenceModel;
 import com.canoo.dolphin.server.util.SimpleTestModel;

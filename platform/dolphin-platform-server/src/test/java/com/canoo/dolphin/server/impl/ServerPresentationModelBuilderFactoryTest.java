@@ -15,8 +15,9 @@
  */
 package com.canoo.dolphin.server.impl;
 
-import com.canoo.dolphin.internal.PresentationModelBuilder;
+import com.canoo.implementation.dolphin.PresentationModelBuilder;
 import com.canoo.dolphin.server.util.AbstractDolphinBasedTest;
+import com.canoo.implementation.dolphin.server.ServerPresentationModelBuilderFactory;
 import org.opendolphin.core.server.ServerDolphin;
 import org.opendolphin.core.server.ServerPresentationModel;
 import org.testng.annotations.Test;

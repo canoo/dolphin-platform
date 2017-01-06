@@ -17,6 +17,7 @@ package com.canoo.dolphin.server.impl.gc;
 
 import com.canoo.dolphin.mapping.DolphinBean;
 import com.canoo.dolphin.mapping.Property;
+import com.canoo.implementation.dolphin.server.gc.GarbageCollector;
 
 @DolphinBean
 public class BeanWithProperties {

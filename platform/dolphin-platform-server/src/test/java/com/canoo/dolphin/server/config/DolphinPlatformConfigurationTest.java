@@ -15,6 +15,7 @@
  */
 package com.canoo.dolphin.server.config;
 
+import com.canoo.implementation.dolphin.server.config.DolphinPlatformConfiguration;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

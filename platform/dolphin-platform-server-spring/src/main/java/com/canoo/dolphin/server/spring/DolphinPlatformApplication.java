@@ -15,6 +15,8 @@
  */
 package com.canoo.dolphin.server.spring;
 
+import com.canoo.implementation.dolphin.server.spring.DolphinPlatformSpringBootstrap;
+import com.canoo.implementation.dolphin.server.spring.SpringBeanFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 

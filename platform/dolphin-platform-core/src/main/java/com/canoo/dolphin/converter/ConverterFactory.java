@@ -15,7 +15,7 @@
  */
 package com.canoo.dolphin.converter;
 
-import com.canoo.dolphin.internal.BeanRepository;
+import com.canoo.implementation.dolphin.BeanRepository;
 
 public interface ConverterFactory {
 

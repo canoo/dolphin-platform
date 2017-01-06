@@ -311,7 +311,7 @@ public class MyViewController {
 === The Dolphin Platform session
 
 The Dolphin Platform offers a service to interact with the client session. To do so the
-`com.canoo.dolphin.server.DolphinSession` can be injected. The interface provides similar functionallity as the
+`com.canoo.dolphin.server.session.DolphinSession` can be injected. The interface provides similar functionallity as the
 `javax.servlet.http.HttpSession` interface does for the http session. Instances are managed objects in the client session
 scope.
 

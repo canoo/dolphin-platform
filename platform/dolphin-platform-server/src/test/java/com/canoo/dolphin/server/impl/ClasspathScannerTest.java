@@ -18,6 +18,7 @@ package com.canoo.dolphin.server.impl;
 import com.canoo.dolphin.server.impl.special.SpecialAnnotatedClass;
 import com.canoo.dolphin.server.impl.util.AnnotatedClassForClasspathScan;
 import com.canoo.dolphin.server.impl.util.AnnotationForClasspathScanTest;
+import com.canoo.implementation.dolphin.server.ClasspathScanner;
 import org.testng.annotations.Test;
 
 import javax.annotation.Resources;

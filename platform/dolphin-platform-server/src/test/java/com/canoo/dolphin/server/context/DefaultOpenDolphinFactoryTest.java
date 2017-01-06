@@ -15,7 +15,9 @@
  */
 package com.canoo.dolphin.server.context;
 
-import com.canoo.dolphin.impl.codec.OptimizedJsonCodec;
+import com.canoo.implementation.dolphin.codec.OptimizedJsonCodec;
+import com.canoo.implementation.dolphin.server.context.DefaultOpenDolphinFactory;
+import com.canoo.implementation.dolphin.server.context.OpenDolphinFactory;
 import org.opendolphin.core.server.DefaultServerDolphin;
 import org.testng.annotations.Test;
 

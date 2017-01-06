@@ -1,5 +1,6 @@
 package com.canoo.dolphin.impl.collections;
 
+import com.canoo.implementation.dolphin.collections.ObservableArrayList;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

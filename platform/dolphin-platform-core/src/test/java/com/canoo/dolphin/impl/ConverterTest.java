@@ -17,6 +17,7 @@ package com.canoo.dolphin.impl;
 
 import com.canoo.dolphin.converter.Converter;
 import com.canoo.dolphin.converter.ValueConverterException;
+import com.canoo.implementation.dolphin.Converters;
 import org.testng.annotations.Test;
 
 import java.util.Date;

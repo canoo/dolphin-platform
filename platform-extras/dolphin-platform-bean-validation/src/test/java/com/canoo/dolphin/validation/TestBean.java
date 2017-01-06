@@ -15,7 +15,7 @@
  */
 package com.canoo.dolphin.validation;
 
-import com.canoo.dolphin.impl.MockedProperty;
+import com.canoo.implementation.dolphin.MockedProperty;
 import com.canoo.dolphin.mapping.DolphinBean;
 import com.canoo.dolphin.mapping.Property;
 

@@ -20,7 +20,7 @@ import com.canoo.dolphin.client.ClientContext;
 import com.canoo.dolphin.client.ClientContextFactory;
 import com.canoo.dolphin.client.ControllerProxy;
 import com.canoo.dolphin.client.Param;
-import com.canoo.dolphin.util.DolphinRemotingException;
+import com.canoo.implementation.dolphin.util.DolphinRemotingException;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;

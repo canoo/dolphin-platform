@@ -16,7 +16,9 @@
 package com.canoo.dolphin.client.impl;
 
 import com.canoo.dolphin.client.DummyUiThreadHandler;
-import com.canoo.dolphin.util.DolphinRemotingException;
+import com.canoo.implementation.dolphin.util.DolphinRemotingException;
+import com.canoo.implementation.dolphin.client.DolphinPlatformHttpClientConnector;
+import com.canoo.implementation.dolphin.client.ForwardableCallback;
 import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.StatusLine;

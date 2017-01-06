@@ -17,13 +17,11 @@ package com.canoo.dolphin.client.javafx.binding;
 
 import com.canoo.dolphin.collections.ListChangeEvent;
 import com.canoo.dolphin.mapping.Property;
-import com.canoo.dolphin.util.Assert;
+import com.canoo.implementation.dolphin.util.Assert;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-
-import static com.canoo.dolphin.util.Assert.requireNonNull;
 
 /**
  * A util class that can be used to create JavaFX properties and lists as wrapper around Dolphin Platform properties and lists.

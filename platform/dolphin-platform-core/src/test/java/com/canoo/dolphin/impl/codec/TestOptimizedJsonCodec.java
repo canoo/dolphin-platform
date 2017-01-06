@@ -15,6 +15,7 @@
  */
 package com.canoo.dolphin.impl.codec;
 
+import com.canoo.implementation.dolphin.codec.OptimizedJsonCodec;
 import org.hamcrest.Matchers;
 import org.opendolphin.core.comm.Command;
 import org.opendolphin.core.comm.CreatePresentationModelCommand;

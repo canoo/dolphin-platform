@@ -23,12 +23,13 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.TimeZone;
 
+import com.canoo.implementation.dolphin.converters.ValueFieldTypes;
 import org.testng.annotations.Test;
 
 import com.canoo.dolphin.converter.Converter;
 import com.canoo.dolphin.converter.ValueConverterException;
-import com.canoo.dolphin.impl.Converters;
-import com.canoo.dolphin.internal.BeanRepository;
+import com.canoo.implementation.dolphin.Converters;
+import com.canoo.implementation.dolphin.BeanRepository;
 
 import mockit.Mocked;
 

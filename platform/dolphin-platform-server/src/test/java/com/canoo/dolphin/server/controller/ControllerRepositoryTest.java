@@ -15,7 +15,8 @@
  */
 package com.canoo.dolphin.server.controller;
 
-import com.canoo.dolphin.server.impl.ClasspathScanner;
+import com.canoo.implementation.dolphin.server.ClasspathScanner;
+import com.canoo.implementation.dolphin.server.controller.ControllerRepository;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;

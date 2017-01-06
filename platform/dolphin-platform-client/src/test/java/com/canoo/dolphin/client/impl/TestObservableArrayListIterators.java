@@ -15,7 +15,7 @@
  */
 package com.canoo.dolphin.client.impl;
 
-import com.canoo.dolphin.impl.collections.ObservableArrayList;
+import com.canoo.implementation.dolphin.collections.ObservableArrayList;
 import org.testng.annotations.Test;
 
 import java.util.Iterator;

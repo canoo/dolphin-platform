@@ -15,7 +15,8 @@
  */
 package com.canoo.dolphin.server.context;
 
-import com.canoo.dolphin.server.DolphinSession;
+import com.canoo.dolphin.server.session.DolphinSession;
+import com.canoo.implementation.dolphin.server.context.DolphinSessionImpl;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

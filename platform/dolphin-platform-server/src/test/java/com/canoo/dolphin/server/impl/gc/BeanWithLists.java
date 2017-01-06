@@ -17,6 +17,7 @@ package com.canoo.dolphin.server.impl.gc;
 
 import com.canoo.dolphin.collections.ObservableList;
 import com.canoo.dolphin.mapping.DolphinBean;
+import com.canoo.implementation.dolphin.server.gc.GarbageCollector;
 
 @DolphinBean
 public class BeanWithLists {

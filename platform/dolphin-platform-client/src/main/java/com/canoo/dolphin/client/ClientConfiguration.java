@@ -15,8 +15,9 @@
  */
 package com.canoo.dolphin.client;
 
-import com.canoo.dolphin.client.impl.DolphinPlatformThreadFactoryImpl;
-import com.canoo.dolphin.util.Assert;
+import com.canoo.implementation.dolphin.client.DolphinPlatformThreadFactory;
+import com.canoo.implementation.dolphin.client.DolphinPlatformThreadFactoryImpl;
+import com.canoo.implementation.dolphin.util.Assert;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.PoolingClientConnectionManager;

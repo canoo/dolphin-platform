@@ -16,7 +16,7 @@
 package com.canoo.dolphin.server;
 
 import com.canoo.dolphin.BeanManager;
-import com.canoo.dolphin.impl.BeanDefinitionException;
+import com.canoo.implementation.dolphin.BeanDefinitionException;
 import com.canoo.dolphin.server.util.AbstractDolphinBasedTest;
 import com.canoo.dolphin.server.util.ChildModel;
 import com.canoo.dolphin.server.util.ListReferenceModel;

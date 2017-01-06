@@ -15,14 +15,17 @@
  */
 package com.canoo.dolphin.server.context;
 
-import com.canoo.dolphin.impl.PlatformConstants;
-import com.canoo.dolphin.server.DolphinSession;
-import com.canoo.dolphin.server.config.DolphinPlatformConfiguration;
-import com.canoo.dolphin.server.container.ContainerManager;
-import com.canoo.dolphin.server.container.ModelInjector;
-import com.canoo.dolphin.server.controller.ControllerRepository;
-import com.canoo.dolphin.server.impl.ClasspathScanner;
-import com.canoo.dolphin.util.Callback;
+import com.canoo.implementation.dolphin.PlatformConstants;
+import com.canoo.dolphin.server.session.DolphinSession;
+import com.canoo.implementation.dolphin.server.config.DolphinPlatformConfiguration;
+import com.canoo.implementation.dolphin.server.container.ContainerManager;
+import com.canoo.implementation.dolphin.server.container.ModelInjector;
+import com.canoo.implementation.dolphin.server.context.DefaultOpenDolphinFactory;
+import com.canoo.implementation.dolphin.server.context.DolphinContext;
+import com.canoo.implementation.dolphin.server.context.DolphinContextProvider;
+import com.canoo.implementation.dolphin.server.controller.ControllerRepository;
+import com.canoo.implementation.dolphin.server.ClasspathScanner;
+import com.canoo.implementation.dolphin.util.Callback;
 import org.opendolphin.core.server.comm.CommandHandler;
 import org.testng.annotations.Test;
 

@@ -16,7 +16,8 @@
 package com.canoo.dolphin.server.impl.gc;
 
 import com.canoo.dolphin.collections.ListChangeEvent;
-import com.canoo.dolphin.impl.collections.ObservableArrayList;
+import com.canoo.implementation.dolphin.collections.ObservableArrayList;
+import com.canoo.implementation.dolphin.server.gc.GarbageCollector;
 
 /**
  * Created by hendrikebbers on 20.01.16.

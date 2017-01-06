@@ -15,8 +15,9 @@
  */
 package com.canoo.dolphin.server.impl;
 
-import com.canoo.dolphin.impl.PlatformConstants;
+import com.canoo.implementation.dolphin.PlatformConstants;
 import com.canoo.dolphin.server.util.AbstractDolphinBasedTest;
+import com.canoo.implementation.dolphin.server.ServerPresentationModelBuilder;
 import org.opendolphin.core.server.ServerDolphin;
 import org.opendolphin.core.server.ServerPresentationModel;
 import org.testng.annotations.Test;

@@ -15,18 +15,24 @@
  */
 package com.canoo.dolphin.client.javafx.binding;
 
-import com.canoo.dolphin.client.javafx.impl.DefaultDolphinBinder;
-import com.canoo.dolphin.client.javafx.impl.DefaultJavaFXBidirectionalBinder;
-import com.canoo.dolphin.client.javafx.impl.DefaultJavaFXBinder;
-import com.canoo.dolphin.client.javafx.impl.DefaultJavaFXListBinder;
-import com.canoo.dolphin.client.javafx.impl.numeric.DoubleDolphinBinder;
-import com.canoo.dolphin.client.javafx.impl.numeric.DoubleJavaFXBidirectionalBinder;
-import com.canoo.dolphin.client.javafx.impl.numeric.FloatDolphinBinder;
-import com.canoo.dolphin.client.javafx.impl.numeric.FloatJavaFXBidirectionalBinder;
-import com.canoo.dolphin.client.javafx.impl.numeric.IntegerDolphinBinder;
-import com.canoo.dolphin.client.javafx.impl.numeric.IntegerJavaFXBidirectionalBinder;
-import com.canoo.dolphin.client.javafx.impl.numeric.LongDolphinBinder;
-import com.canoo.dolphin.client.javafx.impl.numeric.LongJavaFXBidirectionalBinder;
+import com.canoo.dolphin.client.javafx.binding.api.DolphinBinder;
+import com.canoo.dolphin.client.javafx.binding.api.JavaFXBidirectionalBinder;
+import com.canoo.dolphin.client.javafx.binding.api.JavaFXBinder;
+import com.canoo.dolphin.client.javafx.binding.api.JavaFXListBinder;
+import com.canoo.dolphin.client.javafx.binding.api.NumericDolphinBinder;
+import com.canoo.dolphin.client.javafx.binding.api.NumericJavaFXBidirectionaBinder;
+import com.canoo.implementation.dolphin.client.javafx.DefaultDolphinBinder;
+import com.canoo.implementation.dolphin.client.javafx.DefaultJavaFXBidirectionalBinder;
+import com.canoo.implementation.dolphin.client.javafx.DefaultJavaFXBinder;
+import com.canoo.implementation.dolphin.client.javafx.DefaultJavaFXListBinder;
+import com.canoo.implementation.dolphin.client.javafx.DoubleDolphinBinder;
+import com.canoo.implementation.dolphin.client.javafx.DoubleJavaFXBidirectionalBinder;
+import com.canoo.implementation.dolphin.client.javafx.FloatDolphinBinder;
+import com.canoo.implementation.dolphin.client.javafx.FloatJavaFXBidirectionalBinder;
+import com.canoo.implementation.dolphin.client.javafx.IntegerDolphinBinder;
+import com.canoo.implementation.dolphin.client.javafx.IntegerJavaFXBidirectionalBinder;
+import com.canoo.implementation.dolphin.client.javafx.LongDolphinBinder;
+import com.canoo.implementation.dolphin.client.javafx.LongJavaFXBidirectionalBinder;
 import com.canoo.dolphin.mapping.Property;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.FloatProperty;
@@ -39,7 +45,7 @@ import javafx.beans.value.WritableLongValue;
 import javafx.beans.value.WritableValue;
 import javafx.collections.ObservableList;
 
-import static com.canoo.dolphin.util.Assert.requireNonNull;
+import static com.canoo.implementation.dolphin.util.Assert.requireNonNull;
 
 /**
  * Utility class to create uniderctional and bidirectional bindings between JavaFX and Dolphin Platform properties.

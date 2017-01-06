@@ -15,6 +15,8 @@
  */
 package com.canoo.dolphin.server.spring;
 
+import com.canoo.dolphin.server.session.DolphinSession;
+import com.canoo.implementation.dolphin.server.spring.ClientScope;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 
@@ -24,7 +26,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * A custom scope that is bound to the lifecycle of a {@link com.canoo.dolphin.server.DolphinSession}
+ * A custom scope that is bound to the lifecycle of a {@link DolphinSession}
  */
 @Qualifier
 @Scope(ClientScope.CLIENT_SCOPE)

@@ -17,7 +17,7 @@ package com.canoo.dolphin.client;
 
 import com.canoo.dolphin.BeanManager;
 import com.canoo.dolphin.client.util.*;
-import com.canoo.dolphin.impl.BeanDefinitionException;
+import com.canoo.implementation.dolphin.BeanDefinitionException;
 import mockit.Mocked;
 import org.opendolphin.core.client.ClientDolphin;
 import org.opendolphin.core.client.ClientPresentationModel;

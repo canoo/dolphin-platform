@@ -15,7 +15,11 @@
  */
 package com.canoo.dolphin.server.impl.gc;
 
-import com.canoo.dolphin.server.impl.UnstableFeatureFlags;
+import com.canoo.implementation.dolphin.server.UnstableFeatureFlags;
+import com.canoo.implementation.dolphin.server.gc.CircularDependencyException;
+import com.canoo.implementation.dolphin.server.gc.GarbageCollectionCallback;
+import com.canoo.implementation.dolphin.server.gc.GarbageCollector;
+import com.canoo.implementation.dolphin.server.gc.Instance;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;

@@ -16,7 +16,7 @@
 package com.canoo.dolphin.client.javafx.stage;
 
 import com.canoo.dolphin.client.javafx.view.AbstractViewBinder;
-import com.canoo.dolphin.util.Assert;
+import com.canoo.implementation.dolphin.util.Assert;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
