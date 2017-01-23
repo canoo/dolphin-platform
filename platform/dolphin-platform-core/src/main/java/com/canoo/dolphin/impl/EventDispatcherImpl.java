@@ -17,10 +17,10 @@ package com.canoo.dolphin.impl;
 
 import com.canoo.dolphin.internal.DolphinEventHandler;
 import com.canoo.dolphin.internal.EventDispatcher;
-import com.canoo.dolphin.util.Assert;
-import org.opendolphin.core.Dolphin;
-import org.opendolphin.core.ModelStoreEvent;
-import org.opendolphin.core.PresentationModel;
+import com.canoo.common.Assert;
+import com.canoo.communication.common.Dolphin;
+import com.canoo.communication.common.ModelStoreEvent;
+import com.canoo.communication.common.PresentationModel;
 
 import java.util.ArrayList;
 import java.util.List;

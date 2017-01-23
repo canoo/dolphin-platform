@@ -16,14 +16,14 @@
 package com.canoo.dolphin.client.impl;
 
 import com.canoo.dolphin.client.util.AbstractDolphinBasedTest;
-import org.opendolphin.core.client.ClientAttribute;
-import org.opendolphin.core.client.ClientDolphin;
-import org.opendolphin.core.client.comm.UiThreadHandler;
-import org.opendolphin.core.comm.Command;
-import org.opendolphin.core.server.ServerDolphin;
-import org.opendolphin.core.server.action.DolphinServerAction;
-import org.opendolphin.core.server.comm.ActionRegistry;
-import org.opendolphin.core.server.comm.CommandHandler;
+import com.canoo.remoting.client.ClientAttribute;
+import com.canoo.remoting.client.ClientDolphin;
+import com.canoo.remoting.client.communication.UiThreadHandler;
+import com.canoo.communication.common.commands.Command;
+import com.canoo.remoting.server.ServerDolphin;
+import com.canoo.remoting.server.action.DolphinServerAction;
+import com.canoo.remoting.server.communication.ActionRegistry;
+import com.canoo.remoting.server.communication.CommandHandler;
 import org.testng.annotations.Test;
 
 import java.util.List;

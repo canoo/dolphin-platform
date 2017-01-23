@@ -18,7 +18,7 @@ package com.canoo.dolphin.server.spring;
 
 import com.canoo.dolphin.server.DolphinSession;
 import com.canoo.dolphin.server.context.DolphinSessionProvider;
-import com.canoo.dolphin.util.Assert;
+import com.canoo.common.Assert;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.config.Scope;
 

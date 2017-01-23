@@ -20,8 +20,8 @@ import com.canoo.dolphin.client.util.AbstractDolphinBasedTest;
 import com.canoo.dolphin.client.util.SimpleAnnotatedTestModel;
 import com.canoo.dolphin.client.util.SimpleTestModel;
 import mockit.Mocked;
-import org.opendolphin.core.client.ClientDolphin;
-import org.opendolphin.core.client.comm.ClientConnector;
+import com.canoo.remoting.client.ClientDolphin;
+import com.canoo.remoting.client.communication.ClientConnector;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;

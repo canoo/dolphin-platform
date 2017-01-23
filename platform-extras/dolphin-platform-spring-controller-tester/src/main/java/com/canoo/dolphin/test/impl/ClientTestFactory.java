@@ -20,7 +20,7 @@ import com.canoo.dolphin.client.ControllerProxy;
 import com.canoo.dolphin.client.Param;
 import com.canoo.dolphin.test.ControllerTestException;
 import com.canoo.dolphin.test.ControllerUnderTest;
-import com.canoo.dolphin.util.Assert;
+import com.canoo.common.Assert;
 
 public class ClientTestFactory {
 

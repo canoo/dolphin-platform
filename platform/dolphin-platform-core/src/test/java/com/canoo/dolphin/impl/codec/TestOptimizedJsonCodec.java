@@ -16,10 +16,10 @@
 package com.canoo.dolphin.impl.codec;
 
 import org.hamcrest.Matchers;
-import org.opendolphin.core.comm.Command;
-import org.opendolphin.core.comm.CreatePresentationModelCommand;
-import org.opendolphin.core.comm.NamedCommand;
-import org.opendolphin.core.comm.ValueChangedCommand;
+import com.canoo.communication.common.commands.Command;
+import com.canoo.communication.common.commands.CreatePresentationModelCommand;
+import com.canoo.communication.common.commands.NamedCommand;
+import com.canoo.communication.common.commands.ValueChangedCommand;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
@@ -329,6 +329,6 @@ public class TestOptimizedJsonCodec {
     }
 
     private static String createNamedCommandString() {
-        return "{\"id\":\"dolphin_platform_intern_registerController\",\"className\":\"org.opendolphin.core.comm.NamedCommand\"}";
+        return "{\"id\":\"dolphin_platform_intern_registerController\",\"className\":\"com.canoo.communication.common.commands.NamedCommand\"}";
     }
 }

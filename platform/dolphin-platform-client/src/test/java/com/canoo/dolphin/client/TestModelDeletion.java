@@ -24,9 +24,9 @@ import com.canoo.dolphin.client.util.SimpleTestModel;
 import com.canoo.dolphin.client.util.SingleReferenceModel;
 import com.canoo.dolphin.impl.BeanDefinitionException;
 import mockit.Mocked;
-import org.opendolphin.core.client.ClientDolphin;
-import org.opendolphin.core.client.ClientPresentationModel;
-import org.opendolphin.core.client.comm.ClientConnector;
+import com.canoo.remoting.client.ClientDolphin;
+import com.canoo.remoting.client.ClientPresentationModel;
+import com.canoo.remoting.client.communication.ClientConnector;
 import org.testng.annotations.Test;
 
 import java.util.Collection;

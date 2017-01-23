@@ -24,10 +24,10 @@ import com.canoo.dolphin.internal.info.ClassInfo;
 import com.canoo.dolphin.internal.info.PropertyInfo;
 import com.canoo.dolphin.mapping.MappingException;
 import com.canoo.dolphin.mapping.Property;
-import com.canoo.dolphin.util.Assert;
-import org.opendolphin.core.Dolphin;
-import org.opendolphin.core.ModelStoreEvent;
-import org.opendolphin.core.ModelStoreListener;
+import com.canoo.common.Assert;
+import com.canoo.communication.common.Dolphin;
+import com.canoo.communication.common.ModelStoreEvent;
+import com.canoo.communication.common.ModelStoreListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -39,7 +39,7 @@ import javafx.beans.value.WritableLongValue;
 import javafx.beans.value.WritableValue;
 import javafx.collections.ObservableList;
 
-import static com.canoo.dolphin.util.Assert.requireNonNull;
+import static com.canoo.common.Assert.requireNonNull;
 
 /**
  * Utility class to create uniderctional and bidirectional bindings between JavaFX and Dolphin Platform properties.

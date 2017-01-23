@@ -16,9 +16,9 @@
 package com.canoo.dolphin.server.context;
 
 import com.canoo.dolphin.server.config.DolphinPlatformConfiguration;
-import com.canoo.dolphin.util.Assert;
+import com.canoo.common.Assert;
 import com.canoo.dolphin.util.DolphinRemotingException;
-import org.opendolphin.core.comm.Command;
+import com.canoo.communication.common.commands.Command;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

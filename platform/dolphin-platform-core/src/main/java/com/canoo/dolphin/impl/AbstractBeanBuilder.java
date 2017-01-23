@@ -27,9 +27,9 @@ import com.canoo.dolphin.internal.collections.ListMapper;
 import com.canoo.dolphin.internal.info.ClassInfo;
 import com.canoo.dolphin.internal.info.PropertyInfo;
 import com.canoo.dolphin.mapping.Property;
-import com.canoo.dolphin.util.Assert;
-import org.opendolphin.core.Attribute;
-import org.opendolphin.core.PresentationModel;
+import com.canoo.common.Assert;
+import com.canoo.communication.common.Attribute;
+import com.canoo.communication.common.PresentationModel;
 
 
 /**

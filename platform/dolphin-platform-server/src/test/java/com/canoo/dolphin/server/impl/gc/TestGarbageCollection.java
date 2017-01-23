@@ -16,7 +16,7 @@
 package com.canoo.dolphin.server.impl.gc;
 
 import com.canoo.dolphin.server.config.DolphinPlatformConfiguration;
-import com.canoo.dolphin.util.Assert;
+import com.canoo.common.Assert;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;

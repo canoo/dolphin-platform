@@ -15,10 +15,10 @@
  */
 package com.canoo.dolphin.test.impl;
 
-import org.opendolphin.core.client.ClientDolphin;
-import org.opendolphin.core.client.ClientModelStore;
-import org.opendolphin.core.server.DefaultServerDolphin;
-import org.opendolphin.core.server.ServerDolphinFactory;
+import com.canoo.remoting.client.ClientDolphin;
+import com.canoo.remoting.client.ClientModelStore;
+import com.canoo.remoting.server.DefaultServerDolphin;
+import com.canoo.remoting.server.ServerDolphinFactory;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

@@ -38,12 +38,12 @@ import com.canoo.dolphin.internal.BeanRepository;
 import com.canoo.dolphin.internal.ClassRepository;
 import com.canoo.dolphin.internal.EventDispatcher;
 import com.canoo.dolphin.internal.collections.ListMapper;
-import com.canoo.dolphin.util.Assert;
+import com.canoo.common.Assert;
 import com.canoo.dolphin.util.DolphinRemotingException;
-import org.opendolphin.core.client.ClientDolphin;
-import org.opendolphin.core.client.ClientModelStore;
-import org.opendolphin.core.client.comm.AbstractClientConnector;
-import org.opendolphin.core.client.comm.ExceptionHandler;
+import com.canoo.remoting.client.ClientDolphin;
+import com.canoo.remoting.client.ClientModelStore;
+import com.canoo.remoting.client.communication.AbstractClientConnector;
+import com.canoo.remoting.client.communication.ExceptionHandler;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;

@@ -18,7 +18,7 @@ package com.canoo.dolphin.internal;
 import com.canoo.dolphin.event.BeanAddedListener;
 import com.canoo.dolphin.event.BeanRemovedListener;
 import com.canoo.dolphin.event.Subscription;
-import org.opendolphin.core.PresentationModel;
+import com.canoo.communication.common.PresentationModel;
 
 import java.util.List;
 

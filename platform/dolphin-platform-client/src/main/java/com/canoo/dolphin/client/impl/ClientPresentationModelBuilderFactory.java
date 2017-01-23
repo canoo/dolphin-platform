@@ -17,8 +17,8 @@ package com.canoo.dolphin.client.impl;
 
 import com.canoo.dolphin.impl.PresentationModelBuilderFactory;
 import com.canoo.dolphin.internal.PresentationModelBuilder;
-import org.opendolphin.core.client.ClientDolphin;
-import org.opendolphin.core.client.ClientPresentationModel;
+import com.canoo.remoting.client.ClientDolphin;
+import com.canoo.remoting.client.ClientPresentationModel;
 
 public class ClientPresentationModelBuilderFactory implements PresentationModelBuilderFactory<ClientPresentationModel> {
 

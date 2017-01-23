@@ -19,10 +19,10 @@ import com.canoo.dolphin.client.ClientConfiguration;
 import com.canoo.dolphin.client.DummyUiThreadHandler;
 import com.canoo.dolphin.client.HttpURLConnectionFactory;
 import com.canoo.dolphin.util.DolphinRemotingException;
-import org.opendolphin.core.client.ClientDolphin;
-import org.opendolphin.core.comm.Command;
-import org.opendolphin.core.comm.CreatePresentationModelCommand;
-import org.opendolphin.core.comm.JsonCodec;
+import com.canoo.remoting.client.ClientDolphin;
+import com.canoo.communication.common.commands.Command;
+import com.canoo.communication.common.commands.CreatePresentationModelCommand;
+import com.canoo.communication.common.codec.JsonCodec;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -68,7 +68,7 @@ public class TestDolphinPlatformHttpClientConnector {
 
                     @Override
                     public InputStream getInputStream() throws IOException {
-                        String response = "[{\"pmId\":\"p1\",\"clientSideOnly\":false,\"id\":\"CreatePresentationModel\",\"attributes\":[],\"pmType\":null,\"className\":\"org.opendolphin.core.comm.CreatePresentationModelCommand\"}]";
+                        String response = "[{\"pmId\":\"p1\",\"clientSideOnly\":false,\"id\":\"CreatePresentationModel\",\"attributes\":[],\"pmType\":null,\"className\":\"com.canoo.communication.common.commands.CreatePresentationModelCommand\"}]";
                         return new ByteArrayInputStream(response.getBytes("UTF-8"));
                     }
                 };

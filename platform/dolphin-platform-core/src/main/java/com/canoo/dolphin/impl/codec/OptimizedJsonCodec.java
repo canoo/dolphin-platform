@@ -15,7 +15,7 @@
  */
 package com.canoo.dolphin.impl.codec;
 
-import com.canoo.dolphin.util.Assert;
+import com.canoo.common.Assert;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -23,11 +23,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
-import org.opendolphin.core.comm.Codec;
-import org.opendolphin.core.comm.Command;
-import org.opendolphin.core.comm.CreatePresentationModelCommand;
-import org.opendolphin.core.comm.JsonCodec;
-import org.opendolphin.core.comm.ValueChangedCommand;
+import com.canoo.communication.common.codec.Codec;
+import com.canoo.communication.common.commands.Command;
+import com.canoo.communication.common.commands.CreatePresentationModelCommand;
+import com.canoo.communication.common.codec.JsonCodec;
+import com.canoo.communication.common.commands.ValueChangedCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

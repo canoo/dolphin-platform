@@ -17,7 +17,7 @@ package com.canoo.dolphin.server.context;
 
 import com.canoo.dolphin.impl.IdentitySet;
 import com.canoo.dolphin.server.DolphinSession;
-import com.canoo.dolphin.util.Assert;
+import com.canoo.common.Assert;
 import com.google.common.util.concurrent.SettableFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -15,7 +15,7 @@
  */
 package com.canoo.dolphin.server.impl;
 
-import com.canoo.dolphin.util.Assert;
+import com.canoo.common.Assert;
 import org.reflections.Reflections;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;

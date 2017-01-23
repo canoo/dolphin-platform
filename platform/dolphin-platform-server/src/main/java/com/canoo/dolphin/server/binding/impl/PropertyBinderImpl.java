@@ -22,8 +22,8 @@ import com.canoo.dolphin.impl.ReflectionHelper;
 import com.canoo.dolphin.mapping.Property;
 import com.canoo.dolphin.server.binding.Qualifier;
 import com.canoo.dolphin.server.binding.PropertyBinder;
-import com.canoo.dolphin.util.Assert;
-import org.opendolphin.core.server.ServerAttribute;
+import com.canoo.common.Assert;
+import com.canoo.remoting.server.ServerAttribute;
 
 import java.lang.reflect.Field;
 

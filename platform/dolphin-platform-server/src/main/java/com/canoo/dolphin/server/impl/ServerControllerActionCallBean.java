@@ -19,9 +19,9 @@ import com.canoo.dolphin.converter.ValueConverterException;
 import com.canoo.dolphin.impl.AbstractControllerActionCallBean;
 import com.canoo.dolphin.impl.Converters;
 import com.canoo.dolphin.mapping.MappingException;
-import com.canoo.dolphin.util.Assert;
-import org.opendolphin.core.Attribute;
-import org.opendolphin.core.PresentationModel;
+import com.canoo.common.Assert;
+import com.canoo.communication.common.Attribute;
+import com.canoo.communication.common.PresentationModel;
 
 public class ServerControllerActionCallBean extends AbstractControllerActionCallBean {
 

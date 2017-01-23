@@ -22,11 +22,11 @@ import com.canoo.dolphin.server.context.DolphinContextUtils;
 import com.canoo.dolphin.server.context.DolphinSessionProvider;
 import com.canoo.dolphin.server.context.OpenDolphinFactory;
 import com.canoo.dolphin.server.controller.ControllerRepository;
-import com.canoo.dolphin.util.Assert;
-import com.canoo.dolphin.util.Callback;
-import org.opendolphin.core.client.ClientDolphin;
-import org.opendolphin.core.comm.Command;
-import org.opendolphin.core.server.DefaultServerDolphin;
+import com.canoo.common.Assert;
+import com.canoo.common.Callback;
+import com.canoo.remoting.client.ClientDolphin;
+import com.canoo.communication.common.commands.Command;
+import com.canoo.remoting.server.DefaultServerDolphin;
 
 import java.util.List;
 

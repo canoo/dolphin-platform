@@ -20,7 +20,7 @@ import com.canoo.dolphin.client.javafx.binding.Converter;
 import com.canoo.dolphin.client.javafx.binding.JavaFXBinder;
 import com.canoo.dolphin.event.Subscription;
 import com.canoo.dolphin.mapping.Property;
-import com.canoo.dolphin.util.Assert;
+import com.canoo.common.Assert;
 import javafx.beans.value.WritableValue;
 
 public class DefaultJavaFXBinder<S> implements JavaFXBinder<S> {

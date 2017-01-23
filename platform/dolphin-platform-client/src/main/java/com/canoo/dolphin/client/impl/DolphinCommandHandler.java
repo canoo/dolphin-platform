@@ -15,10 +15,10 @@
  */
 package com.canoo.dolphin.client.impl;
 
-import com.canoo.dolphin.util.Assert;
-import org.opendolphin.core.client.ClientDolphin;
-import org.opendolphin.core.client.ClientPresentationModel;
-import org.opendolphin.core.client.comm.OnFinishedHandler;
+import com.canoo.common.Assert;
+import com.canoo.remoting.client.ClientDolphin;
+import com.canoo.remoting.client.ClientPresentationModel;
+import com.canoo.remoting.client.communication.OnFinishedHandler;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;

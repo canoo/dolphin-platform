@@ -15,7 +15,7 @@
  */
 package com.canoo.dolphin.server.context;
 
-import org.opendolphin.core.server.DefaultServerDolphin;
+import com.canoo.remoting.server.DefaultServerDolphin;
 
 /**
  * A factory that creates an Open Dolphin {@link DefaultServerDolphin}

@@ -20,8 +20,8 @@ import com.canoo.dolphin.event.ValueChangeListener;
 import com.canoo.dolphin.internal.info.PropertyInfo;
 import com.canoo.dolphin.mapping.MappingException;
 import com.canoo.dolphin.mapping.Property;
-import com.canoo.dolphin.util.Assert;
-import org.opendolphin.core.Attribute;
+import com.canoo.common.Assert;
+import com.canoo.communication.common.Attribute;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;

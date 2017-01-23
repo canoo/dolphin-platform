@@ -19,7 +19,7 @@ import com.canoo.dolphin.client.ClientBeanManager;
 import com.canoo.dolphin.impl.BeanManagerImpl;
 import com.canoo.dolphin.internal.BeanBuilder;
 import com.canoo.dolphin.internal.BeanRepository;
-import org.opendolphin.core.client.ClientDolphin;
+import com.canoo.remoting.client.ClientDolphin;
 
 @Deprecated
 public class ClientBeanManagerImpl extends BeanManagerImpl implements ClientBeanManager {

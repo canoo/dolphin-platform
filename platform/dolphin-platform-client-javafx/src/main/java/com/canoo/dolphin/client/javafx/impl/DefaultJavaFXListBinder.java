@@ -20,7 +20,7 @@ import com.canoo.dolphin.client.javafx.binding.JavaFXListBinder;
 import com.canoo.dolphin.collections.ListChangeEvent;
 import com.canoo.dolphin.collections.ObservableList;
 import com.canoo.dolphin.event.Subscription;
-import com.canoo.dolphin.util.Assert;
+import com.canoo.common.Assert;
 import javafx.collections.ListChangeListener;
 
 import java.util.IdentityHashMap;

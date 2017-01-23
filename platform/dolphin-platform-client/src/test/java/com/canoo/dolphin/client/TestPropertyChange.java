@@ -25,8 +25,8 @@ import com.canoo.dolphin.event.Subscription;
 import com.canoo.dolphin.event.ValueChangeEvent;
 import com.canoo.dolphin.event.ValueChangeListener;
 import mockit.Mocked;
-import org.opendolphin.core.client.ClientDolphin;
-import org.opendolphin.core.client.comm.ClientConnector;
+import com.canoo.remoting.client.ClientDolphin;
+import com.canoo.remoting.client.communication.ClientConnector;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

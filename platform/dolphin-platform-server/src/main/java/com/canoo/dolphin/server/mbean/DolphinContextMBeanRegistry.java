@@ -23,7 +23,7 @@ import com.canoo.dolphin.server.mbean.beans.DolphinControllerInfoMBean;
 import com.canoo.dolphin.server.mbean.beans.DolphinSessionInfo;
 import com.canoo.dolphin.server.mbean.beans.DolphinSessionInfoMBean;
 import com.canoo.dolphin.server.mbean.beans.ModelProvider;
-import com.canoo.dolphin.util.Assert;
+import com.canoo.common.Assert;
 
 /**
  * Helper method to register MBeans for Dolphin Platform

@@ -21,7 +21,7 @@ import com.canoo.dolphin.event.BeanRemovedListener;
 import com.canoo.dolphin.event.Subscription;
 import com.canoo.dolphin.internal.BeanBuilder;
 import com.canoo.dolphin.internal.BeanRepository;
-import com.canoo.dolphin.util.Assert;
+import com.canoo.common.Assert;
 
 import java.util.Collection;
 import java.util.List;

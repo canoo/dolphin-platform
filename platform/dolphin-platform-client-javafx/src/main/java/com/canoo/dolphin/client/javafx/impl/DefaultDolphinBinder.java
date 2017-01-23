@@ -21,7 +21,7 @@ import com.canoo.dolphin.client.javafx.binding.Converter;
 import com.canoo.dolphin.client.javafx.binding.DolphinBinder;
 import com.canoo.dolphin.event.Subscription;
 import com.canoo.dolphin.mapping.Property;
-import com.canoo.dolphin.util.Assert;
+import com.canoo.common.Assert;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 

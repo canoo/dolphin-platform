@@ -40,11 +40,11 @@ import com.canoo.dolphin.impl.converters.ShortConverterFactory;
 import com.canoo.dolphin.impl.converters.StringConverterFactory;
 import mockit.Mocked;
 import org.hamcrest.Matchers;
-import org.opendolphin.core.Attribute;
-import org.opendolphin.core.PresentationModel;
-import org.opendolphin.core.client.ClientDolphin;
-import org.opendolphin.core.client.ClientPresentationModel;
-import org.opendolphin.core.client.comm.ClientConnector;
+import com.canoo.communication.common.Attribute;
+import com.canoo.communication.common.PresentationModel;
+import com.canoo.remoting.client.ClientDolphin;
+import com.canoo.remoting.client.ClientPresentationModel;
+import com.canoo.remoting.client.communication.ClientConnector;
 import org.testng.annotations.Test;
 
 import java.util.List;

@@ -24,8 +24,8 @@ import com.canoo.dolphin.internal.EventDispatcher;
 import com.canoo.dolphin.internal.UpdateSource;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import org.opendolphin.core.Dolphin;
-import org.opendolphin.core.PresentationModel;
+import com.canoo.communication.common.Dolphin;
+import com.canoo.communication.common.PresentationModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;

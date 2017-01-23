@@ -21,11 +21,11 @@ import com.canoo.dolphin.impl.converters.DolphinBeanConverterFactory;
 import com.canoo.dolphin.server.util.AbstractDolphinBasedTest;
 import com.canoo.dolphin.server.util.ListReferenceModel;
 import com.canoo.dolphin.server.util.SimpleTestModel;
-import org.opendolphin.core.PresentationModel;
-import org.opendolphin.core.server.DTO;
-import org.opendolphin.core.server.ServerDolphin;
-import org.opendolphin.core.server.ServerPresentationModel;
-import org.opendolphin.core.server.Slot;
+import com.canoo.communication.common.PresentationModel;
+import com.canoo.remoting.server.DTO;
+import com.canoo.remoting.server.ServerDolphin;
+import com.canoo.remoting.server.ServerPresentationModel;
+import com.canoo.remoting.server.Slot;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;

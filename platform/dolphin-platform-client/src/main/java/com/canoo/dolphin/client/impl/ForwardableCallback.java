@@ -16,8 +16,8 @@
 package com.canoo.dolphin.client.impl;
 
 import com.canoo.dolphin.event.Subscription;
-import com.canoo.dolphin.util.Assert;
-import com.canoo.dolphin.util.Callback;
+import com.canoo.common.Assert;
+import com.canoo.common.Callback;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;

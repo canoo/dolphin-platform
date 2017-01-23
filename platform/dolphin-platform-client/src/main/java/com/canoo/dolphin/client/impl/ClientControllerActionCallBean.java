@@ -22,9 +22,9 @@ import com.canoo.dolphin.impl.Converters;
 import com.canoo.dolphin.impl.PlatformConstants;
 import com.canoo.dolphin.internal.PresentationModelBuilder;
 import com.canoo.dolphin.mapping.MappingException;
-import org.opendolphin.core.Dolphin;
-import org.opendolphin.core.PresentationModel;
-import org.opendolphin.core.client.ClientDolphin;
+import com.canoo.communication.common.Dolphin;
+import com.canoo.communication.common.PresentationModel;
+import com.canoo.remoting.client.ClientDolphin;
 
 public class ClientControllerActionCallBean extends AbstractControllerActionCallBean {
 

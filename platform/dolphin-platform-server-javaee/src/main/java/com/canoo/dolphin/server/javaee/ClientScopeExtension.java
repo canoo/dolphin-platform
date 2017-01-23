@@ -15,7 +15,7 @@
  */
 package com.canoo.dolphin.server.javaee;
 
-import com.canoo.dolphin.util.Assert;
+import com.canoo.common.Assert;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;

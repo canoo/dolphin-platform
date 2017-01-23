@@ -19,8 +19,8 @@ import com.canoo.dolphin.BeanManager;
 import com.canoo.dolphin.server.util.AbstractDolphinBasedTest;
 import com.canoo.dolphin.server.util.SimpleAnnotatedTestModel;
 import com.canoo.dolphin.server.util.SimpleTestModel;
-import org.opendolphin.core.server.ServerDolphin;
-import org.opendolphin.core.server.ServerPresentationModel;
+import com.canoo.remoting.server.ServerDolphin;
+import com.canoo.remoting.server.ServerPresentationModel;
 import org.testng.annotations.Test;
 
 import java.util.List;

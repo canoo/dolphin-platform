@@ -15,12 +15,12 @@
  */
 package com.canoo.dolphin.impl.codec;
 
-import com.canoo.dolphin.util.Assert;
+import com.canoo.common.Assert;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import org.opendolphin.core.comm.CreatePresentationModelCommand;
+import com.canoo.communication.common.commands.CreatePresentationModelCommand;
 
 import java.util.ArrayList;
 import java.util.HashMap;

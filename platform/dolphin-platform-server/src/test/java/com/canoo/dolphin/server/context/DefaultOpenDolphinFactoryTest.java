@@ -16,7 +16,7 @@
 package com.canoo.dolphin.server.context;
 
 import com.canoo.dolphin.impl.codec.OptimizedJsonCodec;
-import org.opendolphin.core.server.DefaultServerDolphin;
+import com.canoo.remoting.server.DefaultServerDolphin;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;

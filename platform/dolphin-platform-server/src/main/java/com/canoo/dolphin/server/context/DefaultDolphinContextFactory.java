@@ -19,8 +19,8 @@ import com.canoo.dolphin.server.config.DolphinPlatformConfiguration;
 import com.canoo.dolphin.server.container.ContainerManager;
 import com.canoo.dolphin.server.controller.ControllerRepository;
 import com.canoo.dolphin.server.impl.ClasspathScanner;
-import com.canoo.dolphin.util.Assert;
-import com.canoo.dolphin.util.Callback;
+import com.canoo.common.Assert;
+import com.canoo.common.Callback;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpSession;

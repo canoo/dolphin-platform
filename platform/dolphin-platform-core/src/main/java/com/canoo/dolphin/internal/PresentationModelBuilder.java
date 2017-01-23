@@ -15,7 +15,7 @@
  */
 package com.canoo.dolphin.internal;
 
-import org.opendolphin.core.PresentationModel;
+import com.canoo.communication.common.PresentationModel;
 
 public interface PresentationModelBuilder<T extends PresentationModel> {
 

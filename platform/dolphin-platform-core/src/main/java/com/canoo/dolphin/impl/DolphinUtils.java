@@ -15,23 +15,10 @@
  */
 package com.canoo.dolphin.impl;
 
-import com.canoo.dolphin.impl.converters.BooleanConverterFactory;
-import com.canoo.dolphin.impl.converters.ByteConverterFactory;
-import com.canoo.dolphin.impl.converters.DateConverterFactory;
-import com.canoo.dolphin.impl.converters.DolphinBeanConverterFactory;
-import com.canoo.dolphin.impl.converters.DoubleConverterFactory;
-import com.canoo.dolphin.impl.converters.EnumConverterFactory;
-import com.canoo.dolphin.impl.converters.FloatConverterFactory;
-import com.canoo.dolphin.impl.converters.IntegerConverterFactory;
-import com.canoo.dolphin.impl.converters.LongConverterFactory;
-import com.canoo.dolphin.impl.converters.ShortConverterFactory;
-import com.canoo.dolphin.impl.converters.StringConverterFactory;
 import com.canoo.dolphin.mapping.DolphinBean;
-import com.canoo.dolphin.util.Assert;
+import com.canoo.common.Assert;
 
 import java.lang.reflect.Field;
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * The class {@code DolphinUtils} is a horrible class that we should get rid of asap.

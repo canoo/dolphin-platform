@@ -23,10 +23,10 @@ import com.canoo.dolphin.client.ControllerInitalizationException;
 import com.canoo.dolphin.client.ControllerProxy;
 import com.canoo.dolphin.event.Subscription;
 import com.canoo.dolphin.impl.PlatformConstants;
-import com.canoo.dolphin.util.Assert;
-import com.canoo.dolphin.util.Callback;
+import com.canoo.common.Assert;
+import com.canoo.common.Callback;
 import com.canoo.dolphin.util.DolphinRemotingException;
-import org.opendolphin.core.client.ClientDolphin;
+import com.canoo.remoting.client.ClientDolphin;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;

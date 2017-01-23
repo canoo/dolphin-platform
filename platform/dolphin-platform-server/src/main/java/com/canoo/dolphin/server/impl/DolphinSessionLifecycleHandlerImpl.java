@@ -19,7 +19,7 @@ import com.canoo.dolphin.event.Subscription;
 import com.canoo.dolphin.server.DolphinSession;
 import com.canoo.dolphin.server.context.DolphinContextException;
 import com.canoo.dolphin.server.context.DolphinSessionLifecycleHandler;
-import com.canoo.dolphin.util.Callback;
+import com.canoo.common.Callback;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;

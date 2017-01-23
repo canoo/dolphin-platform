@@ -23,10 +23,10 @@ import com.canoo.dolphin.server.util.PrimitiveDataTypesModel;
 import com.canoo.dolphin.server.util.SimpleAnnotatedTestModel;
 import com.canoo.dolphin.server.util.SimpleTestModel;
 import com.canoo.dolphin.server.util.SingleReferenceModel;
-import org.opendolphin.core.Attribute;
-import org.opendolphin.core.PresentationModel;
-import org.opendolphin.core.server.ServerDolphin;
-import org.opendolphin.core.server.ServerPresentationModel;
+import com.canoo.communication.common.Attribute;
+import com.canoo.communication.common.PresentationModel;
+import com.canoo.remoting.server.ServerDolphin;
+import com.canoo.remoting.server.ServerPresentationModel;
 import org.testng.annotations.Test;
 
 import java.util.Calendar;

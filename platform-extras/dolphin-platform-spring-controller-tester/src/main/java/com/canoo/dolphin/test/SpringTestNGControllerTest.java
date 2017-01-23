@@ -18,7 +18,7 @@ package com.canoo.dolphin.test;
 import com.canoo.dolphin.client.ClientContext;
 import com.canoo.dolphin.test.impl.ClientTestFactory;
 import com.canoo.dolphin.test.impl.DolphinPlatformSpringTestBootstrap;
-import com.canoo.dolphin.util.Assert;
+import com.canoo.common.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.annotation.DirtiesContext;

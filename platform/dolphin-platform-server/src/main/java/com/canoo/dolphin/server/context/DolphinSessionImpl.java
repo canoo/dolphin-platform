@@ -16,7 +16,7 @@
 package com.canoo.dolphin.server.context;
 
 import com.canoo.dolphin.server.DolphinSession;
-import com.canoo.dolphin.util.Assert;
+import com.canoo.common.Assert;
 
 import java.util.Collections;
 import java.util.Map;

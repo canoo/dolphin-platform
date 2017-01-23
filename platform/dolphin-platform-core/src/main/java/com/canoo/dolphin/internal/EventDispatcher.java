@@ -15,7 +15,7 @@
  */
 package com.canoo.dolphin.internal;
 
-import org.opendolphin.core.ModelStoreListener;
+import com.canoo.communication.common.ModelStoreListener;
 
 public interface EventDispatcher extends ModelStoreListener {
 

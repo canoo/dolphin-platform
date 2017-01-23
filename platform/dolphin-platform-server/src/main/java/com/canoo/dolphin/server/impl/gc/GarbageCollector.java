@@ -21,7 +21,7 @@ import com.canoo.dolphin.impl.IdentitySet;
 import com.canoo.dolphin.impl.ReflectionHelper;
 import com.canoo.dolphin.mapping.Property;
 import com.canoo.dolphin.server.config.DolphinPlatformConfiguration;
-import com.canoo.dolphin.util.Assert;
+import com.canoo.common.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -21,9 +21,9 @@ import com.canoo.dolphin.impl.PlatformConstants;
 import com.canoo.dolphin.internal.BeanRepository;
 import com.canoo.dolphin.internal.DolphinEventHandler;
 import com.canoo.dolphin.internal.EventDispatcher;
-import com.canoo.dolphin.util.Assert;
-import org.opendolphin.core.PresentationModel;
-import org.opendolphin.core.server.ServerDolphin;
+import com.canoo.common.Assert;
+import com.canoo.communication.common.PresentationModel;
+import com.canoo.remoting.server.ServerDolphin;
 
 public class ServerPlatformBeanRepository {
 

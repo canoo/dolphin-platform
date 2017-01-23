@@ -21,7 +21,7 @@ import com.canoo.dolphin.event.ValueChangeEvent;
 import com.canoo.dolphin.event.ValueChangeListener;
 import com.canoo.dolphin.mapping.Property;
 import com.canoo.dolphin.server.util.*;
-import org.opendolphin.core.server.ServerDolphin;
+import com.canoo.remoting.server.ServerDolphin;
 import org.testng.annotations.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;

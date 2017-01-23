@@ -15,7 +15,7 @@
  */
 package com.canoo.dolphin.server.context;
 
-import com.canoo.dolphin.util.Assert;
+import com.canoo.common.Assert;
 
 import javax.servlet.http.HttpSession;
 import java.lang.ref.WeakReference;

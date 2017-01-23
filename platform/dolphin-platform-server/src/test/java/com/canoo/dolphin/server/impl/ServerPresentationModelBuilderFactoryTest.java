@@ -17,8 +17,8 @@ package com.canoo.dolphin.server.impl;
 
 import com.canoo.dolphin.internal.PresentationModelBuilder;
 import com.canoo.dolphin.server.util.AbstractDolphinBasedTest;
-import org.opendolphin.core.server.ServerDolphin;
-import org.opendolphin.core.server.ServerPresentationModel;
+import com.canoo.remoting.server.ServerDolphin;
+import com.canoo.remoting.server.ServerPresentationModel;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertNotNull;

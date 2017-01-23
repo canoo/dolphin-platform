@@ -18,8 +18,8 @@ package com.canoo.dolphin.client;
 import com.canoo.dolphin.client.impl.DefaultHttpURLConnectionFactory;
 import com.canoo.dolphin.client.impl.DefaultHttpURLConnectionResponseHandler;
 import com.canoo.dolphin.client.impl.DolphinPlatformThreadFactoryImpl;
-import com.canoo.dolphin.util.Assert;
-import org.opendolphin.core.client.comm.UiThreadHandler;
+import com.canoo.common.Assert;
+import com.canoo.remoting.client.communication.UiThreadHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

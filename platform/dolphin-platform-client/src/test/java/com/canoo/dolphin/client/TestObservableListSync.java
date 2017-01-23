@@ -22,11 +22,11 @@ import com.canoo.dolphin.client.util.SimpleTestModel;
 import com.canoo.dolphin.impl.PlatformConstants;
 import com.canoo.dolphin.impl.converters.DolphinBeanConverterFactory;
 import mockit.Mocked;
-import org.opendolphin.core.PresentationModel;
-import org.opendolphin.core.client.ClientAttribute;
-import org.opendolphin.core.client.ClientDolphin;
-import org.opendolphin.core.client.ClientPresentationModel;
-import org.opendolphin.core.client.comm.ClientConnector;
+import com.canoo.communication.common.PresentationModel;
+import com.canoo.remoting.client.ClientAttribute;
+import com.canoo.remoting.client.ClientDolphin;
+import com.canoo.remoting.client.ClientPresentationModel;
+import com.canoo.remoting.client.communication.ClientConnector;
 import org.testng.annotations.Test;
 
 import java.util.*;

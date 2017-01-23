@@ -29,13 +29,13 @@ import com.canoo.dolphin.internal.BeanBuilder;
 import com.canoo.dolphin.internal.ClassRepository;
 import com.canoo.dolphin.internal.EventDispatcher;
 import com.canoo.dolphin.internal.collections.ListMapper;
-import core.comm.DefaultInMemoryConfig;
-import org.opendolphin.core.client.ClientDolphin;
-import org.opendolphin.core.client.ClientModelStore;
-import org.opendolphin.core.client.comm.ClientConnector;
-import org.opendolphin.core.comm.Command;
-import org.opendolphin.core.server.ServerDolphin;
-import org.opendolphin.core.server.ServerModelStore;
+import com.canoo.remoting.combined.DefaultInMemoryConfig;
+import com.canoo.remoting.client.ClientDolphin;
+import com.canoo.remoting.client.ClientModelStore;
+import com.canoo.remoting.client.communication.ClientConnector;
+import com.canoo.communication.common.commands.Command;
+import com.canoo.remoting.server.ServerDolphin;
+import com.canoo.remoting.server.ServerModelStore;
 
 import java.util.ArrayList;
 

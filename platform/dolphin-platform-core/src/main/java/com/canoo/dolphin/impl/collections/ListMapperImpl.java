@@ -27,8 +27,8 @@ import com.canoo.dolphin.internal.collections.ListMapper;
 import com.canoo.dolphin.internal.info.ClassInfo;
 import com.canoo.dolphin.internal.info.PropertyInfo;
 import com.canoo.dolphin.mapping.MappingException;
-import org.opendolphin.core.Dolphin;
-import org.opendolphin.core.PresentationModel;
+import com.canoo.communication.common.Dolphin;
+import com.canoo.communication.common.PresentationModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

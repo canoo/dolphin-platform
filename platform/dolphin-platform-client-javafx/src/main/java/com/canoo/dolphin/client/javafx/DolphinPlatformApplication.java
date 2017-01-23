@@ -23,11 +23,11 @@ import com.canoo.dolphin.client.ClientShutdownException;
 import com.canoo.dolphin.client.DolphinRuntimeException;
 import com.canoo.dolphin.client.impl.ClientContextImpl;
 import com.canoo.dolphin.impl.ReflectionHelper;
-import com.canoo.dolphin.util.Assert;
+import com.canoo.common.Assert;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
-import org.opendolphin.core.client.ClientDolphin;
+import com.canoo.remoting.client.ClientDolphin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

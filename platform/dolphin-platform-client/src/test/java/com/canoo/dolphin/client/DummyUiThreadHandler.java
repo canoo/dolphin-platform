@@ -15,7 +15,7 @@
  */
 package com.canoo.dolphin.client;
 
-import org.opendolphin.core.client.comm.UiThreadHandler;
+import com.canoo.remoting.client.communication.UiThreadHandler;
 
 public class DummyUiThreadHandler implements UiThreadHandler {
     @Override

@@ -16,7 +16,7 @@
 package com.canoo.dolphin.test.impl;
 
 import com.canoo.dolphin.server.spring.AbstractSpringContainerManager;
-import com.canoo.dolphin.util.Assert;
+import com.canoo.common.Assert;
 import org.springframework.context.ApplicationContext;
 
 import javax.servlet.ServletContext;

@@ -22,8 +22,8 @@ import com.canoo.dolphin.server.container.ContainerManager;
 import com.canoo.dolphin.server.container.ModelInjector;
 import com.canoo.dolphin.server.controller.ControllerRepository;
 import com.canoo.dolphin.server.impl.ClasspathScanner;
-import com.canoo.dolphin.util.Callback;
-import org.opendolphin.core.server.comm.CommandHandler;
+import com.canoo.common.Callback;
+import com.canoo.remoting.server.communication.CommandHandler;
 import org.testng.annotations.Test;
 
 import javax.servlet.ServletContext;

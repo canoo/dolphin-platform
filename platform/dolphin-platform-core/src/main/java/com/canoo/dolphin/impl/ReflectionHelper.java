@@ -17,7 +17,7 @@ package com.canoo.dolphin.impl;
 
 import com.canoo.dolphin.collections.ObservableList;
 import com.canoo.dolphin.mapping.Property;
-import com.canoo.dolphin.util.Assert;
+import com.canoo.common.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

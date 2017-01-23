@@ -17,7 +17,7 @@ package com.canoo.dolphin.client.impl;
 
 import com.canoo.dolphin.impl.EventDispatcherImpl;
 import com.canoo.dolphin.impl.PlatformConstants;
-import org.opendolphin.core.Dolphin;
+import com.canoo.communication.common.Dolphin;
 
 public class ClientEventDispatcher extends EventDispatcherImpl {
 

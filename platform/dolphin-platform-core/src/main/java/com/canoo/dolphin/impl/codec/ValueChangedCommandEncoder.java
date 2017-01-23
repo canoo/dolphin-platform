@@ -15,10 +15,10 @@
  */
 package com.canoo.dolphin.impl.codec;
 
-import com.canoo.dolphin.util.Assert;
+import com.canoo.common.Assert;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import org.opendolphin.core.comm.ValueChangedCommand;
+import com.canoo.communication.common.commands.ValueChangedCommand;
 
 import static com.canoo.dolphin.impl.codec.ValueEncoder.decodeValue;
 import static com.canoo.dolphin.impl.codec.ValueEncoder.encodeValue;

@@ -17,7 +17,7 @@ package com.canoo.dolphin.server.javaee;
 
 import com.canoo.dolphin.server.container.ContainerManager;
 import com.canoo.dolphin.server.container.ModelInjector;
-import com.canoo.dolphin.util.Assert;
+import com.canoo.common.Assert;
 import org.apache.deltaspike.core.api.provider.BeanManagerProvider;
 import org.apache.deltaspike.core.util.bean.BeanBuilder;
 import org.apache.deltaspike.core.util.metadata.builder.DelegatingContextualLifecycle;

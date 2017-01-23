@@ -16,7 +16,7 @@
 package com.canoo.dolphin.client.impl;
 
 import com.canoo.dolphin.client.DolphinPlatformThreadFactory;
-import com.canoo.dolphin.util.Assert;
+import com.canoo.common.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

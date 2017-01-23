@@ -18,8 +18,8 @@ package com.canoo.dolphin.client.impl;
 import com.canoo.dolphin.client.ControllerProxy;
 import com.canoo.dolphin.impl.InternalAttributesBean;
 import com.canoo.dolphin.impl.PlatformConstants;
-import com.canoo.dolphin.util.Assert;
-import org.opendolphin.core.client.ClientDolphin;
+import com.canoo.common.Assert;
+import com.canoo.remoting.client.ClientDolphin;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;

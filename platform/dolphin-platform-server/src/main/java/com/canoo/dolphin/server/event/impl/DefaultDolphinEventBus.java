@@ -23,8 +23,8 @@ import com.canoo.dolphin.server.event.DolphinEventBus;
 import com.canoo.dolphin.server.event.Message;
 import com.canoo.dolphin.server.event.MessageListener;
 import com.canoo.dolphin.server.event.Topic;
-import com.canoo.dolphin.util.Assert;
-import com.canoo.dolphin.util.Callback;
+import com.canoo.common.Assert;
+import com.canoo.common.Callback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

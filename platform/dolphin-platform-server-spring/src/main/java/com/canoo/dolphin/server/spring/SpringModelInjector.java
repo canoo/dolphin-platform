@@ -16,7 +16,7 @@
 package com.canoo.dolphin.server.spring;
 
 import com.canoo.dolphin.server.container.ModelInjector;
-import com.canoo.dolphin.util.Assert;
+import com.canoo.common.Assert;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessorAdapter;
 

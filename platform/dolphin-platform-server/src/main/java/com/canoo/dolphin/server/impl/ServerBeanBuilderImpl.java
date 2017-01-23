@@ -30,9 +30,9 @@ import com.canoo.dolphin.internal.collections.ListMapper;
 import com.canoo.dolphin.internal.info.PropertyInfo;
 import com.canoo.dolphin.mapping.Property;
 import com.canoo.dolphin.server.impl.gc.GarbageCollector;
-import com.canoo.dolphin.util.Assert;
-import org.opendolphin.core.Attribute;
-import org.opendolphin.core.PresentationModel;
+import com.canoo.common.Assert;
+import com.canoo.communication.common.Attribute;
+import com.canoo.communication.common.PresentationModel;
 
 public class ServerBeanBuilderImpl extends AbstractBeanBuilder implements ServerBeanBuilder {
 

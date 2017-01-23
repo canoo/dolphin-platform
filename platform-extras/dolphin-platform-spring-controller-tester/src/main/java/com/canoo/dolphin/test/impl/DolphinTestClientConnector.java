@@ -17,12 +17,12 @@ package com.canoo.dolphin.test.impl;
 
 import com.canoo.dolphin.impl.PlatformConstants;
 import com.canoo.dolphin.server.context.DolphinContext;
-import org.opendolphin.core.client.ClientDolphin;
-import org.opendolphin.core.client.comm.AbstractClientConnector;
-import org.opendolphin.core.client.comm.CommandAndHandler;
-import org.opendolphin.core.client.comm.OnFinishedHandler;
-import org.opendolphin.core.comm.Command;
-import org.opendolphin.core.comm.NamedCommand;
+import com.canoo.remoting.client.ClientDolphin;
+import com.canoo.remoting.client.communication.AbstractClientConnector;
+import com.canoo.remoting.client.communication.CommandAndHandler;
+import com.canoo.remoting.client.communication.OnFinishedHandler;
+import com.canoo.communication.common.commands.Command;
+import com.canoo.communication.common.commands.NamedCommand;
 
 import java.util.ArrayList;
 import java.util.Arrays;
