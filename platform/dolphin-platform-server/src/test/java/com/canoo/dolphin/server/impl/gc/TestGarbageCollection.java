@@ -27,6 +27,7 @@ import java.util.Set;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.fail;
 
@@ -570,6 +571,43 @@ public class TestGarbageCollection {
         garbageCollector.gc();
         assertThat(removedObjects, hasSize(1000));
         removedObjects.clear();
+    }
+
+    @Test
+    public void testLargeListSeveralTimes() {
+        final List<Object> removedObjects = new ArrayList<>();
+        GarbageCollectionCallback gcConsumer = new GarbageCollectionCallback() {
+            @Override
+            public void onReject(Set<Instance> instances) {
+                for (Instance instance : instances) {
+                    removedObjects.add(instance.getBean());
+                }
+            }
+        };
+        GarbageCollector garbageCollector = createGarbageCollection(gcConsumer);
+
+        BeanWithLists parentBean = new BeanWithLists(garbageCollector);
+        garbageCollector.onBeanCreated(parentBean, true);
+
+        for (int j = 0; j < 10; j++) {
+
+            for (int i = 0; i < 1000; i++) {
+                BeanWithLists wrapperBean = new BeanWithLists(garbageCollector);
+                garbageCollector.onBeanCreated(wrapperBean, false);
+                parentBean.getBeansList().add(wrapperBean);
+            }
+
+            garbageCollector.gc();
+            assertThat(removedObjects, hasSize(0));
+            removedObjects.clear();
+
+            parentBean.getBeansList().clear();
+
+            garbageCollector.gc();
+            assertThat(removedObjects, hasSize(1000));
+            removedObjects.clear();
+            assertNotNull(parentBean.getBeansList());
+        }
     }
 
     @Test
