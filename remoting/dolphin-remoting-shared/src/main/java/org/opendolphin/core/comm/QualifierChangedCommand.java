@@ -15,21 +15,15 @@
  */
 package org.opendolphin.core.comm;
 
-public final class AttributeMetadataChangedCommand extends Command {
+public final class QualifierChangedCommand extends Command {
 
     private String attributeId;
 
-    private String metadataName;
+    private String qualifier;
 
-    private Object value;
-
-    public AttributeMetadataChangedCommand() {
-    }
-
-    public AttributeMetadataChangedCommand(String attributeId, String metadataName, Object value) {
+    public QualifierChangedCommand(final String attributeId, final String qualifier) {
         this.attributeId = attributeId;
-        this.metadataName = metadataName;
-        this.value = value;
+        this.qualifier = qualifier;
     }
 
     public String getAttributeId() {
@@ -40,24 +34,16 @@ public final class AttributeMetadataChangedCommand extends Command {
         this.attributeId = attributeId;
     }
 
-    public String getMetadataName() {
-        return metadataName;
+    public String getQualifier() {
+        return qualifier;
     }
 
-    public void setMetadataName(String metadataName) {
-        this.metadataName = metadataName;
-    }
-
-    public Object getValue() {
-        return value;
-    }
-
-    public void setValue(Object value) {
-        this.value = value;
+    public void setQualifier(String qualifier) {
+        this.qualifier = qualifier;
     }
 
     @Override
     public String toString() {
-        return super.toString() + " attr:" + attributeId + ", metadataName:" + metadataName + " value:" + String.valueOf(value);
+        return super.toString() + " attr:" + attributeId + " value:" + qualifier;
     }
 }

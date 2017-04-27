@@ -16,12 +16,9 @@
 package org.opendolphin.core.client.comm
 
 import org.opendolphin.LogConfig
-import org.opendolphin.core.comm.Command
 import org.opendolphin.core.comm.CreatePresentationModelCommand
-import org.opendolphin.core.comm.GetPresentationModelCommand
 import org.opendolphin.core.comm.ValueChangedCommand
 
-import java.util.concurrent.TimeUnit
 import java.util.logging.Level
 
 class BlindCommandBatcherTest extends GroovyTestCase {
@@ -132,45 +129,6 @@ class BlindCommandBatcherTest extends GroovyTestCase {
         assert nextBatch[1].command instanceof CreatePresentationModelCommand
         assert batcher.empty
 
-    }
-
-    void testDropMultipleGetPmCommands() {
-        Command cmd1 = new GetPresentationModelCommand(pmId: 1)
-        Command cmd2 = new GetPresentationModelCommand(pmId: 1)
-        OnFinishedHandler sameHandler = [onFinished: { /* do nothing*/ }] as OnFinishedHandler
-
-        def list = [
-          new CommandAndHandler(cmd1, sameHandler),
-          new CommandAndHandler(cmd2, sameHandler), // same handler can be dropped
-          new CommandAndHandler(cmd2),        // null handler can be dropped
-        ]
-
-        list.each { commandAndHandler -> batcher.batch(commandAndHandler) }
-
-        def nextBatch = batcher.waitingBatches.val
-        assert nextBatch.size() == 1
-        assert nextBatch[0].command instanceof GetPresentationModelCommand
-        assert batcher.empty
-    }
-
-    void testVeryManyGetPmCommands() {
-        def list = []
-        300.times {
-            Command cmd1 = new GetPresentationModelCommand(pmId: it)
-            Command cmd2 = new GetPresentationModelCommand(pmId: it)
-            list << new CommandAndHandler(cmd1, null) // will be batched
-            list << new CommandAndHandler(cmd2, null) // will be dropped
-        }
-
-        list.each { commandAndHandler -> batcher.batch(commandAndHandler) }
-
-        def resultCount = 0
-        def nextBatch = batcher.waitingBatches.getVal(1, TimeUnit.SECONDS)
-        while (nextBatch ) {
-            resultCount += nextBatch.size()
-            nextBatch = batcher.waitingBatches.getVal(100, TimeUnit.MILLISECONDS)
-        }
-        assert resultCount == 300
     }
 
 }

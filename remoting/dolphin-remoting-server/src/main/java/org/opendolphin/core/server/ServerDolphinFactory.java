@@ -18,6 +18,7 @@ package org.opendolphin.core.server;
 /**
  * A factory class to create a ServerDolphin object.
  */
+@Deprecated
 public class ServerDolphinFactory {
 
     private ServerDolphinFactory() {}

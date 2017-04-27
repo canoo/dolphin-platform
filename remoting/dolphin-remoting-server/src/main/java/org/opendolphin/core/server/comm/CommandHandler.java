@@ -17,8 +17,6 @@ package org.opendolphin.core.server.comm;
 
 import org.opendolphin.core.comm.Command;
 
-import java.util.List;
-
 public interface CommandHandler<T extends Command> {
-    void handleCommand(T command, List<Command> response);
+    void handleCommand(T command);
 }

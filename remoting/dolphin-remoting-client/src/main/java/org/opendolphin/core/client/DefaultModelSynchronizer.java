@@ -5,8 +5,6 @@ import org.opendolphin.core.client.comm.AbstractClientConnector;
 import org.opendolphin.core.comm.*;
 import org.opendolphin.util.Provider;
 
-import java.beans.PropertyChangeEvent;
-
 public class DefaultModelSynchronizer implements ModelSynchronizer {
 
     private final Provider<AbstractClientConnector> connectionProvider;
@@ -23,19 +21,19 @@ public class DefaultModelSynchronizer implements ModelSynchronizer {
 
     @Override
     public void onDeleted(final ClientPresentationModel model) {
-        final Command command = new DeletedPresentationModelNotification(model.getId());
+        final Command command = new DeletePresentationModelCommand(model.getId());
         send(command);
     }
 
     @Override
-    public void onPropertyChanged(final PropertyChangeEvent evt) {
-        final Command command = new ValueChangedCommand(((Attribute) evt.getSource()).getId(), evt.getOldValue(), evt.getNewValue());
+    public void onPropertyChanged(final Attribute attribute, Object oldValue, Object newValue) {
+        final Command command = new ValueChangedCommand(attribute.getId(), oldValue, newValue);
         send(command);
     }
 
     @Override
-    public void onMetadataChanged(final PropertyChangeEvent evt) {
-        final Command command = new ChangeAttributeMetadataCommand(((Attribute) evt.getSource()).getId(), evt.getPropertyName(), evt.getNewValue());
+    public void onMetadataChanged(final Attribute attribute) {
+        final Command command = new QualifierChangedCommand(attribute.getId(), attribute.getQualifier());
         send(command);
     }
 

@@ -42,7 +42,7 @@ class InMemoryClientConnectorTests extends GroovyTestCase {
         });
         ClientModelStore modelStore = new ClientModelStore(defaultModelSynchronizer);
         AbstractClientConnector connector = new InMemoryClientConnector(modelStore, serverConnector, new CommandBatcher(), DirectExecutor.getInstance());
-
+        connector.connect(false);
         clientDolphin.setClientConnector(connector);
         clientDolphin.setClientModelStore(modelStore);
 
@@ -65,6 +65,7 @@ class InMemoryClientConnectorTests extends GroovyTestCase {
         });
         ClientModelStore modelStore = new ClientModelStore(defaultModelSynchronizer);
         AbstractClientConnector connector = new InMemoryClientConnector(modelStore, serverConnector, new CommandBatcher(), DirectExecutor.getInstance());
+        connector.connect(false);
 
         clientDolphin.setClientConnector(connector);
         clientDolphin.setClientModelStore(modelStore);
@@ -90,6 +91,7 @@ class InMemoryClientConnectorTests extends GroovyTestCase {
         });
         ClientModelStore modelStore = new ClientModelStore(defaultModelSynchronizer);
         AbstractClientConnector connector = new InMemoryClientConnector(modelStore, serverConnector, new CommandBatcher(), DirectExecutor.getInstance());
+        connector.connect(false);
 
         clientDolphin.setClientConnector(connector);
         clientDolphin.setClientModelStore(modelStore);

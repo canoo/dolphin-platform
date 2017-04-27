@@ -26,6 +26,7 @@ import java.util.logging.Logger;
  * <li>attributeCapacity: map of attributes (key: unique attribute ID); default is 4096</li>
  * <li>qualifierCapacity: map of attributes (key: qualifier, returns a list of all attributes with that qualifier); default 1024</li></ol>
  */
+@Deprecated
 public class ModelStoreConfig {
 
     private static final Logger log  = Logger.getLogger(ModelStoreConfig.class.getName());

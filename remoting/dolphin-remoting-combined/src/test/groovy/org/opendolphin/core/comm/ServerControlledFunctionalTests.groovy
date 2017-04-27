@@ -17,6 +17,7 @@ package org.opendolphin.core.comm
 
 import org.opendolphin.core.client.ClientAttribute
 import org.opendolphin.core.client.ClientDolphin
+import org.opendolphin.core.client.ClientPresentationModel
 import org.opendolphin.core.client.comm.OnFinishedHandler
 import org.opendolphin.core.server.*
 import org.opendolphin.core.server.action.DolphinServerAction
@@ -72,27 +73,42 @@ class ServerControlledFunctionalTests extends GroovyTestCase {
 
     void testPMsWereDeletedAndRecreated() {
         // a pm created on the client side
-        clientDolphin.getModelStore().createModel("pm1", null, new ClientAttribute("a", 0 ))
+        ClientPresentationModel model = new ClientPresentationModel("pm1", Arrays.asList(new ClientAttribute("a", 0)));
+        clientDolphin.getModelStore().add(model);
 
-        // register a server-side action that sees the second PM
-        registerAction (serverDolphin, CheckPmIsThereCommand.class, { cmd, list ->
-            assert serverDolphin.getModelStore().findPresentationModelById("pm1").getAttribute("a").value == 1
-            assert clientDolphin.getModelStore().findPresentationModelById("pm1").getAttribute("a").value == 1
-            context.assertionsDone()
+        registerAction (serverDolphin, RemoveCommand.class, { cmd ->
+            assert serverDolphin.getModelStore().findPresentationModelById("pm1").getAttribute("a").value == 0
+            assert clientDolphin.getModelStore().findPresentationModelById("pm1").getAttribute("a").value == 0
+
+            serverDolphin.getModelStore().remove(serverDolphin.getModelStore().findPresentationModelById("pm1"));
         });
 
-        assert clientDolphin.getModelStore().findPresentationModelById("pm1").getAttribute("a").value == 0
-        clientDolphin.getModelStore().delete(clientDolphin.getModelStore().findPresentationModelById("pm1"))
-        clientDolphin.getModelStore().createModel("pm1", null, new ClientAttribute("a", 1 ))
-        clientDolphin.getClientConnector().send(new CheckPmIsThereCommand(), null)
+        clientDolphin.getClientConnector().send(new RemoveCommand());
+
+
+        clientDolphin.sync(new Runnable() {
+            @Override
+            void run() {
+                ClientPresentationModel model2 = new ClientPresentationModel("pm1", Arrays.asList(new ClientAttribute("a", 1)));
+                clientDolphin.getModelStore().add(model2);
+
+                registerAction (serverDolphin, CheckPmIsThereCommand.class, { cmd ->
+                    assert serverDolphin.getModelStore().findPresentationModelById("pm1").getAttribute("a").value == 1
+                    assert clientDolphin.getModelStore().findPresentationModelById("pm1").getAttribute("a").value == 1
+                    context.assertionsDone()
+                });
+
+                clientDolphin.getClientConnector().send(new CheckPmIsThereCommand(), null);
+            }
+        });
     }
 
 
     void testPMsWereCreatedOnServerSideDeletedByTypeRecreatedOnServer() { // the "Baerbel" problem
-        registerAction( serverDolphin, CreatePmCommand.class, { cmd, list ->
+        registerAction( serverDolphin, CreatePmCommand.class, { cmd ->
             serverDolphin.getModelStore().presentationModel(null, "myType", new DTO(new Slot('a',0)))
         });
-        registerAction( serverDolphin, DeleteAndRecreateCommand.class, { cmd, list ->
+        registerAction( serverDolphin, DeleteAndRecreateCommand.class, { cmd ->
             List<ServerPresentationModel> toDelete = new ArrayList<>();
             for(ServerPresentationModel model : serverDolphin.getModelStore().findAllPresentationModelsByType("myType")) {
                 toDelete.add(model);
@@ -109,7 +125,7 @@ class ServerControlledFunctionalTests extends GroovyTestCase {
             assert serverDolphin.getModelStore().findAllPresentationModelsByType("myType")[1].getAttribute("a").value == 1
         });
 
-        registerAction( serverDolphin, AssertRetainedServerStateCommand.class, { cmd, list ->
+        registerAction( serverDolphin, AssertRetainedServerStateCommand.class, { cmd ->
             assert serverDolphin.getModelStore().findAllPresentationModelsByType("myType").size() == 2
             assert serverDolphin.getModelStore().findAllPresentationModelsByType("myType")[0].getAttribute("a").value == 0
             assert serverDolphin.getModelStore().findAllPresentationModelsByType("myType")[1].getAttribute("a").value == 1
@@ -136,10 +152,10 @@ class ServerControlledFunctionalTests extends GroovyTestCase {
 
     void testChangeValueMultipleTimesAndBackToBase() { // Alex issue
         // register a server-side action that creates a PM
-        registerAction( serverDolphin, (CreatePmCommand.class), { cmd, list ->
+        registerAction( serverDolphin, (CreatePmCommand.class), { cmd ->
             serverDolphin.getModelStore().presentationModel("myPm", null, new DTO(new Slot('a',0)))
         });
-        registerAction( serverDolphin, ChangeValueMultipleTimesAndBackToBaseCommand.class, { cmd, list ->
+        registerAction( serverDolphin, ChangeValueMultipleTimesAndBackToBaseCommand.class, { cmd ->
             def myPm = serverDolphin.getModelStore().findPresentationModelById("myPm")
             myPm.getAttribute("a").value = 1
             myPm.getAttribute("a").value = 2
@@ -158,10 +174,10 @@ class ServerControlledFunctionalTests extends GroovyTestCase {
     }
 
     void testServerSideRemove() {
-        registerAction(serverDolphin, CreatePmCommand.class, { cmd, list ->
+        registerAction(serverDolphin, CreatePmCommand.class, { cmd ->
             serverDolphin.getModelStore().presentationModel("myPm", null, new DTO(new Slot('a',0)))
         });
-        registerAction(serverDolphin, RemoveCommand.class, { cmd, list ->
+        registerAction(serverDolphin, RemoveCommand.class, { cmd ->
             def myPm = serverDolphin.getModelStore().findPresentationModelById("myPm")
             serverDolphin.getModelStore().remove(myPm)
             assert null == serverDolphin.getModelStore().findPresentationModelById("myPm")
@@ -183,10 +199,10 @@ class ServerControlledFunctionalTests extends GroovyTestCase {
     }
 
     void testServerSideSetAndUnsetQualifier() {
-        registerAction(serverDolphin, CreatePmCommand.class, { cmd, list ->
+        registerAction(serverDolphin, CreatePmCommand.class, { cmd ->
             serverDolphin.getModelStore().presentationModel(null, "myType", new DTO(new Slot('a',0)))
         });
-        registerAction(serverDolphin, SetAndUnsetQualifierCommand.class, { cmd, list ->
+        registerAction(serverDolphin, SetAndUnsetQualifierCommand.class, { cmd ->
             def myPm = serverDolphin.getModelStore().findAllPresentationModelsByType("myType").first()
             myPm.getAttribute("a").qualifier = "myQualifier"
             myPm.getAttribute("a").qualifier = "othervalue"
@@ -214,11 +230,11 @@ class ServerControlledFunctionalTests extends GroovyTestCase {
     }
 
     void testServerSideSetQualifier() {
-        registerAction( serverDolphin, CreatePmCommand.class, { cmd, list ->
+        registerAction( serverDolphin, CreatePmCommand.class, { cmd ->
             serverDolphin.getModelStore().presentationModel(null, "myType", new DTO(new Slot('a',0)))
             serverDolphin.getModelStore().presentationModel("target", null, new DTO(new Slot('a',1)))
         });
-        registerAction( serverDolphin, SetQualifierCommand.class, { cmd, list ->
+        registerAction( serverDolphin, SetQualifierCommand.class, { cmd ->
             def myPm = serverDolphin.getModelStore().findAllPresentationModelsByType("myType").first()
             myPm.getAttribute("a").qualifier = "myQualifier"
         })

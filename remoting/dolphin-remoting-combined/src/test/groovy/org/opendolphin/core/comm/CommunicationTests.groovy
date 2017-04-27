@@ -67,7 +67,7 @@ class CommunicationTests extends GroovyTestCase {
 		def testServerAction = new CommandHandler<ValueChangedCommand>() {
 
             @Override
-            void handleCommand(ValueChangedCommand command, List<Command> response) {
+            void handleCommand(ValueChangedCommand command) {
                 receivedCommand = command
             }
         }
@@ -90,7 +90,7 @@ class CommunicationTests extends GroovyTestCase {
 		def testServerAction = new CommandHandler<CreatePresentationModelCommand>() {
 
             @Override
-            void handleCommand(CreatePresentationModelCommand command, List<Command> response) {
+            void handleCommand(CreatePresentationModelCommand command) {
                 receivedCommand = command
             }
         }
@@ -113,8 +113,8 @@ class CommunicationTests extends GroovyTestCase {
 		def setValueAction = new CommandHandler<CreatePresentationModelCommand>() {
 
             @Override
-            void handleCommand(CreatePresentationModelCommand command, List<Command> response) {
-                response << new ValueChangedCommand(
+            void handleCommand(CreatePresentationModelCommand command) {
+                serverConnector.serverModelStore.currentResponse << new ValueChangedCommand(
                         attributeId: command.attributes.id.first(),
                         newValue: "set from server",
                         oldValue: null
@@ -126,7 +126,7 @@ class CommunicationTests extends GroovyTestCase {
 		def valueChangedAction = new CommandHandler<ValueChangedCommand>() {
 
             @Override
-            void handleCommand(ValueChangedCommand command, List<Command> response) {
+            void handleCommand(ValueChangedCommand command) {
                 receivedCommand = command
                 clientDolphin.sync {                            // there is no onFinished for value changes, so we have to do it here
                     assert ca.value == "set from server"        // client is updated
@@ -148,7 +148,7 @@ class CommunicationTests extends GroovyTestCase {
 		serverConnector.registry.register(ButtonActionCommand.class, new CommandHandler<ButtonActionCommand>(){
 
             @Override
-            void handleCommand(ButtonActionCommand command, List response) {
+            void handleCommand(ButtonActionCommand command) {
                 reached = true
             }
         });

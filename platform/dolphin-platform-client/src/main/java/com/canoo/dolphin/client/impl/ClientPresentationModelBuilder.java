@@ -55,7 +55,10 @@ public class ClientPresentationModelBuilder extends AbstractPresentationModelBui
 
     @Override
     public ClientPresentationModel create() {
-        return modelStore.createModel(id, type, attributes.toArray(new ClientAttribute[attributes.size()]));
+        ClientPresentationModel result = new ClientPresentationModel(id, attributes);
+        result.setPresentationModelType(type);
+        modelStore.add(result);
+        return result;
     }
 
 }

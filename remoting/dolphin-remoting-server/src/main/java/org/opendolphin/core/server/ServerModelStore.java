@@ -96,13 +96,14 @@ public class ServerModelStore extends ModelStore<ServerAttribute, ServerPresenta
         return true;
     }
 
+    @Deprecated
     public boolean checkClientAdded(ServerPresentationModel model) {
         boolean added = super.add(model);
         //FIXME: Currently the client has the same event for a add answer and a add trigger
 
-//        if (!added) {
-  //          throw new IllegalStateException("Model " + model + " already defined on server!");
-    //    }
+        if (!added) {
+            throw new IllegalStateException("Model " + model + " already defined on server!");
+        }
         model.setModelStore(this);
         return true;
     }
@@ -123,14 +124,12 @@ public class ServerModelStore extends ModelStore<ServerAttribute, ServerPresenta
         return deleted;
     }
 
-    public boolean checkClientRemoved(ServerPresentationModel pm) {
+    @Deprecated
+    public void removedByClient(ServerPresentationModel pm) {
         boolean deleted = super.remove(pm);
-
-        //FIXME: Currently the client has the same event for a remove answer and a remove trigger
-      //  if (!deleted) {
-      //      throw new IllegalStateException("Model " + pm + " not found on the server!");
-      //  }
-        return deleted;
+        if (!deleted) {
+            throw new IllegalStateException("Model " + pm + " not found on the server!");
+        }
     }
 
     /**
@@ -159,17 +158,8 @@ public class ServerModelStore extends ModelStore<ServerAttribute, ServerPresenta
             LOG.severe("Cannot change value on a null attribute to '" + value);
             return;
         }
-        forceChangeValue(value, response, attribute);
-    }
-
-    /**
-     * @deprecated use forceChangeValueCommand(Object, List, ServerAttribute). You can use the "inline method refactoring". Will be removed in version 1.0!
-     */
-    @Deprecated
-    public static void forceChangeValue(Object value, List<Command> response, ServerAttribute attribute) {
         response.add(new ValueChangedCommand(attribute.getId(), attribute.getValue(), value));
     }
-
 
     /**
      * Convenience method to let the client (!) dolphin create a presentation model as specified by the DTO.

@@ -16,9 +16,8 @@
 package org.opendolphin.core.server;
 
 import org.opendolphin.RemotingConstants;
-import org.opendolphin.core.Attribute;
 import org.opendolphin.core.BaseAttribute;
-import org.opendolphin.core.comm.AttributeMetadataChangedCommand;
+import org.opendolphin.core.comm.QualifierChangedCommand;
 
 import java.util.List;
 
@@ -74,7 +73,7 @@ public class ServerAttribute extends BaseAttribute {
     public void setQualifier(String value) {
         super.setQualifier(value);
         if (notifyClient) {
-            getPresentationModel().getModelStore().getCurrentResponse().add(new AttributeMetadataChangedCommand(getId(), Attribute.QUALIFIER_NAME, value));
+            getPresentationModel().getModelStore().getCurrentResponse().add(new QualifierChangedCommand(getId(), value));
         }
 
     }

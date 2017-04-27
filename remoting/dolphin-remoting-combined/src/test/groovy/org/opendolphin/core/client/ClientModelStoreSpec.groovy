@@ -38,8 +38,8 @@ class ClientModelStoreSpec extends Specification {
 			}
 		});
 		modelStore = new ClientModelStore(defaultModelSynchronizer)
-		AbstractClientConnector clientConnector = new InMemoryClientConnector(modelStore, [:] as ServerConnector, new CommandBatcher(), DirectExecutor.getInstance());
-
+		AbstractClientConnector clientConnector = new InMemoryClientConnector(modelStore, new ServerConnector(), new CommandBatcher(), DirectExecutor.getInstance());
+		clientConnector.connect(false);
         clientDolphin.clientConnector = clientConnector;
 		clientDolphin.clientModelStore = modelStore
 
@@ -89,8 +89,8 @@ class ClientModelStoreSpec extends Specification {
 
     void "trying to delete a pm that is not known to the store is silently ignored"() {
         when:
-        modelStore.delete(null)
-        modelStore.delete(pm) // has not been added!
+        modelStore.remove(null)
+        modelStore.remove(pm) // has not been added!
         then:
         0 * listener.modelStoreChanged(new ModelStoreEvent(ModelStoreEvent.Type.REMOVED, pm))
     }

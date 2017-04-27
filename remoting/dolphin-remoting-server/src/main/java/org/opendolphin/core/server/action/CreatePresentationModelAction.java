@@ -28,6 +28,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+/**
+ * Models should be only created on the server
+ */
+@Deprecated
 public class CreatePresentationModelAction extends DolphinServerAction {
 
     private static final Logger LOG = Logger.getLogger(CreatePresentationModelAction.class.getName());
@@ -36,7 +40,7 @@ public class CreatePresentationModelAction extends DolphinServerAction {
 
         registry.register(CreatePresentationModelCommand.class, new CommandHandler<CreatePresentationModelCommand>() {
             @Override
-            public void handleCommand(final CreatePresentationModelCommand command, List response) {
+            public void handleCommand(final CreatePresentationModelCommand command) {
                 createPresentationModel(command, getServerModelStore());
             }
         });

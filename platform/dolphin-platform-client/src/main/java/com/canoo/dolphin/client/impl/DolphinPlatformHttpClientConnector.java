@@ -70,9 +70,6 @@ public class DolphinPlatformHttpClientConnector extends AbstractClientConnector 
         this.httpClientCookieHandler = new HttpClientCookieHandler(configuration.getCookieStore());
         this.responseHandler = configuration.getResponseHandler();
         this.codec = Assert.requireNonNull(codec, "codec");
-
-        //TODO: Strict mode is always false in DP. This flag should be removed in AbstractClientConnector
-        setStrictMode(false);
     }
 
     private final AtomicBoolean disconnecting = new AtomicBoolean(false);

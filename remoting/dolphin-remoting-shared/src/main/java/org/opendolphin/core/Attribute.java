@@ -29,8 +29,6 @@ package org.opendolphin.core;
  * they belong) which refer to the same domain model object.
  */
 public interface Attribute extends Observable {
-    String QUALIFIER_NAME = "qualifier";
-    String VALUE_NAME = "value";
 
     /** Returns the current value of this attribute. */
     Object getValue();

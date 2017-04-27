@@ -46,6 +46,7 @@ public abstract class Command implements Serializable {
         return id;
     }
 
+    @Deprecated
     private static String idFor(Class commandClass) {
         String id = commandClass.getSimpleName();
         id = id.replace("Command", "");

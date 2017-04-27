@@ -19,7 +19,6 @@ import org.opendolphin.core.ModelStore;
 import org.opendolphin.core.ModelStoreConfig;
 import org.opendolphin.core.client.comm.AttributeChangeListener;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -36,6 +35,7 @@ public class ClientModelStore extends ModelStore<ClientAttribute, ClientPresenta
 
     /**
      * Constructs a client model store with default capacities.
+     *
      * @see ModelStoreConfig
      */
     public ClientModelStore(final ModelSynchronizer modelSynchronizer) {
@@ -43,7 +43,6 @@ public class ClientModelStore extends ModelStore<ClientAttribute, ClientPresenta
         this.modelSynchronizer = modelSynchronizer;
         attributeChangeListener = new AttributeChangeListener(this, modelSynchronizer);
     }
-
 
     @Override
     public boolean add(ClientPresentationModel model) {
@@ -60,25 +59,13 @@ public class ClientModelStore extends ModelStore<ClientAttribute, ClientPresenta
         return success;
     }
 
-    public void delete(ClientPresentationModel model) {
-        delete(model, true);
-    }
-
-    public void delete(ClientPresentationModel model, boolean notify) {
-        if (model == null) return;
-        if (containsPresentationModel(model.getId())) {
-            remove(model);
-            if (!notify) return;
-            if (model.isClientSideOnly()) return;
-            modelSynchronizer.onDeleted(model);
-        }
-    }
-
     @Override
     public boolean remove(ClientPresentationModel model) {
         boolean success = super.remove(model);
-        for (ClientAttribute attribute : model.getAttributes()) {
-            attribute.removePropertyChangeListener(attributeChangeListener);
+        if (success) {
+            for (ClientAttribute attribute : model.getAttributes()) {
+                attribute.removePropertyChangeListener(attributeChangeListener);
+            }
         }
         return success;
     }
@@ -88,13 +75,5 @@ public class ClientModelStore extends ModelStore<ClientAttribute, ClientPresenta
     public void registerAttribute(ClientAttribute attribute) {
         super.registerAttribute(attribute);
         attribute.addPropertyChangeListener(attributeChangeListener);
-    }
-
-
-    public ClientPresentationModel createModel(String id, String presentationModelType, ClientAttribute... attributes) {
-        ClientPresentationModel result = new ClientPresentationModel(id, Arrays.asList(attributes));
-        result.setPresentationModelType(presentationModelType);
-        add(result);
-        return result;
     }
 }

@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 /**
  * Keep logging details in one place
  **/
+@Deprecated
 public class LogConfig {
 
     private static final Logger DOLPHIN_LOGGER = Logger.getLogger("org.opendolphin");

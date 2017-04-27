@@ -15,6 +15,8 @@
  */
 package org.opendolphin.core;
 
+import org.opendolphin.RemotingConstants;
+
 /**
  * The value may be null as long as the BaseAttribute is used as a "placeholder".
  */
@@ -71,7 +73,7 @@ public abstract class BaseAttribute extends AbstractObservable implements Attrib
 
     public void setValue(Object newValue) {
         if (isDifferent(value, newValue)) {
-            firePropertyChange(VALUE_NAME, value, value = newValue);
+            firePropertyChange(RemotingConstants.VALUE_NAME, value, value = newValue);
         }
     }
 
@@ -106,6 +108,6 @@ public abstract class BaseAttribute extends AbstractObservable implements Attrib
     }
 
     public void setQualifier(String qualifier) {
-        firePropertyChange(QUALIFIER_NAME, this.qualifier, this.qualifier = qualifier);
+        firePropertyChange(RemotingConstants.QUALIFIER_NAME, this.qualifier, this.qualifier = qualifier);
     }
 }

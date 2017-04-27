@@ -15,6 +15,7 @@
  */
 package org.opendolphin;
 
+@Deprecated
 public class StringUtil {
 
     /**

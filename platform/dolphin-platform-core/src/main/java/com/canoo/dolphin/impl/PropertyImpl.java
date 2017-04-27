@@ -21,9 +21,8 @@ import com.canoo.dolphin.internal.info.PropertyInfo;
 import com.canoo.dolphin.mapping.MappingException;
 import com.canoo.dolphin.mapping.Property;
 import com.canoo.dolphin.util.Assert;
+import org.opendolphin.RemotingConstants;
 import org.opendolphin.core.Attribute;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -47,7 +46,7 @@ public class PropertyImpl<T> extends AbstractProperty<T> {
         this.attribute = Assert.requireNonNull(attribute, "attribute");
         this.propertyInfo = Assert.requireNonNull(propertyInfo, "propertyInfo");
 
-        attribute.addPropertyChangeListener(Attribute.VALUE_NAME, new PropertyChangeListener() {
+        attribute.addPropertyChangeListener(RemotingConstants.VALUE_NAME, new PropertyChangeListener() {
             @SuppressWarnings("unchecked")
             @Override
             public void propertyChange(final PropertyChangeEvent evt) {

@@ -17,6 +17,7 @@ package org.opendolphin.core.comm;
 
 public final class DeletePresentationModelCommand extends Command {
 
+    @Deprecated
     public DeletePresentationModelCommand() {
     }
 

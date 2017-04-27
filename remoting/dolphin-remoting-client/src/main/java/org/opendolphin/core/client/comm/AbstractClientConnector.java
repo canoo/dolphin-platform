@@ -124,7 +124,7 @@ public abstract class AbstractClientConnector {
                     LOG.warn("Remoting error based on broken connection in parallel request", e);
                 }
             }
-            if(!longPollingActivated && useLongPolling.get()) {
+            if (!longPollingActivated && useLongPolling.get()) {
                 uiExecutor.execute(new Runnable() {
                     @Override
                     public void run() {
@@ -276,10 +276,6 @@ public abstract class AbstractClientConnector {
                 connectionFlagForUiExecutor = false;
             }
         });
-    }
-
-    public void setStrictMode(boolean strictMode) {
-        this.responseHandler.setStrictMode(strictMode);
     }
 
     protected Command getReleaseCommand() {

@@ -55,7 +55,10 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         }
 
         public PresentationModel create() {
-            return dolphin.getModelStore().createModel(UUID.randomUUID().toString(), type, attributes.toArray(new ClientAttribute[attributes.size()]));
+            ClientPresentationModel result = new ClientPresentationModel(UUID.randomUUID().toString(), attributes);
+            result.setPresentationModelType(type);
+            dolphin.getModelStore().add(result);
+            return result;
         }
 
     }
@@ -1751,7 +1754,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
     private void deleteAllPresentationModelsOfType(ClientDolphin dolphin, String listSplice) {
         List<ClientPresentationModel> toDelete = new ArrayList<>(dolphin.getModelStore().findAllPresentationModelsByType(listSplice));
         for (ClientPresentationModel model : toDelete) {
-            dolphin.getModelStore().delete(model);
+            dolphin.getModelStore().remove(model);
         }
     }
 

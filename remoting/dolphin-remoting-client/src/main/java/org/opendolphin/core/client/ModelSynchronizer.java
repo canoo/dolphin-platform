@@ -1,6 +1,6 @@
 package org.opendolphin.core.client;
 
-import java.beans.PropertyChangeEvent;
+import org.opendolphin.core.Attribute;
 
 public interface ModelSynchronizer {
 
@@ -8,7 +8,7 @@ public interface ModelSynchronizer {
 
     void onDeleted(ClientPresentationModel model);
 
-    void onPropertyChanged(PropertyChangeEvent evt);
+    void onPropertyChanged(Attribute attribute, Object oldValue, Object newValue);
 
-    void onMetadataChanged(PropertyChangeEvent evt);
+    void onMetadataChanged(Attribute attribute);
 }

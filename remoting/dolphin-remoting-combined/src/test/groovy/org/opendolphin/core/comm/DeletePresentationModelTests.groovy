@@ -17,10 +17,9 @@ package org.opendolphin.core.comm
 
 import org.opendolphin.core.client.ClientAttribute
 import org.opendolphin.core.client.ClientDolphin
-import org.opendolphin.core.client.comm.OnFinishedHandler
+import org.opendolphin.core.client.ClientPresentationModel
 import org.opendolphin.core.server.DefaultServerDolphin
 import org.opendolphin.core.server.ServerDolphin
-import org.opendolphin.core.server.ServerModelStore
 import org.opendolphin.core.server.action.DolphinServerAction
 import org.opendolphin.core.server.comm.ActionRegistry
 import org.opendolphin.core.server.comm.CommandHandler
@@ -57,11 +56,13 @@ class DeletePresentationModelTests extends GroovyTestCase {
             }
         });
     }
-    
+
     void testCreateAndDeletePresentationModel() {
         // create the pm
         String modelId = 'modelId'
-        def model = clientDolphin.getModelStore().createModel(modelId, null, new ClientAttribute("someAttribute", "someValue"));
+        ClientPresentationModel model = new ClientPresentationModel(modelId, Arrays.asList(new ClientAttribute("someAttribute", "someValue")));
+        model.setPresentationModelType(null);
+        clientDolphin.getModelStore().add(model);
         // sanity check: we have a least the client model store listening to changes of someAttribute
         assert model.getAttribute("someAttribute").propertyChangeListeners
         // the model is in the client model store
@@ -71,60 +72,32 @@ class DeletePresentationModelTests extends GroovyTestCase {
         clientDolphin.sync {
             assert serverDolphin.getModelStore().findPresentationModelById(modelId)
         }
-        // when we now delete the pm
-        clientDolphin.getModelStore().delete(model)
-        // ... it is no longer in the client model store
-        assert !clientDolphin.getModelStore().findPresentationModelById(modelId)
-        // ... all listeners have been detached from model and all its attributes
-        assert ! model.getPropertyChangeListeners()
-        // what is allowed to remain is the "detached" model still listening to its own attribute changes
-        model.attributes*.propertyChangeListeners.flatten()*.listener.each {
-            assert (it.toString() =~ "PresentationModel")
-            // todo dk: the below should also work but there is some weird boxing going on
-            // assert it.is(model)
-        }
-        // the model is also gone from the server model store
-        clientDolphin.sync {
-            assert !serverDolphin.getModelStore().findPresentationModelById(modelId)
-            context.assertionsDone()
-        }
-    }
-
-    void testCreateAndDeletePresentationModelFromServer() {
-        // create the pm
-        String modelId = 'modelId'
-        def model = clientDolphin.getModelStore().createModel(modelId, null, new ClientAttribute("someAttribute", "someValue"))
-        // the model is in the client model store
-        def found = clientDolphin.getModelStore().findPresentationModelById(modelId)
-        assert model == found
-        // ... and in the server model store after roundtrip
-        clientDolphin.sync {
-            assert serverDolphin.getModelStore().findPresentationModelById(modelId)
-        }
-
         registerAction(serverDolphin, TriggerDeleteCommand.class, new CommandHandler<TriggerDeleteCommand>() {
 
             @Override
-            void handleCommand(TriggerDeleteCommand command, List<Command> response) {
-                ServerModelStore.deleteCommand(response, modelId)
+            void handleCommand(TriggerDeleteCommand command) {
+                serverDolphin.getModelStore().remove(serverDolphin.getModelStore().findPresentationModelById(modelId));
             }
         });
         // when we now delete the pm
-        clientDolphin.getClientConnector().send(new TriggerDeleteCommand(), new OnFinishedHandler() {
-            @Override
-            void onFinished() {
-                clientDolphin.sync {
-                    // ... it is no longer in the client model store
-                    assert !clientDolphin.getModelStore().findPresentationModelById(modelId)
-                }
-                clientDolphin.sync {
-                    // the model is also gone from the server model store
-                    assert !serverDolphin.getModelStore().findPresentationModelById(modelId)
-                    // we are done
-                    context.assertionsDone()
-                }
-            }
-        });
-    }
+        clientDolphin.getClientConnector().send(new TriggerDeleteCommand());
 
+        clientDolphin.sync {
+            // ... it is no longer in the client model store
+            assert !serverDolphin.getModelStore().findPresentationModelById(modelId)
+            assert !clientDolphin.getModelStore().findPresentationModelById(modelId)
+
+            // ... all listeners have been detached from model and all its attributes
+            assert !model.getPropertyChangeListeners()
+
+            // what is allowed to remain is the "detached" model still listening to its own attribute changes
+            model.attributes*.propertyChangeListeners.flatten()*.listener.each {
+                assert (it.toString() =~ "PresentationModel")
+                // todo dk: the below should also work but there is some weird boxing going on
+                // assert it.is(model)
+            }
+            context.assertionsDone()
+        }
+
+    }
 }

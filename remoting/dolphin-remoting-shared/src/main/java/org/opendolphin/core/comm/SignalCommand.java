@@ -21,6 +21,7 @@ package org.opendolphin.core.comm;
  * session. Therefore any handler for this command must neither change nor access any unprotected shared
  * mutable state like the dolphin instance or the model store.
  */
+@Deprecated
 public class SignalCommand extends Command {
     public SignalCommand() {
     }

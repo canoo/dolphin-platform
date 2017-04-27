@@ -15,7 +15,7 @@
  */
 package org.opendolphin.core.server.action
 
-import org.opendolphin.core.comm.ChangeAttributeMetadataCommand
+import org.opendolphin.core.comm.QualifierChangedCommand
 import org.opendolphin.core.server.DefaultServerDolphin
 import org.opendolphin.core.server.ServerAttribute
 import org.opendolphin.core.server.ServerDolphinFactory
@@ -34,10 +34,10 @@ class StoreAttributeActionTests extends GroovyTestCase {
     }
 
     void testChangeAttributeMetadata() {
-        new StoreAttributeAction(serverModelStore: dolphin.modelStore).registerIn registry
+        new QualifierChangeAction(serverModelStore: dolphin.modelStore).registerIn registry
         ServerAttribute attribute = new ServerAttribute('newAttribute', '')
         dolphin.getModelStore().add(new ServerPresentationModel('model', [attribute], dolphin.getModelStore()))
-        registry.getActionsFor(ChangeAttributeMetadataCommand.class).first().handleCommand(new ChangeAttributeMetadataCommand(attributeId: attribute.id, metadataName: 'value', value: 'newValue'), [])
-        assert 'newValue' == attribute.value
+        registry.getActionsFor(QualifierChangedCommand.class).first().handleCommand(new QualifierChangedCommand(attribute.id, 'newValue'))
+        assert 'newValue' == attribute.qualifier
     }
 }

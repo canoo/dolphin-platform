@@ -15,6 +15,7 @@
  */
 package org.opendolphin.core.client.comm;
 
+import org.opendolphin.RemotingConstants;
 import org.opendolphin.core.Attribute;
 import org.opendolphin.core.client.ClientAttribute;
 import org.opendolphin.core.client.ClientModelStore;
@@ -34,8 +35,6 @@ public class ClientResponseHandler {
 
     private final ClientModelStore clientModelStore;
 
-    private boolean strictMode = true;
-
     public ClientResponseHandler(final ClientModelStore clientModelStore) {
         this.clientModelStore = Objects.requireNonNull(clientModelStore);
     }
@@ -47,20 +46,19 @@ public class ClientResponseHandler {
             handleCreatePresentationModelCommand((CreatePresentationModelCommand) command);
         } else if (command instanceof ValueChangedCommand) {
             handleValueChangedCommand((ValueChangedCommand) command);
-        } else if (command instanceof AttributeMetadataChangedCommand) {
-            handleAttributeMetadataChangedCommand((AttributeMetadataChangedCommand) command);
+        } else if (command instanceof QualifierChangedCommand) {
+            handleQualifierChangedCommand((QualifierChangedCommand) command);
         } else {
-            LOG.error("C: cannot handle unknown command '{}'", command );
+            LOG.error("C: cannot handle unknown command '{}'", command);
         }
-
     }
 
     private void handleDeletePresentationModelCommand(DeletePresentationModelCommand serverCommand) {
         ClientPresentationModel model = clientModelStore.findPresentationModelById(serverCommand.getPmId());
         if (model == null) {
-            return;
+            throw new IllegalStateException("Can not find presentation model with id '" + serverCommand.getPmId());
         }
-        clientModelStore.delete(model);
+        clientModelStore.remove(model);
     }
 
     private void handleCreatePresentationModelCommand(CreatePresentationModelCommand serverCommand) {
@@ -70,17 +68,14 @@ public class ClientResponseHandler {
 
         List<ClientAttribute> attributes = new ArrayList<ClientAttribute>();
         for (Map<String, Object> attr : serverCommand.getAttributes()) {
-
-            Object propertyName = attr.get("propertyName");
-            Object value = attr.get("value");
-            Object qualifier = attr.get("qualifier");
-            Object id = attr.get("id");
-
+            Object propertyName = attr.get(RemotingConstants.PROPERTY_NAME);
+            Object value = attr.get(RemotingConstants.VALUE_NAME);
+            Object qualifier = attr.get(RemotingConstants.QUALIFIER_NAME);
+            Object id = attr.get(RemotingConstants.ID_NAME);
             ClientAttribute attribute = new ClientAttribute(propertyName != null ? propertyName.toString() : null, value, qualifier != null ? qualifier.toString() : null);
-            if (id != null && id.toString().endsWith("S")) {
+            if (id != null && id.toString().endsWith(RemotingConstants.SERVER_ORIGIN)) {
                 attribute.setId(id.toString());
             }
-
             attributes.add(attribute);
         }
 
@@ -89,7 +84,6 @@ public class ClientResponseHandler {
         if (serverCommand.isClientSideOnly()) {
             model.setClientSideOnly(true);
         }
-
         clientModelStore.add(model);
         clientModelStore.updateQualifiers(model);
     }
@@ -97,47 +91,21 @@ public class ClientResponseHandler {
     private void handleValueChangedCommand(ValueChangedCommand serverCommand) {
         Attribute attribute = clientModelStore.findAttributeById(serverCommand.getAttributeId());
         if (attribute == null) {
-            LOG.warn("C: attribute with id '{}' not found, cannot update old value '{}' to new value '{}'", serverCommand.getAttributeId() ,serverCommand.getOldValue(), serverCommand.getNewValue() );
-            return;
+            throw new IllegalStateException("Can not find attribute with id '" + serverCommand.getAttributeId());
         }
 
         if (attribute.getValue() == null && serverCommand.getNewValue() == null || (attribute.getValue() != null && serverCommand.getNewValue() != null && attribute.getValue().equals(serverCommand.getNewValue()))) {
             return;
         }
-
-
-        if (strictMode && ((attribute.getValue() == null && serverCommand.getOldValue() != null) || (attribute.getValue() != null && serverCommand.getOldValue() == null) || (attribute.getValue() != null && !attribute.getValue().equals(serverCommand.getOldValue())))) {
-            // todo dk: think about sending a RejectCommand here to tell the server about a possible lost update
-            LOG.warn("C: attribute with id '{}' and value '{}' cannot be set to new value '{}' because the change was based on an outdated old value of '{}'.", serverCommand.getAttributeId(), attribute.getValue(), serverCommand.getNewValue(), serverCommand.getOldValue());
-            return;
-        }
-
-        LOG.info("C: updating '{}' id '{}' from '{}' to '{}' " + attribute.getPropertyName(), serverCommand.getAttributeId(), attribute.getValue(), serverCommand.getNewValue());
+        LOG.info("C: updating '{}' id '{}' from '{}' to '{}' ", attribute.getPropertyName(), serverCommand.getAttributeId(), attribute.getValue(), serverCommand.getNewValue());
         attribute.setValue(serverCommand.getNewValue());
-        return;
     }
 
-    private void handleAttributeMetadataChangedCommand(AttributeMetadataChangedCommand serverCommand) {
+    private void handleQualifierChangedCommand(QualifierChangedCommand serverCommand) {
         ClientAttribute attribute = clientModelStore.findAttributeById(serverCommand.getAttributeId());
         if (attribute == null) {
-            return;
+            throw new IllegalStateException("Can not find attribute with id '" + serverCommand.getAttributeId());
         }
-
-        if (serverCommand.getMetadataName() != null && serverCommand.getMetadataName().equals(Attribute.VALUE_NAME)) {
-            attribute.setValue(serverCommand.getValue());
-        }
-
-        if (serverCommand.getMetadataName() != null && serverCommand.getMetadataName().equals(Attribute.QUALIFIER_NAME)) {
-            if (serverCommand.getValue() == null) {
-                attribute.setQualifier(null);
-            } else {
-                attribute.setQualifier(serverCommand.getValue().toString());
-            }
-        }
+        attribute.setQualifier(serverCommand.getQualifier());
     }
-
-    public void setStrictMode(boolean strictMode) {
-        this.strictMode = strictMode;
-    }
-
 }

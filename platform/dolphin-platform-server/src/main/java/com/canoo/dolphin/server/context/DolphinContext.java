@@ -160,7 +160,7 @@ public class DolphinContext {
         Assert.requireNonNull(handler, "handler");
         registry.register(commandClass, new CommandHandler() {
             @Override
-            public void handleCommand(final Command command, final List response) {
+            public void handleCommand(final Command command) {
                 LOG.trace("Handling {} for DolphinContext {}", commandClass.getSimpleName(), getId());
                 handler.call((T) command);
             }

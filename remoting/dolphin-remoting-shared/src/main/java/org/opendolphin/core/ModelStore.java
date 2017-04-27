@@ -15,6 +15,7 @@
  */
 package org.opendolphin.core;
 
+import org.opendolphin.RemotingConstants;
 import org.opendolphin.StringUtil;
 
 import java.beans.PropertyChangeEvent;
@@ -83,6 +84,7 @@ public class ModelStore<A extends Attribute, P extends PresentationModel<A>> {
      * @param config specifies the default capacities for the model store
      * @see ModelStoreConfig
      */
+    @Deprecated
     public ModelStore(ModelStoreConfig config) {
         presentationModels      = new HashMap<String, P>        (config.getPmCapacity());
         modelsPerType           = new HashMap<String, List<P>>  (config.getTypeCapacity());
@@ -131,7 +133,7 @@ public class ModelStore<A extends Attribute, P extends PresentationModel<A>> {
             addPresentationModelByType(model);
             for (A attribute : model.getAttributes()) {
                 addAttributeById(attribute);
-                attribute.addPropertyChangeListener(Attribute.QUALIFIER_NAME, ATTRIBUTE_WORKER);
+                attribute.addPropertyChangeListener(RemotingConstants.QUALIFIER_NAME, ATTRIBUTE_WORKER);
                 if (!StringUtil.isBlank(attribute.getQualifier())) addAttributeByQualifier(attribute);
             }
             fireModelStoreChangedEvent(model, ModelStoreEvent.Type.ADDED);
@@ -155,7 +157,7 @@ public class ModelStore<A extends Attribute, P extends PresentationModel<A>> {
             for (A attribute : model.getAttributes()) {
                 removeAttributeById(attribute);
                 removeAttributeByQualifier(attribute);
-                attribute.removePropertyChangeListener(Attribute.QUALIFIER_NAME, ATTRIBUTE_WORKER);
+                attribute.removePropertyChangeListener(RemotingConstants.QUALIFIER_NAME, ATTRIBUTE_WORKER);
             }
             fireModelStoreChangedEvent(model, ModelStoreEvent.Type.REMOVED);
             removed = true;
@@ -295,7 +297,7 @@ public class ModelStore<A extends Attribute, P extends PresentationModel<A>> {
     public void registerAttribute(A attribute) {
         if (null == attribute) return;
         boolean listeningAlready = false;
-        for (PropertyChangeListener listener : attribute.getPropertyChangeListeners(Attribute.QUALIFIER_NAME)) {
+        for (PropertyChangeListener listener : attribute.getPropertyChangeListeners(RemotingConstants.QUALIFIER_NAME)) {
             if (ATTRIBUTE_WORKER == listener) {
                 listeningAlready = true;
                 break;
@@ -303,7 +305,7 @@ public class ModelStore<A extends Attribute, P extends PresentationModel<A>> {
         }
 
         if (!listeningAlready) {
-            attribute.addPropertyChangeListener(Attribute.QUALIFIER_NAME, ATTRIBUTE_WORKER);
+            attribute.addPropertyChangeListener(RemotingConstants.QUALIFIER_NAME, ATTRIBUTE_WORKER);
         }
 
         addAttributeByQualifier(attribute);

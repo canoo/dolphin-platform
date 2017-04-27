@@ -15,6 +15,7 @@
  */
 package org.opendolphin.core
 
+import org.opendolphin.RemotingConstants
 import spock.lang.Specification
 
 class ModelStoreSpec extends Specification {
@@ -124,6 +125,6 @@ class ModelStoreSpec extends Specification {
         modelStore.registerAttribute(attr)
         modelStore.registerAttribute(attr)
         then:
-        attr.getPropertyChangeListeners(Attribute.QUALIFIER_NAME).size() == 1
+        attr.getPropertyChangeListeners(RemotingConstants.QUALIFIER_NAME).size() == 1
     }
 }

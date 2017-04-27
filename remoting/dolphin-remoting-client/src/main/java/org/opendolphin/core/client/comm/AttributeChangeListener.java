@@ -15,6 +15,7 @@
  */
 package org.opendolphin.core.client.comm;
 
+import org.opendolphin.RemotingConstants;
 import org.opendolphin.core.Attribute;
 import org.opendolphin.core.PresentationModel;
 import org.opendolphin.core.client.ClientAttribute;
@@ -39,13 +40,13 @@ public class AttributeChangeListener implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals(Attribute.VALUE_NAME)) {
+        if (evt.getPropertyName().equals(RemotingConstants.VALUE_NAME)) {
             if (evt.getOldValue() == null && evt.getNewValue() == null || evt.getOldValue() != null && evt.getNewValue() != null && evt.getOldValue().equals(evt.getNewValue())) {
                 return;
             }
 
             if (isSendable(evt)) {
-                modelSynchronizer.onPropertyChanged(evt);
+                modelSynchronizer.onPropertyChanged((Attribute) evt.getSource(), evt.getOldValue(), evt.getNewValue());
             }
 
             List<ClientAttribute> attributes = clientModelStore.findAllAttributesByQualifier(((Attribute) evt.getSource()).getQualifier());
@@ -56,7 +57,7 @@ public class AttributeChangeListener implements PropertyChangeListener {
         } else {
             // we assume the change is on a metadata property such as qualifier
             if (isSendable(evt)) {
-                modelSynchronizer.onMetadataChanged(evt);
+                modelSynchronizer.onMetadataChanged((Attribute) evt.getSource());
             }
         }
     }

@@ -32,7 +32,7 @@ class ActionRegistryTests extends GroovyTestCase {
         assert 0 == registry.actions.size()
         CommandHandler firstAction = new CommandHandler<Command>() {
             @Override
-            void handleCommand(Command command, List response) {
+            void handleCommand(Command command) {
 
             }
         };
@@ -42,7 +42,7 @@ class ActionRegistryTests extends GroovyTestCase {
 
         CommandHandler otherAction = new CommandHandler<Command>() {
             @Override
-            void handleCommand(Command command, List<Command> response) {
+            void handleCommand(Command command) {
 
             }
         }
@@ -54,7 +54,7 @@ class ActionRegistryTests extends GroovyTestCase {
         CommandHandler<TestDataCommand> commandHandler = new CommandHandler<TestDataCommand>() {
 
             @Override
-            void handleCommand(TestDataCommand command, List response) {
+            void handleCommand(TestDataCommand command) {
 
             }
         }
@@ -68,7 +68,7 @@ class ActionRegistryTests extends GroovyTestCase {
         assert 0 == registry.actions.size()
         def action = new CommandHandler<Command>() {
             @Override
-            void handleCommand(Command command, List<Command> response) {
+            void handleCommand(Command command) {
 
             }
         }

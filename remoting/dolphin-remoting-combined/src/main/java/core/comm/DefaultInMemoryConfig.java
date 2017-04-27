@@ -34,6 +34,7 @@ import java.util.concurrent.Executor;
  * Subclasses JavaFxInMemoryConfig and SwingInMemoryConfig additionally set the threading model
  * as appropriate for the UI (JavaFX or Swing, respectively.)
  */
+@Deprecated
 public class DefaultInMemoryConfig implements Provider<AbstractClientConnector> {
 
     private final ClientDolphin clientDolphin;
@@ -48,6 +49,7 @@ public class DefaultInMemoryConfig implements Provider<AbstractClientConnector> 
         ModelSynchronizer defaultModelSynchronizer = new DefaultModelSynchronizer(this);
         ClientModelStore modelStore = new ClientModelStore(defaultModelSynchronizer);
         clientConnector = new InMemoryClientConnector(modelStore, serverDolphin.getServerConnector(), new CommandBatcher(), uiExecutor);
+        clientConnector.connect(false);
         clientDolphin.setClientModelStore(modelStore);
         clientDolphin.setClientConnector(clientConnector);
         clientConnector.setSleepMillis(100);

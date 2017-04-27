@@ -29,16 +29,10 @@ public final class CreatePresentationModelCommand extends Command {
 
     private String pmType;
 
+    @Deprecated
     private boolean clientSideOnly = false;
 
     private List<Map<String, Object>> attributes = new ArrayList<Map<String, Object>>();
-
-    public CreatePresentationModelCommand(String pmId, String pmType, List<Map<String, Object>> attributes, boolean clientSideOnly) {
-        this.pmId = pmId;
-        this.pmType = pmType;
-        this.clientSideOnly = clientSideOnly;
-        this.attributes = attributes;
-    }
 
     public CreatePresentationModelCommand(String pmId, String pmType, List<Map<String, Object>> attributes) {
         this.pmId = pmId;
@@ -46,6 +40,7 @@ public final class CreatePresentationModelCommand extends Command {
         this.attributes = attributes;
     }
 
+    @Deprecated
     public CreatePresentationModelCommand() {
     }
 
@@ -89,14 +84,17 @@ public final class CreatePresentationModelCommand extends Command {
         this.pmType = pmType;
     }
 
+    @Deprecated
     public boolean getClientSideOnly() {
         return clientSideOnly;
     }
 
+    @Deprecated
     public boolean isClientSideOnly() {
         return clientSideOnly;
     }
 
+    @Deprecated
     public void setClientSideOnly(boolean clientSideOnly) {
         this.clientSideOnly = clientSideOnly;
     }
