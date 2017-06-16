@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/canoo/dolphin-platform.png?label=ready&title=Ready)](https://waffle.io/canoo/dolphin-platform?utm_source=badge)
 <p align="right">
 <a href="http://www.canoo.com"><img src="http://www.guigarage.com/wordpress/wp-content/uploads/2016/08/canoo_support.png"/></a>
 </p>
