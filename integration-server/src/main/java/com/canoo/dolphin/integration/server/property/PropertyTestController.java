@@ -15,12 +15,16 @@
  */
 package com.canoo.dolphin.integration.server.property;
 
-import com.canoo.platform.core.functional.Subscription;
 import com.canoo.dolphin.integration.property.PropertyTestBean;
+import com.canoo.platform.core.functional.Subscription;
 import com.canoo.platform.server.DolphinAction;
 import com.canoo.platform.server.DolphinController;
 import com.canoo.platform.server.DolphinModel;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 import static com.canoo.dolphin.integration.IntegrationConstants.NOT_NULL;
@@ -95,6 +99,51 @@ public class PropertyTestController {
         model.setShortValue(SHORT_VALUE);
         model.setStringValue(STRING_VALUE);
         model.setUuidValue(UUID_VALUE);
+    }
+
+    @DolphinAction(SET_TO_MIN_VALUES_ACTION)
+    public void setToMin() {
+        model.setBigDecimalValue(BigDecimal.valueOf(Double.MIN_VALUE));
+        model.setBigIntegerValue(BigInteger.valueOf(Integer.MIN_VALUE));
+        model.setByteValue(Byte.MIN_VALUE);
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(0);
+        model.setCalendarValue(calendar);
+        model.setDateValue(new Date(0));
+        model.setDoubleValue(Double.MIN_VALUE);
+        model.setFloatValue(Float.MIN_VALUE);
+        model.setIntegerValue(Integer.MIN_VALUE);
+        model.setLongValue(Long.MIN_VALUE);
+        model.setShortValue(Short.MIN_VALUE);
+    }
+
+
+    @DolphinAction(SET_TO_INFINITY_VALUES_ACTION)
+    public void setToInfinity() {
+        model.setDoubleValue(Double.POSITIVE_INFINITY);
+        model.setFloatValue(Float.POSITIVE_INFINITY);
+    }
+
+    @DolphinAction(SET_TO_NEGATIVE_INFINITY_VALUES_ACTION)
+    public void setToNegativeInfinity() {
+        model.setDoubleValue(Double.NEGATIVE_INFINITY);
+        model.setFloatValue(Float.NEGATIVE_INFINITY);
+    }
+
+    @DolphinAction(SET_TO_MAX_VALUES_ACTION)
+    public void setToMax() {
+        model.setBigDecimalValue(BigDecimal.valueOf(Double.MAX_VALUE));
+        model.setBigIntegerValue(BigInteger.valueOf(Integer.MAX_VALUE));
+        model.setByteValue(Byte.MAX_VALUE);
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(Long.MAX_VALUE);
+        model.setCalendarValue(calendar);
+        model.setDateValue(new Date(Long.MAX_VALUE));
+        model.setDoubleValue(Double.MAX_VALUE);
+        model.setFloatValue(Float.MAX_VALUE);
+        model.setIntegerValue(Integer.MAX_VALUE);
+        model.setLongValue(Long.MAX_VALUE);
+        model.setShortValue(Short.MAX_VALUE);
     }
 
     @DolphinAction(ADD_CHANGE_LISTENER)

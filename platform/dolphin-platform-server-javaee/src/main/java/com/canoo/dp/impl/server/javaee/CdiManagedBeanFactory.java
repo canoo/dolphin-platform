@@ -74,6 +74,9 @@ public class CdiManagedBeanFactory implements ManagedBeanFactory {
         BeanManager bm = BeanManagerProvider.getInstance().getBeanManager();
         AnnotatedType annotatedType = bm.createAnnotatedType(cls);
         final InjectionTarget<T> injectionTarget = bm.createInjectionTarget(annotatedType);
+
+        //CDI.current().select()
+
         final Bean<T> bean = new BeanBuilder<T>(bm)
                 .beanClass(cls)
                 .name(UUID.randomUUID().toString())

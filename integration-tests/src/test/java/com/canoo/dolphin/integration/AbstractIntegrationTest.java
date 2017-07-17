@@ -58,10 +58,12 @@ public class AbstractIntegrationTest {
                 // do nothing since server is not up at the moment...
             }
             //Check server state again in 10 sec
-            try {
-                Thread.sleep(10_000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+            if(!connected) {
+                try {
+                    Thread.sleep(10_000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }

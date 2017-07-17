@@ -36,6 +36,14 @@ public interface PropertyTestConstants {
 
     String SET_TO_DEFAULTS_ACTION = "setToDefaults";
 
+    String SET_TO_MIN_VALUES_ACTION = "setToMinValues";
+
+    String SET_TO_MAX_VALUES_ACTION = "setToMaxValues";
+
+    String SET_TO_INFINITY_VALUES_ACTION = "setToInfinityValues";
+
+    String SET_TO_NEGATIVE_INFINITY_VALUES_ACTION = "setToNegativeInfinityValues";
+
     String REMOVE_CHANGE_LISTENER = "removeChangeListener";
 
     String RESET_CHANGE_FLAGS = "resetChangeFlags";

@@ -21,6 +21,11 @@ import com.canoo.dolphin.integration.property.PropertyTestBean;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Calendar;
+import java.util.Date;
+
 import static com.canoo.dolphin.integration.property.PropertyTestConstants.*;
 
 public class PropertyControllerTest extends AbstractIntegrationTest {
@@ -254,7 +259,7 @@ public class PropertyControllerTest extends AbstractIntegrationTest {
     }
 
     @Test(dataProvider = ENDPOINTS_DATAPROVIDER, description = "Test if all unsubscribe for changes is working")
-    public void testNoChangeForSameValue(String containerType, String endpoint) {
+    public void testNoChangeForSameValue(final String containerType, final String endpoint) {
         try {
             ClientContext context = connect(endpoint);
             ControllerProxy<PropertyTestBean> controller = createController(context, PROPERTY_CONTROLLER_NAME);
@@ -298,6 +303,86 @@ public class PropertyControllerTest extends AbstractIntegrationTest {
         } catch (Exception e) {
             Assert.fail("Can not create controller for " + containerType, e);
         }
+    }
+
+    @Test(dataProvider = ENDPOINTS_DATAPROVIDER)
+    public void testMaxValues(String containerType, String endpoint) {
+        //given
+        final ClientContext context = connect(endpoint);
+        final ControllerProxy<PropertyTestBean> controller = createController(context, PROPERTY_CONTROLLER_NAME);
+
+
+        //when
+        invoke(controller, SET_TO_MAX_VALUES_ACTION, containerType);
+
+        //then
+        Assert.assertEquals(controller.getModel().getBigDecimalValue(), BigDecimal.valueOf(Double.MAX_VALUE));
+        Assert.assertEquals(controller.getModel().getBigIntegerValue(), BigInteger.valueOf(Integer.MAX_VALUE));
+        Assert.assertEquals(controller.getModel().getByteValue().byteValue(), Byte.MAX_VALUE);
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(Long.MAX_VALUE);
+        Assert.assertEquals(controller.getModel().getCalendarValue().getTime(), calendar.getTime());
+        Assert.assertEquals(controller.getModel().getDateValue(), new Date(Long.MAX_VALUE));
+        Assert.assertEquals(controller.getModel().getDoubleValue().doubleValue(), Double.MAX_VALUE);
+        Assert.assertEquals(controller.getModel().getFloatValue().floatValue(), Float.MAX_VALUE);
+        Assert.assertEquals(controller.getModel().getIntegerValue().intValue(), Integer.MAX_VALUE);
+        Assert.assertEquals(controller.getModel().getLongValue().longValue(), Long.MAX_VALUE);
+        Assert.assertEquals(controller.getModel().getShortValue().shortValue(), Short.MAX_VALUE);
+    }
+
+    @Test(dataProvider = ENDPOINTS_DATAPROVIDER)
+    public void testMinValues(final String containerType, final String endpoint) {
+        //given
+        final ClientContext context = connect(endpoint);
+        final ControllerProxy<PropertyTestBean> controller = createController(context, PROPERTY_CONTROLLER_NAME);
+
+
+        //when
+        invoke(controller, SET_TO_MIN_VALUES_ACTION, containerType);
+
+        //then
+        Assert.assertEquals(controller.getModel().getBigDecimalValue(), BigDecimal.valueOf(Double.MIN_VALUE));
+        Assert.assertEquals(controller.getModel().getBigIntegerValue(), BigInteger.valueOf(Integer.MIN_VALUE));
+        Assert.assertEquals(controller.getModel().getByteValue().byteValue(), Byte.MIN_VALUE);
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(0);
+        Assert.assertEquals(controller.getModel().getCalendarValue().getTime(), calendar.getTime());
+        Assert.assertEquals(controller.getModel().getDateValue(), new Date(0));
+        Assert.assertEquals(controller.getModel().getDoubleValue().doubleValue(), Double.MIN_VALUE);
+        Assert.assertEquals(controller.getModel().getFloatValue().floatValue(), Float.MIN_VALUE);
+        Assert.assertEquals(controller.getModel().getIntegerValue().intValue(), Integer.MIN_VALUE);
+        Assert.assertEquals(controller.getModel().getLongValue().longValue(), Long.MIN_VALUE);
+        Assert.assertEquals(controller.getModel().getShortValue().shortValue(), Short.MIN_VALUE);
+    }
+
+    @Test(dataProvider = ENDPOINTS_DATAPROVIDER)
+    public void testInfinityValues(final String containerType, final String endpoint) {
+        //given
+        final ClientContext context = connect(endpoint);
+        final ControllerProxy<PropertyTestBean> controller = createController(context, PROPERTY_CONTROLLER_NAME);
+
+
+        //when
+        invoke(controller, SET_TO_INFINITY_VALUES_ACTION, containerType);
+
+        //then
+        Assert.assertEquals(controller.getModel().getDoubleValue().doubleValue(), Double.POSITIVE_INFINITY);
+        Assert.assertEquals(controller.getModel().getFloatValue().floatValue(), Float.POSITIVE_INFINITY);
+    }
+
+    @Test(dataProvider = ENDPOINTS_DATAPROVIDER)
+    public void testNegativeInfinityValues(final String containerType, final String endpoint) {
+        //given
+        final ClientContext context = connect(endpoint);
+        final ControllerProxy<PropertyTestBean> controller = createController(context, PROPERTY_CONTROLLER_NAME);
+
+
+        //when
+        invoke(controller, SET_TO_NEGATIVE_INFINITY_VALUES_ACTION, containerType);
+
+        //then
+        Assert.assertEquals(controller.getModel().getDoubleValue().doubleValue(), Double.NEGATIVE_INFINITY);
+        Assert.assertEquals(controller.getModel().getFloatValue().floatValue(), Float.NEGATIVE_INFINITY);
     }
 
 }

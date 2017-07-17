@@ -26,6 +26,11 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Calendar;
+import java.util.Date;
+
 import static com.canoo.dolphin.integration.property.PropertyTestConstants.*;
 
 @SpringBootTest(classes = TestConfiguration.class)
@@ -296,5 +301,65 @@ public class PropertyTestControllerTest extends SpringTestNGControllerTest {
         Assert.assertFalse(controller.getModel().getShortValueChanged());
         Assert.assertFalse(controller.getModel().getStringValueChanged());
         Assert.assertFalse(controller.getModel().getUuidValueChanged());
+    }
+
+    @Test
+    public void testMaxValues() {
+        //when
+        controller.invoke(SET_TO_MAX_VALUES_ACTION);
+
+        //then
+        Assert.assertEquals(controller.getModel().getBigDecimalValue(), BigDecimal.valueOf(Double.MAX_VALUE));
+        Assert.assertEquals(controller.getModel().getBigIntegerValue(), BigInteger.valueOf(Integer.MAX_VALUE));
+        Assert.assertEquals(controller.getModel().getByteValue().byteValue(), Byte.MAX_VALUE);
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(Long.MAX_VALUE);
+        Assert.assertEquals(controller.getModel().getCalendarValue().getTime(), calendar.getTime());
+        Assert.assertEquals(controller.getModel().getDateValue(), new Date(Long.MAX_VALUE));
+        Assert.assertEquals(controller.getModel().getDoubleValue().doubleValue(), Double.MAX_VALUE);
+        Assert.assertEquals(controller.getModel().getFloatValue().floatValue(), Float.MAX_VALUE);
+        Assert.assertEquals(controller.getModel().getIntegerValue().intValue(), Integer.MAX_VALUE);
+        Assert.assertEquals(controller.getModel().getLongValue().longValue(), Long.MAX_VALUE);
+        Assert.assertEquals(controller.getModel().getShortValue().shortValue(), Short.MAX_VALUE);
+    }
+
+    @Test
+    public void testMinValues() {
+        //when
+        controller.invoke(SET_TO_MIN_VALUES_ACTION);
+
+        //then
+        Assert.assertEquals(controller.getModel().getBigDecimalValue(), BigDecimal.valueOf(Double.MIN_VALUE));
+        Assert.assertEquals(controller.getModel().getBigIntegerValue(), BigInteger.valueOf(Integer.MIN_VALUE));
+        Assert.assertEquals(controller.getModel().getByteValue().byteValue(), Byte.MIN_VALUE);
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(0);
+        Assert.assertEquals(controller.getModel().getCalendarValue().getTime(), calendar.getTime());
+        Assert.assertEquals(controller.getModel().getDateValue(), new Date(0));
+        Assert.assertEquals(controller.getModel().getDoubleValue().doubleValue(), Double.MIN_VALUE);
+        Assert.assertEquals(controller.getModel().getFloatValue().floatValue(), Float.MIN_VALUE);
+        Assert.assertEquals(controller.getModel().getIntegerValue().intValue(), Integer.MIN_VALUE);
+        Assert.assertEquals(controller.getModel().getLongValue().longValue(), Long.MIN_VALUE);
+        Assert.assertEquals(controller.getModel().getShortValue().shortValue(), Short.MIN_VALUE);
+    }
+
+    @Test
+    public void testInfinityValues() {
+        //when
+        controller.invoke(SET_TO_INFINITY_VALUES_ACTION);
+
+        //then
+        Assert.assertEquals(controller.getModel().getDoubleValue().doubleValue(), Double.POSITIVE_INFINITY);
+        Assert.assertEquals(controller.getModel().getFloatValue().floatValue(), Float.POSITIVE_INFINITY);
+    }
+
+    @Test
+    public void testNegativeInfinityValues() {
+        //when
+        controller.invoke(SET_TO_NEGATIVE_INFINITY_VALUES_ACTION);
+
+        //then
+        Assert.assertEquals(controller.getModel().getDoubleValue().doubleValue(), Double.NEGATIVE_INFINITY);
+        Assert.assertEquals(controller.getModel().getFloatValue().floatValue(), Float.NEGATIVE_INFINITY);
     }
 }

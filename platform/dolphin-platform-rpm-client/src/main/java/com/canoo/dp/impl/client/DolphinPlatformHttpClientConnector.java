@@ -100,9 +100,11 @@ public class DolphinPlatformHttpClientConnector extends AbstractClientConnector 
             final HttpURLConnection conn = connectionFactory.create(servletUrl);
             conn.setDoOutput(true);
             conn.setDoInput(true);
+            conn.setRequestProperty(ACCEPT_CHARSET_HEADER, CHARSET);
             conn.setRequestProperty(CONTENT_TYPE_HEADER, JSON_MIME_TYPE);
             conn.setRequestProperty(ACCEPT_HEADER, JSON_MIME_TYPE);
             conn.setRequestMethod(POST_METHOD);
+
             if (clientId.get() != null) {
                 conn.setRequestProperty(PlatformRemotingConstants.CLIENT_ID_HTTP_HEADER_NAME, clientId.get());
             } else {
