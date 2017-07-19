@@ -34,6 +34,7 @@ public final class CreatePresentationModelCommand extends Command {
     private List<Map<String, Object>> attributes = new ArrayList<Map<String, Object>>();
 
     public CreatePresentationModelCommand(final String pmId, String pmType, final List<Map<String, Object>> attributes, final boolean clientSideOnly) {
+        this();
         this.pmId = pmId;
         this.pmType = pmType;
         this.clientSideOnly = clientSideOnly;
@@ -41,12 +42,14 @@ public final class CreatePresentationModelCommand extends Command {
     }
 
     public CreatePresentationModelCommand(final String pmId, final String pmType, final List<Map<String, Object>> attributes) {
+        this();
         this.pmId = pmId;
         this.pmType = pmType;
         this.attributes = attributes;
     }
 
     public CreatePresentationModelCommand() {
+        super(CommandConstants.CREATE_PRESENTATION_MODEL_COMMAND_ID);
     }
 
     /**

@@ -24,9 +24,12 @@ public final class AttributeMetadataChangedCommand extends Command {
     private Object value;
 
     public AttributeMetadataChangedCommand() {
+        super(CommandConstants.ATTRIBUTE_METADATA_CHANGED_COMMAND_ID);
+
     }
 
     public AttributeMetadataChangedCommand(final String attributeId, final String metadataName, final Object value) {
+        this();
         this.attributeId = attributeId;
         this.metadataName = metadataName;
         this.value = value;

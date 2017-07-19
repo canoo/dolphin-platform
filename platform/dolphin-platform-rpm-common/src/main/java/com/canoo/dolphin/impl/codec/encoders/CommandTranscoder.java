@@ -13,19 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.opendolphin.core.comm;
+package com.canoo.dolphin.impl.codec.encoders;
 
-/**
- * A command where the id can be set from the outside for general purposes.
- * Signal commands are transmitted outside the usual sequence but possibly in the same
- * session. Therefore any handler for this command must neither change nor access any unprotected shared
- * mutable state like the dolphin instance or the model store.
- */
-public class SignalCommand extends Command {
-    public SignalCommand() {
-    }
+import com.google.gson.JsonObject;
+import org.opendolphin.core.comm.Command;
 
-    public SignalCommand(String id) {
-        super(id);
-    }
+public interface CommandTranscoder<C extends Command> {
+
+    JsonObject encode(C command);
+
+    C decode(JsonObject jsonObject);
+
 }

@@ -43,7 +43,7 @@ public class DolphinContextCommunicationHandler {
 
     private final ClientSessionProvider sessionProvider;
 
-    private final Codec codec = new OptimizedJsonCodec();
+    private final Codec codec = OptimizedJsonCodec.getInstance();
 
     private final DolphinContextFactory contextFactory;
 

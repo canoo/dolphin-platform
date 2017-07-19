@@ -28,6 +28,7 @@ import org.opendolphin.core.server.*;
 import org.opendolphin.core.server.action.DolphinServerAction;
 import org.opendolphin.core.server.comm.ActionRegistry;
 import org.opendolphin.core.server.comm.CommandHandler;
+import org.opendolphin.core.util.AbstractTestCommand;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -40,6 +41,59 @@ import java.util.concurrent.TimeUnit;
  * the application purely from server side.
  */
 public class ServerControlledFunctionalTests {
+
+    private volatile TestInMemoryConfig context;
+    private DefaultServerDolphin serverDolphin;
+    private ClientDolphin clientDolphin;
+
+    final private class CreatePmCommand extends AbstractTestCommand {
+        public CreatePmCommand() {
+            super("CreatePmCommand");
+        }
+    }
+
+    final private class CheckPmIsThereCommand extends AbstractTestCommand {
+        public CheckPmIsThereCommand() {
+            super("CheckPmIsThereCommand");
+        }
+    }
+
+    final private class DeleteAndRecreateCommand extends AbstractTestCommand {
+        public DeleteAndRecreateCommand() {
+            super("DeleteAndRecreateCommand");
+        }
+    }
+
+    final private class AssertRetainedServerStateCommand extends AbstractTestCommand {
+        public AssertRetainedServerStateCommand() {
+            super("AssertRetainedServerStateCommand");
+        }
+    }
+
+    final private class ChangeValueMultipleTimesAndBackToBaseCommand extends AbstractTestCommand {
+        public ChangeValueMultipleTimesAndBackToBaseCommand() {
+            super("ChangeValueMultipleTimesAndBackToBaseCommand");
+        }
+    }
+
+    final private class RemoveCommand extends AbstractTestCommand {
+        public RemoveCommand() {
+            super("RemoveCommand");
+        }
+    }
+
+    final private class SetAndUnsetQualifierCommand extends AbstractTestCommand {
+        public SetAndUnsetQualifierCommand() {
+            super("SetAndUnsetQualifierCommand");
+        }
+    }
+
+    final private class SetQualifierCommand extends AbstractTestCommand {
+        public SetQualifierCommand() {
+            super("SetQualifierCommand");
+        }
+    }
+
     @Before
     public void setUp() {
         context = new TestInMemoryConfig();
@@ -302,31 +356,5 @@ public class ServerControlledFunctionalTests {
         });
     }
 
-    private volatile TestInMemoryConfig context;
-    private DefaultServerDolphin serverDolphin;
-    private ClientDolphin clientDolphin;
 
-    final private class CreatePmCommand extends Command {
-    }
-
-    final private class CheckPmIsThereCommand extends Command {
-    }
-
-    final private class DeleteAndRecreateCommand extends Command {
-    }
-
-    final private class AssertRetainedServerStateCommand extends Command {
-    }
-
-    final private class ChangeValueMultipleTimesAndBackToBaseCommand extends Command {
-    }
-
-    final private class RemoveCommand extends Command {
-    }
-
-    final private class SetAndUnsetQualifierCommand extends Command {
-    }
-
-    final private class SetQualifierCommand extends Command {
-    }
 }

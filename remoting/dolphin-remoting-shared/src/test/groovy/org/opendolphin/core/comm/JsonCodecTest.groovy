@@ -33,7 +33,7 @@ public class JsonCodecTest extends GroovyTestCase {
         def codec = new JsonCodec()
         def commands = []
         count.times {
-            commands << new EmptyNotification()
+            commands << new EmptyCommand()
         }
         def coded = codec.encode(commands)
         def decoded = codec.decode(coded)
@@ -87,9 +87,7 @@ public class JsonCodecTest extends GroovyTestCase {
         assertCodingCommand(new AttributeMetadataChangedCommand("A", "B", "C"))
         assertCodingCommand(new CreatePresentationModelCommand())
         assertCodingCommand(new ChangeAttributeMetadataCommand())
-        assertCodingCommand(new GetPresentationModelCommand())
-        assertCodingCommand(new EmptyNotification())
-        assertCodingCommand(new SignalCommand())
+        assertCodingCommand(new EmptyCommand())
         assertCodingCommand(new ValueChangedCommand())
     }
 

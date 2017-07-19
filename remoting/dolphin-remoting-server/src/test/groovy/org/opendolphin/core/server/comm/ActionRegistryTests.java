@@ -18,11 +18,20 @@ package org.opendolphin.core.server.comm;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.opendolphin.core.comm.Command;
+import org.opendolphin.core.server.util.AbstractTestCommand;
 
 import java.util.List;
 
 public class ActionRegistryTests {
+
+    private ActionRegistry registry;
+
+    final private class TestDataCommand extends AbstractTestCommand {
+        public TestDataCommand() {
+            super("TestDataCommand");
+        }
+    }
+
     @Before
     public void setUp() throws Exception {
         registry = new ActionRegistry();
@@ -95,10 +104,5 @@ public class ActionRegistryTests {
 
         //then:
         Assert.assertEquals(1, registry.getActionsFor(TestDataCommand.class).size());
-    }
-
-    private ActionRegistry registry;
-
-    final private class TestDataCommand extends Command {
     }
 }

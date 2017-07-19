@@ -15,26 +15,15 @@
  */
 package org.opendolphin.core.comm;
 
-public final class DeletedPresentationModelNotification extends Command {
-    public DeletedPresentationModelNotification(String pmId) {
-        this.pmId = pmId;
+/**
+ * A notification that does nothing on the server.
+ * It is only used to hook into the communication at a known point
+ * such that the onFinished handler can be executed
+ * in the expected sequence.
+ */
+@Deprecated
+public final class EmptyCommand extends Command {
+    public EmptyCommand() {
+        super(CommandConstants.EMPTY_COMMAND_ID);
     }
-
-    public DeletedPresentationModelNotification() {
-    }
-
-    public String getPmId() {
-        return pmId;
-    }
-
-    public void setPmId(final String pmId) {
-        this.pmId = pmId;
-    }
-
-    @Override
-    public String toString() {
-        return super.toString() + " pmId " + pmId;
-    }
-
-    private String pmId;
 }

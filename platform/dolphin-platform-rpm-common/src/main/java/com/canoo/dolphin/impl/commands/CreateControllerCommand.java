@@ -18,6 +18,7 @@ package com.canoo.dolphin.impl.commands;
 import com.canoo.dolphin.impl.PlatformRemotingConstants;
 import com.canoo.impl.platform.core.Assert;
 import org.opendolphin.core.comm.Command;
+import org.opendolphin.core.comm.CommandConstants;
 
 public final class CreateControllerCommand extends Command {
 
@@ -26,7 +27,7 @@ public final class CreateControllerCommand extends Command {
     private String controllerName;
 
     public CreateControllerCommand() {
-        super(PlatformRemotingConstants.CREATE_CONTROLLER_COMMAND_NAME);
+        super(CommandConstants.CREATE_CONTROLLER_COMMAND_ID);
     }
 
     public String getParentControllerId() {

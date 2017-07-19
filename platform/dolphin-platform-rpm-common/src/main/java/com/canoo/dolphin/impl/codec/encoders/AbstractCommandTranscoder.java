@@ -20,7 +20,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.opendolphin.core.comm.Command;
 
-public abstract class AbstractCommandEncoder<C extends Command> implements CommandEncoder<C> {
+public abstract class AbstractCommandTranscoder<C extends Command> implements CommandTranscoder<C> {
 
     protected boolean isElementJsonNull(final JsonObject jsonObject, final String jsonElementName) {
         return getElement(jsonObject, jsonElementName).isJsonNull();

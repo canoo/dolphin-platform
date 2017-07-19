@@ -4,9 +4,9 @@ import com.canoo.dolphin.impl.commands.CreateContextCommand;
 import com.canoo.impl.platform.core.Assert;
 import com.google.gson.JsonObject;
 
-import static com.canoo.dolphin.impl.codec.CommandConstants.*;
+import static org.opendolphin.core.comm.CommandConstants.*;
 
-public class CreateContextCommandEncoder extends AbstractCommandEncoder<CreateContextCommand> {
+public class CreateContextCommandEncoder extends AbstractCommandTranscoder<CreateContextCommand> {
     @Override
     public JsonObject encode(CreateContextCommand command) {
         Assert.requireNonNull(command, "command");

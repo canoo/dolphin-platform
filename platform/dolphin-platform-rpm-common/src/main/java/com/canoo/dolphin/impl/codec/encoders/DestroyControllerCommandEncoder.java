@@ -20,9 +20,9 @@ import com.canoo.impl.platform.core.Assert;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import static com.canoo.dolphin.impl.codec.CommandConstants.*;
+import static org.opendolphin.core.comm.CommandConstants.*;
 
-public class DestroyControllerCommandEncoder extends AbstractCommandEncoder<DestroyControllerCommand> {
+public class DestroyControllerCommandEncoder extends AbstractCommandTranscoder<DestroyControllerCommand> {
 
     @Override
     public JsonObject encode(final DestroyControllerCommand command) {

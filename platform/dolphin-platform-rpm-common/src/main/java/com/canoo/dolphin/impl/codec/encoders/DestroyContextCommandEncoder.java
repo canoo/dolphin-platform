@@ -4,10 +4,10 @@ import com.canoo.dolphin.impl.commands.DestroyContextCommand;
 import com.canoo.impl.platform.core.Assert;
 import com.google.gson.JsonObject;
 
-import static com.canoo.dolphin.impl.codec.CommandConstants.DESTROY_CONTEXT_COMMAND_ID;
-import static com.canoo.dolphin.impl.codec.CommandConstants.ID;
+import static org.opendolphin.core.comm.CommandConstants.DESTROY_CONTEXT_COMMAND_ID;
+import static org.opendolphin.core.comm.CommandConstants.ID;
 
-public class DestroyContextCommandEncoder extends AbstractCommandEncoder<DestroyContextCommand> {
+public class DestroyContextCommandEncoder extends AbstractCommandTranscoder<DestroyContextCommand> {
     @Override
     public JsonObject encode(DestroyContextCommand command) {
         Assert.requireNonNull(command, "command");

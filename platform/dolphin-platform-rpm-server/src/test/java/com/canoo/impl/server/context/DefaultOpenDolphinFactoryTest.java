@@ -41,7 +41,7 @@ public class DefaultOpenDolphinFactoryTest {
         assertTrue(serverDolphin.getServerConnector().getRegistry().getActions().containsKey(ValueChangedCommand.class));
         assertTrue(serverDolphin.getServerConnector().getRegistry().getActions().containsKey(CreatePresentationModelCommand.class));
         assertTrue(serverDolphin.getServerConnector().getRegistry().getActions().containsKey(ChangeAttributeMetadataCommand.class));
-        assertTrue(serverDolphin.getServerConnector().getRegistry().getActions().containsKey(DeletedPresentationModelNotification.class));
+        assertTrue(serverDolphin.getServerConnector().getRegistry().getActions().containsKey(PresentationModelDeletedCommand.class));
 
         assertEquals(serverDolphin.getModelStore().listPresentationModelIds().size(), 0);
     }

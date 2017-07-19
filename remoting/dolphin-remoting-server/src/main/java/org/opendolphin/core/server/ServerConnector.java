@@ -15,10 +15,14 @@
  */
 package org.opendolphin.core.server;
 
+import com.canoo.dolphin.impl.commands.InterruptLongPollCommand;
 import org.opendolphin.core.comm.Codec;
 import org.opendolphin.core.comm.Command;
-import org.opendolphin.core.comm.SignalCommand;
-import org.opendolphin.core.server.action.*;
+import org.opendolphin.core.server.action.CreatePresentationModelAction;
+import org.opendolphin.core.server.action.DeletePresentationModelAction;
+import org.opendolphin.core.server.action.DolphinServerAction;
+import org.opendolphin.core.server.action.StoreAttributeAction;
+import org.opendolphin.core.server.action.StoreValueChangeAction;
 import org.opendolphin.core.server.comm.ActionRegistry;
 import org.opendolphin.core.server.comm.CommandHandler;
 import org.slf4j.Logger;
@@ -51,7 +55,7 @@ public class ServerConnector {
         LOG.trace("Received command of type {}", command.getClass().getSimpleName());
         List<Command> response = new LinkedList();// collecting parameter pattern
 
-        if (!(command instanceof SignalCommand)) {// signal commands must not update thread-confined state
+        if (!(command instanceof InterruptLongPollCommand)) {// signal commands must not update thread-confined state
             for (DolphinServerAction it : dolphinServerActions) {
                 it.setDolphinResponse(response);// todo: can be deleted as soon as all action refer to the SMS
             }

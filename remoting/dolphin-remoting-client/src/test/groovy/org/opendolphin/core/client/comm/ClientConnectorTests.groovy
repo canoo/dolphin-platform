@@ -95,11 +95,11 @@ public class ClientConnectorTests extends GroovyTestCase {
         assertCommandsTransmitted(1)
         // 1 command was sent because of the sent sync (resulting in a EMPTY command):
         Assert.assertFalse(clientConnector.getTransmittedCommands().isEmpty());
-        Assert.assertEquals(EmptyNotification.class, clientConnector.getTransmittedCommands().get(0).class);
+        Assert.assertEquals(EmptyCommand.class, clientConnector.getTransmittedCommands().get(0).class);
     }
 
     public void testSevereLogWhenCommandNotFound() {
-        clientConnector.dispatchHandle(new EmptyNotification());
+        clientConnector.dispatchHandle(new EmptyCommand());
         syncAndWaitUntilDone();
         assertOnlySyncCommandWasTransmitted();
     }
@@ -272,14 +272,14 @@ public class ClientConnectorTests extends GroovyTestCase {
         Assert.assertNull(dolphin.getModelStore().findPresentationModelById(p2.id));
         syncAndWaitUntilDone();
         // 3 commands will have been transferred:
-        // 1: delete of p1 (causes no DeletedPresentationModelNotification since client side only)
+        // 1: delete of p1 (causes no PresentationModelDeletedCommand since client side only)
         // 2: delete of p2
-        // 3: DeletedPresentationModelNotification caused by delete of p2
+        // 3: PresentationModelDeletedCommand caused by delete of p2
         assertCommandsTransmitted(4);
 
         int deletedPresentationModelNotificationCount = 0;
         for(Command c : clientConnector.getTransmittedCommands()) {
-            if(c instanceof DeletedPresentationModelNotification) {
+            if(c instanceof PresentationModelDeletedCommand) {
                 deletedPresentationModelNotificationCount = deletedPresentationModelNotificationCount + 1;
             }
         }

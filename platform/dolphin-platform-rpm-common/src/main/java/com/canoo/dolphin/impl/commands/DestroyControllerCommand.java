@@ -15,16 +15,16 @@
  */
 package com.canoo.dolphin.impl.commands;
 
-import com.canoo.dolphin.impl.PlatformRemotingConstants;
 import com.canoo.impl.platform.core.Assert;
 import org.opendolphin.core.comm.Command;
+import org.opendolphin.core.comm.CommandConstants;
 
 public final class DestroyControllerCommand extends Command {
 
     private String controllerId;
 
     public DestroyControllerCommand() {
-        super(PlatformRemotingConstants.DESTROY_CONTROLLER_COMMAND_NAME);
+        super(CommandConstants.DESTROY_CONTROLLER_COMMAND_ID);
     }
 
     public String getControllerId() {

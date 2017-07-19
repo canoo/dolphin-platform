@@ -26,6 +26,7 @@ import org.opendolphin.core.client.ClientPresentationModel;
 import org.opendolphin.core.client.comm.AbstractClientConnector;
 import org.opendolphin.core.server.ServerConnector;
 import org.opendolphin.core.server.comm.CommandHandler;
+import org.opendolphin.core.util.AbstractTestCommand;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,6 +39,20 @@ import java.util.concurrent.atomic.AtomicReference;
  * They are really more integration tests than unit tests.
  */
 public class CommunicationTests {
+
+
+    private ServerConnector serverConnector;
+    private AbstractClientConnector clientConnector;
+    private ClientModelStore clientModelStore;
+    private ClientDolphin clientDolphin;
+    private TestInMemoryConfig config;
+
+    final private class ButtonActionCommand extends AbstractTestCommand {
+        public ButtonActionCommand() {
+            super("ButtonActionCommand");
+        }
+    }
+
     @Before
     public void setUp() {
         config = new TestInMemoryConfig();
@@ -173,12 +188,4 @@ public class CommunicationTests {
         });
     }
 
-    private ServerConnector serverConnector;
-    private AbstractClientConnector clientConnector;
-    private ClientModelStore clientModelStore;
-    private ClientDolphin clientDolphin;
-    private TestInMemoryConfig config;
-
-    final private class ButtonActionCommand extends Command {
-    }
 }

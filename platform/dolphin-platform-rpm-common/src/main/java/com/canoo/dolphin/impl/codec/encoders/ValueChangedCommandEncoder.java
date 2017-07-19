@@ -20,17 +20,17 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import org.opendolphin.core.comm.ValueChangedCommand;
 
-import static com.canoo.dolphin.impl.codec.CommandConstants.*;
+import static org.opendolphin.core.comm.CommandConstants.*;
 
-public class ValueChangedCommandEncoder extends AbstractCommandEncoder<ValueChangedCommand> {
+public class ValueChangedCommandEncoder extends AbstractCommandTranscoder<ValueChangedCommand> {
 
     @Override
     public JsonObject encode(ValueChangedCommand command) {
         Assert.requireNonNull(command, "command");
         final JsonObject jsonCommand = new JsonObject();
-        jsonCommand.addProperty(VALUE_CHANGED_ATTRIBUTE_ID, command.getAttributeId());
+        jsonCommand.addProperty(ATTRIBUTE_ID, command.getAttributeId());
         if (command.getNewValue() != null) {
-            jsonCommand.add(NEW_VALUE, ValueEncoder.encodeValue(command.getNewValue()));
+            jsonCommand.add(VALUE, ValueEncoder.encodeValue(command.getNewValue()));
         }
         jsonCommand.addProperty(ID, VALUE_CHANGED_COMMAND_ID);
         return jsonCommand;
@@ -41,8 +41,8 @@ public class ValueChangedCommandEncoder extends AbstractCommandEncoder<ValueChan
         Assert.requireNonNull(jsonObject, "jsonObject");
         try {
             final ValueChangedCommand command = new ValueChangedCommand();
-            command.setNewValue(ValueEncoder.decodeValue(jsonObject.get(NEW_VALUE)));
-            command.setAttributeId(getStringElement(jsonObject, VALUE_CHANGED_ATTRIBUTE_ID));
+            command.setNewValue(ValueEncoder.decodeValue(jsonObject.get(VALUE)));
+            command.setAttributeId(getStringElement(jsonObject, ATTRIBUTE_ID));
             return command;
         } catch (IllegalStateException | ClassCastException | NullPointerException ex) {
             throw new JsonParseException("Illegal JSON detected", ex);

@@ -27,6 +27,7 @@ import org.opendolphin.core.server.ServerModelStore
 import org.opendolphin.core.server.action.DolphinServerAction
 import org.opendolphin.core.server.comm.ActionRegistry
 import org.opendolphin.core.server.comm.CommandHandler
+import org.opendolphin.core.util.AbstractTestCommand
 
 import java.util.concurrent.TimeUnit
 
@@ -36,7 +37,7 @@ class DeletePresentationModelTests extends GroovyTestCase {
     private DefaultServerDolphin serverDolphin;
     private ClientDolphin clientDolphin;
 
-    private final class TriggerDeleteCommand extends Command {}
+    private final class TriggerDeleteCommand extends AbstractTestCommand {}
 
 
     @Override

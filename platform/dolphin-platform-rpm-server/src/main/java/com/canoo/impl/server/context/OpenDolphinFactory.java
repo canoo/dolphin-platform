@@ -33,7 +33,7 @@ public class OpenDolphinFactory {
         //Init Open Dolphin
         final ServerModelStore modelStore = new ServerModelStore();
         final ServerConnector serverConnector = new ServerConnector();
-        serverConnector.setCodec(new OptimizedJsonCodec());
+        serverConnector.setCodec(OptimizedJsonCodec.getInstance());
         serverConnector.setServerModelStore(modelStore);
         final DefaultServerDolphin dolphin = new DefaultServerDolphin(modelStore, serverConnector);
         dolphin.getServerConnector().registerDefaultActions();

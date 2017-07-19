@@ -15,7 +15,6 @@
  */
 package org.opendolphin.core.client.comm;
 
-import org.opendolphin.core.comm.GetPresentationModelCommand;
 import org.opendolphin.core.comm.ValueChangedCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,31 +107,7 @@ public class BlindCommandBatcher extends CommandBatcher {
     }
 
     protected boolean canBeDropped(final CommandAndHandler commandWithHandler) {
-        if (!(commandWithHandler.getCommand() instanceof GetPresentationModelCommand)) {
-            return false;
-        }
-
-        String pmId = ((GetPresentationModelCommand) commandWithHandler.getCommand()).getPmId();
-        OnFinishedHandler handler = commandWithHandler.getHandler();
-
-        boolean found = false;
-        for (CommandAndHandler commandAndHandler : cacheGetPmCmds) {
-            if (((GetPresentationModelCommand) commandAndHandler.getCommand()).getPmId().equals(pmId) && ((handler == null) || handler.equals(commandAndHandler.getHandler()))) {
-                found = true;
-            }
-
-        }
-
-
-        if (!found) {
-            cacheGetPmCmds.push(commandWithHandler);// front adding makes lookup faster
-            if (cacheGetPmCmds.size() > MAX_GET_PM_CMD_CACHE_SIZE) {
-                cacheGetPmCmds.removeLast();
-            }
-
-        }
-
-        return found;
+        return false;
     }
 
     protected void processDeferred() {

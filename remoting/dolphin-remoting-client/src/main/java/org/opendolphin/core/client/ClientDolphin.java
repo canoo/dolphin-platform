@@ -18,7 +18,7 @@ package org.opendolphin.core.client;
 import org.opendolphin.core.Dolphin;
 import org.opendolphin.core.client.comm.AbstractClientConnector;
 import org.opendolphin.core.client.comm.OnFinishedHandler;
-import org.opendolphin.core.comm.EmptyNotification;
+import org.opendolphin.core.comm.EmptyCommand;
 
 /**
  * The main Dolphin facade on the client side.
@@ -48,7 +48,7 @@ public class ClientDolphin implements Dolphin<ClientAttribute, ClientPresentatio
      */
     @Deprecated
     public void sync(final Runnable runnable) {
-        clientConnector.send(new EmptyNotification(), new OnFinishedHandler() {
+        clientConnector.send(new EmptyCommand(), new OnFinishedHandler() {
             public void onFinished() {
                 runnable.run();
             }

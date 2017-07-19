@@ -15,7 +15,7 @@
  */
 package org.opendolphin.core.server.action;
 
-import org.opendolphin.core.comm.DeletedPresentationModelNotification;
+import org.opendolphin.core.comm.PresentationModelDeletedCommand;
 import org.opendolphin.core.server.ServerPresentationModel;
 import org.opendolphin.core.server.comm.ActionRegistry;
 import org.opendolphin.core.server.comm.CommandHandler;
@@ -25,9 +25,9 @@ import java.util.List;
 public class DeletePresentationModelAction extends DolphinServerAction {
 
     public void registerIn(final ActionRegistry registry) {
-        registry.register(DeletedPresentationModelNotification.class, new CommandHandler<DeletedPresentationModelNotification>() {
+        registry.register(PresentationModelDeletedCommand.class, new CommandHandler<PresentationModelDeletedCommand>() {
             @Override
-            public void handleCommand(final DeletedPresentationModelNotification command, final List response) {
+            public void handleCommand(final PresentationModelDeletedCommand command, final List response) {
                 ServerPresentationModel model = getServerModelStore().findPresentationModelById(command.getPmId());
                 getServerModelStore().checkClientRemoved(model);
             }

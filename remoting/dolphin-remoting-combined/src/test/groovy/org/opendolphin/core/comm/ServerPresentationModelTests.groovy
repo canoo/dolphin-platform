@@ -28,6 +28,7 @@ import org.opendolphin.core.server.*
 import org.opendolphin.core.server.action.DolphinServerAction
 import org.opendolphin.core.server.comm.ActionRegistry
 import org.opendolphin.core.server.comm.CommandHandler
+import org.opendolphin.core.util.AbstractTestCommand
 
 import java.beans.PropertyChangeEvent
 import java.beans.PropertyChangeListener
@@ -39,25 +40,23 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 class ServerPresentationModelTests extends GroovyTestCase {
 
-    private final class SetValueCommand extends Command {}
+    private final class SetValueCommand extends AbstractTestCommand {}
 
-    private final class AssertValueCommand extends Command {}
+    private final class AssertValueCommand extends AbstractTestCommand {}
 
-    private final class ChangeValueCommand extends Command {}
+    private final class ChangeValueCommand extends AbstractTestCommand {}
 
-    private final class AttachListenerCommand extends Command {}
+    private final class AttachListenerCommand extends AbstractTestCommand {}
 
-    private final class ChangeBaseValueCommand extends Command {}
+    private final class ChangeBaseValueCommand extends AbstractTestCommand {}
 
-    private final class CreateCommand extends Command {}
+    private final class CreateCommand extends AbstractTestCommand {}
 
-    private final class AssertVisibleCommand extends Command {}
+    private final class AssertVisibleCommand extends AbstractTestCommand {}
 
-    private final class RegisterMSLCommand extends Command {}
+    private final class RemoveCommand extends AbstractTestCommand {}
 
-    private final class RemoveCommand extends Command {}
-
-    private final class AssertValueChangeCommand extends Command {}
+    private final class AssertValueChangeCommand extends AbstractTestCommand {}
 
     private volatile TestInMemoryConfig context
     private DefaultServerDolphin serverDolphin

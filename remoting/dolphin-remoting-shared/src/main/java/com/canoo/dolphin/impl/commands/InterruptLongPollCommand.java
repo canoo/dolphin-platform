@@ -15,13 +15,13 @@
  */
 package com.canoo.dolphin.impl.commands;
 
-import org.opendolphin.RemotingConstants;
-import org.opendolphin.core.comm.SignalCommand;
+import org.opendolphin.core.comm.Command;
+import org.opendolphin.core.comm.CommandConstants;
 
-public final class InterruptLongPollCommand extends SignalCommand {
+public final class InterruptLongPollCommand extends Command {
 
     public InterruptLongPollCommand() {
-        super(RemotingConstants.INTERRUPT_LONG_POLL_COMMAND_NAME);
+        super(CommandConstants.INTERRUPT_LONG_POLL_COMMAND_ID);
     }
 }
 

@@ -38,7 +38,7 @@ public class DefaultModelSynchronizer implements ModelSynchronizer {
 
     @Override
     public void onDeleted(final ClientPresentationModel model) {
-        final Command command = new DeletedPresentationModelNotification(model.getId());
+        final Command command = new PresentationModelDeletedCommand(model.getId());
         send(command);
     }
 

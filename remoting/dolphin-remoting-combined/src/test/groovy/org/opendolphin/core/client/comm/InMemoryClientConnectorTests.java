@@ -23,7 +23,7 @@ import org.opendolphin.core.client.ClientModelStore;
 import org.opendolphin.core.client.DefaultModelSynchronizer;
 import org.opendolphin.core.client.ModelSynchronizer;
 import org.opendolphin.core.comm.Command;
-import org.opendolphin.core.comm.EmptyNotification;
+import org.opendolphin.core.comm.EmptyCommand;
 import org.opendolphin.core.server.ServerConnector;
 import org.opendolphin.util.DirectExecutor;
 import org.opendolphin.util.Provider;
@@ -59,7 +59,7 @@ public class InMemoryClientConnectorTests extends GroovyTestCase {
         clientDolphin.setClientModelStore(modelStore);
 
         //when:
-        List<Command> ret = connector.transmit(Collections.<Command>singletonList(new EmptyNotification()));
+        List<Command> ret = connector.transmit(Collections.<Command>singletonList(new EmptyCommand()));
 
         //then:
         Assert.assertEquals(Collections.emptyList(), ret);
@@ -93,7 +93,7 @@ public class InMemoryClientConnectorTests extends GroovyTestCase {
         clientDolphin.setClientModelStore(modelStore);
 
         //when:
-        ((InMemoryClientConnector) connector).transmit(Collections.<Command>singletonList(new EmptyNotification()));
+        ((InMemoryClientConnector) connector).transmit(Collections.<Command>singletonList(new EmptyCommand()));
 
         //then:
         Assert.assertTrue(serverCalled.get());
@@ -126,7 +126,7 @@ public class InMemoryClientConnectorTests extends GroovyTestCase {
         ((InMemoryClientConnector) connector).setSleepMillis(10);
 
         //when:
-        ((InMemoryClientConnector) connector).transmit(Collections.<Command>singletonList(new EmptyNotification()));
+        ((InMemoryClientConnector) connector).transmit(Collections.<Command>singletonList(new EmptyCommand()));
 
         //then:
         Assert.assertTrue(serverCalled.get());

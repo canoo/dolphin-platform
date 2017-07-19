@@ -31,6 +31,8 @@ package org.opendolphin.core;
 public interface Attribute extends Observable {
     String QUALIFIER_NAME = "qualifier";
     String VALUE_NAME = "value";
+    String PROPERTY_NAME = "propertyName";
+    String ID = "id";
 
     /** Returns the current value of this attribute. */
     Object getValue();

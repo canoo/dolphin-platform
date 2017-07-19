@@ -20,6 +20,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import org.opendolphin.core.Attribute;
 import org.opendolphin.core.comm.CreatePresentationModelCommand;
 
 import java.util.ArrayList;
@@ -27,9 +28,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.canoo.dolphin.impl.codec.CommandConstants.*;
+import static org.opendolphin.core.comm.CommandConstants.*;
 
-public class  CreatePresentationModelEncoder extends AbstractCommandEncoder<CreatePresentationModelCommand> {
+public class CreatePresentationModelCommandEncoder extends AbstractCommandTranscoder<CreatePresentationModelCommand> {
 
     @Override
     public JsonObject encode(CreatePresentationModelCommand command) {
@@ -42,12 +43,9 @@ public class  CreatePresentationModelEncoder extends AbstractCommandEncoder<Crea
         final JsonArray jsonArray = new JsonArray();
         for (final Map<String, Object> attribute : command.getAttributes()) {
             final JsonObject jsonAttribute = new JsonObject();
-            jsonAttribute.addProperty(ATTRIBUTE_NAME, String.valueOf(attribute.get(PROPERTY_NAME)));
-            jsonAttribute.addProperty(ATTRIBUTE_ID, String.valueOf(attribute.get(ID)));
-            final Object value = attribute.get(VALUE);
-            if (value != null) {
-                jsonAttribute.add(ATTRIBUTE_VALUE, ValueEncoder.encodeValue(attribute.get(VALUE)));
-            }
+            jsonAttribute.addProperty(NAME, String.valueOf(attribute.get(Attribute.PROPERTY_NAME)));
+            jsonAttribute.addProperty(ATTRIBUTE_ID, String.valueOf(attribute.get(Attribute.ID)));
+            jsonAttribute.add(VALUE, ValueEncoder.encodeValue(attribute.get(Attribute.VALUE_NAME)));
             jsonArray.add(jsonAttribute);
         }
         jsonCommand.add(PM_ATTRIBUTES, jsonArray);
@@ -72,12 +70,10 @@ public class  CreatePresentationModelEncoder extends AbstractCommandEncoder<Crea
             for (final JsonElement jsonElement : jsonArray) {
                 final JsonObject attribute = jsonElement.getAsJsonObject();
                 final HashMap<String, Object> map = new HashMap<>();
-                map.put(PROPERTY_NAME,getStringElement(attribute, ATTRIBUTE_NAME));
-                map.put(ID, getStringElement(attribute, ATTRIBUTE_ID));
-                final Object value = attribute.has(ATTRIBUTE_VALUE)? ValueEncoder.decodeValue(attribute.get(ATTRIBUTE_VALUE)) : null;
-                map.put(VALUE, value);
-                map.put("baseValue", value);
-                map.put("qualifier", null);
+                map.put(Attribute.PROPERTY_NAME, getStringElement(attribute, NAME));
+                map.put(Attribute.ID, getStringElement(attribute, ATTRIBUTE_ID));
+                final Object value = attribute.has(VALUE) ? ValueEncoder.decodeValue(attribute.get(VALUE)) : null;
+                map.put(Attribute.VALUE_NAME, value);
                 attributes.add(map);
             }
             command.setAttributes(attributes);

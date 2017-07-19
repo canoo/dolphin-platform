@@ -20,9 +20,11 @@ public final class DeletePresentationModelCommand extends Command {
     private String pmId;
 
     public DeletePresentationModelCommand() {
+        super(CommandConstants.DELETE_PRESENTATION_MODEL_COMMAND_ID);
     }
 
     public DeletePresentationModelCommand(final String pmId) {
+        this();
         this.pmId = pmId;
     }
 

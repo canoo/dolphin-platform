@@ -24,22 +24,22 @@ import com.google.gson.JsonParseException;
 
 import java.util.Map;
 
-import static com.canoo.dolphin.impl.codec.CommandConstants.*;
+import static org.opendolphin.core.comm.CommandConstants.*;
 
-public class CallActionCommandEncoder extends AbstractCommandEncoder<CallActionCommand> {
+public class CallActionCommandEncoder extends AbstractCommandTranscoder<CallActionCommand> {
 
     @Override
     public JsonObject encode(final CallActionCommand command) {
         Assert.requireNonNull(command, "command");
         final JsonObject jsonCommand = new JsonObject();
         jsonCommand.addProperty(CONTROLLER_ID, command.getControllerId());
-        jsonCommand.addProperty(ACTION_NAME, command.getActionName());
+        jsonCommand.addProperty(NAME, command.getActionName());
 
         final JsonArray paramArray = new JsonArray();
         for(Map.Entry<String, Object> paramEntry : command.getParams().entrySet()) {
             final JsonObject paramObject = new JsonObject();
-            paramObject.addProperty(PARAM_NAME, paramEntry.getKey());
-            paramObject.add(PARAM_VALUE, ValueEncoder.encodeValue(paramEntry.getValue()));
+            paramObject.addProperty(NAME, paramEntry.getKey());
+            paramObject.add(VALUE, ValueEncoder.encodeValue(paramEntry.getValue()));
             paramArray.add(paramObject);
         }
         jsonCommand.add(PARAMS, paramArray);
@@ -54,13 +54,13 @@ public class CallActionCommandEncoder extends AbstractCommandEncoder<CallActionC
         try {
             final CallActionCommand command = new CallActionCommand();
             command.setControllerId(getStringElement(jsonObject, CONTROLLER_ID));
-            command.setActionName(getStringElement(jsonObject, ACTION_NAME));
+            command.setActionName(getStringElement(jsonObject, NAME));
 
             final JsonArray jsonArray = jsonObject.getAsJsonArray(PARAMS);
             if(jsonArray != null) {
                 for (final JsonElement jsonElement : jsonArray) {
                     final JsonObject paramObject = jsonElement.getAsJsonObject();
-                    command.addParam(getStringElement(paramObject, PARAM_NAME), ValueEncoder.decodeValue(paramObject.get(PARAM_VALUE)));
+                    command.addParam(getStringElement(paramObject, NAME), ValueEncoder.decodeValue(paramObject.get(VALUE)));
                 }
             }
             return command;

@@ -51,7 +51,7 @@ public class ClientContextFactory {
         return new ClientContextImpl(clientConfiguration, new Function<ClientModelStore, AbstractClientConnector>() {
             @Override
             public AbstractClientConnector call(final ClientModelStore clientModelStore) {
-                return new DolphinPlatformHttpClientConnector(clientConfiguration, clientModelStore, new OptimizedJsonCodec(), new RemotingExceptionHandler() {
+                return new DolphinPlatformHttpClientConnector(clientConfiguration, clientModelStore, OptimizedJsonCodec.getInstance(), new RemotingExceptionHandler() {
                     @Override
                     public void handle(DolphinRemotingException e) {
                         for(RemotingExceptionHandler handler : clientConfiguration.getRemotingExceptionHandlers()) {

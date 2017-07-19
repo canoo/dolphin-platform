@@ -16,6 +16,7 @@
 package com.canoo.dolphin.client.impl;
 
 import com.canoo.dolphin.client.util.AbstractDolphinBasedTest;
+import com.canoo.dolphin.client.util.AbstractTestCommand;
 import com.canoo.dp.impl.client.DolphinCommandHandler;
 import org.opendolphin.core.client.ClientAttribute;
 import org.opendolphin.core.client.ClientDolphin;
@@ -33,7 +34,11 @@ import static org.testng.Assert.assertEquals;
 
 public class TestDolphinCommandHandler extends AbstractDolphinBasedTest {
 
-    private final class TestChangeCommand extends Command {}
+    private final class TestChangeCommand extends AbstractTestCommand {
+        public TestChangeCommand() {
+            super("TestChangeCommand");
+        }
+    }
 
     @Test
     public void testInvocation() throws Exception {

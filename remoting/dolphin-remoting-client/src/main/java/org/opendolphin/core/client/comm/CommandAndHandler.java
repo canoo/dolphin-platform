@@ -16,7 +16,7 @@
 package org.opendolphin.core.client.comm;
 
 import org.opendolphin.core.comm.Command;
-import org.opendolphin.core.comm.EmptyNotification;
+import org.opendolphin.core.comm.EmptyCommand;
 
 public class CommandAndHandler {
 
@@ -54,7 +54,7 @@ public class CommandAndHandler {
      */
     public boolean isBatchable() {
         if (handler != null) return false;
-        if (command instanceof EmptyNotification) return false;
+        if (command instanceof EmptyCommand) return false;
         return true;
     }
 

@@ -32,6 +32,7 @@ import org.opendolphin.core.server.*
 import org.opendolphin.core.server.action.DolphinServerAction
 import org.opendolphin.core.server.comm.ActionRegistry
 import org.opendolphin.core.server.comm.CommandHandler
+import org.opendolphin.core.util.AbstractTestCommand
 
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
@@ -43,40 +44,40 @@ import java.util.concurrent.atomic.AtomicLong
  */
 public class FunctionalPresentationModelTests {
 
-    final private class CreateCommand extends Command {
+    final private class CreateCommand extends AbstractTestCommand {
     }
 
-    final private class PerformanceCommand extends Command {
+    final private class PerformanceCommand extends AbstractTestCommand {
     }
 
-    final private class CheckNotificationReachedCommand extends Command {
+    final private class CheckNotificationReachedCommand extends AbstractTestCommand {
     }
 
-    final private class JavaCommand extends Command {
+    final private class JavaCommand extends AbstractTestCommand {
     }
 
-    final private class ArbitraryCommand extends Command {
+    final private class ArbitraryCommand extends AbstractTestCommand {
     }
 
-    final private class DeleteCommand extends Command {
+    final private class DeleteCommand extends AbstractTestCommand {
     }
 
-    final private class FetchDataCommand extends Command {
+    final private class FetchDataCommand extends AbstractTestCommand {
     }
 
-    final private class LoginCommand extends Command {
+    final private class LoginCommand extends AbstractTestCommand {
     }
 
-    final private class NoSuchActionRegisteredCommand extends Command {
+    final private class NoSuchActionRegisteredCommand extends AbstractTestCommand {
     }
 
-    final private class Set2Command extends Command {
+    final private class Set2Command extends AbstractTestCommand {
     }
 
-    final private class Assert3Command extends Command {
+    final private class Assert3Command extends AbstractTestCommand {
     }
 
-    final private class CheckTagIsKnownOnServerSideCommand extends Command {
+    final private class CheckTagIsKnownOnServerSideCommand extends AbstractTestCommand {
     }
 
     private volatile TestInMemoryConfig context;

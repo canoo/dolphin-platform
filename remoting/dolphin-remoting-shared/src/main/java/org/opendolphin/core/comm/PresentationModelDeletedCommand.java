@@ -13,15 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.canoo.dolphin.impl.codec.encoders;
+package org.opendolphin.core.comm;
 
-import com.google.gson.JsonObject;
-import org.opendolphin.core.comm.Command;
+@Deprecated
+public final class PresentationModelDeletedCommand extends Command {
 
-public interface CommandEncoder<C extends Command> {
+    public PresentationModelDeletedCommand(String pmId) {
+        this();
+        this.pmId = pmId;
+    }
 
-    JsonObject encode(C command);
+    public PresentationModelDeletedCommand() {
+        super(CommandConstants.PRESENTATION_MODEL_DELETED_COMMAND_ID);
+    }
 
-    C decode(JsonObject jsonObject);
+    public String getPmId() {
+        return pmId;
+    }
 
+    public void setPmId(final String pmId) {
+        this.pmId = pmId;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + " pmId " + pmId;
+    }
+
+    private String pmId;
 }
