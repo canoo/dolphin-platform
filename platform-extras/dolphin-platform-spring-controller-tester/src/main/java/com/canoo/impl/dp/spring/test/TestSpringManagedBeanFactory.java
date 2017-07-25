@@ -16,7 +16,7 @@
 package com.canoo.impl.dp.spring.test;
 
 import com.canoo.dp.impl.server.spring.AbstractSpringManagedBeanFactory;
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 import org.springframework.context.ApplicationContext;
 
 import javax.servlet.ServletContext;

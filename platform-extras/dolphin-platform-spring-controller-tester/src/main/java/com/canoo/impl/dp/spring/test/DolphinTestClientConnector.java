@@ -16,7 +16,7 @@
 package com.canoo.impl.dp.spring.test;
 
 import com.canoo.dolphin.impl.commands.StartLongPollCommand;
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 import org.opendolphin.core.client.ClientModelStore;
 import org.opendolphin.core.client.comm.*;
 import org.opendolphin.core.comm.Command;

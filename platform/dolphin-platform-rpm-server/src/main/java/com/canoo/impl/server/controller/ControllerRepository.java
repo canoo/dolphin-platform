@@ -15,7 +15,7 @@
  */
 package com.canoo.impl.server.controller;
 
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.platform.server.DolphinController;
 import com.canoo.platform.server.spi.ClasspathScanner;
 

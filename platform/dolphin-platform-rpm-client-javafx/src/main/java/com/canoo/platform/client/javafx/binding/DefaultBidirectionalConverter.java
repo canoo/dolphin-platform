@@ -15,7 +15,7 @@
  */
 package com.canoo.platform.client.javafx.binding;
 
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 
 public class DefaultBidirectionalConverter<T, U> implements BidirectionalConverter<T, U> {
 

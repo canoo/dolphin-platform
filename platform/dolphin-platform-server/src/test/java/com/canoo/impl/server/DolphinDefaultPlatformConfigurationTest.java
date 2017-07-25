@@ -15,8 +15,8 @@
  */
 package com.canoo.impl.server;
 
-import com.canoo.impl.server.config.DefaultModuleConfig;
-import com.canoo.impl.server.config.DefaultPlatformConfiguration;
+import com.canoo.dp.impl.server.config.DefaultModuleConfig;
+import com.canoo.dp.impl.server.config.DefaultPlatformConfiguration;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

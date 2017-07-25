@@ -21,7 +21,7 @@ import com.canoo.dolphin.impl.InternalAttributesBean;
 import com.canoo.dolphin.impl.commands.CreateControllerCommand;
 import com.canoo.dolphin.internal.BeanRepository;
 import com.canoo.dolphin.internal.EventDispatcher;
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 import org.opendolphin.core.client.ClientModelStore;
 import org.opendolphin.core.client.comm.AbstractClientConnector;
 

@@ -15,9 +15,9 @@
  */
 package com.canoo.dp.impl.server.spring;
 
-import com.canoo.impl.platform.core.Assert;
-import com.canoo.impl.server.beans.ManagedBeanFactory;
-import com.canoo.impl.server.beans.PostConstructInterceptor;
+import com.canoo.dp.impl.platform.core.Assert;
+import com.canoo.dp.impl.server.beans.ManagedBeanFactory;
+import com.canoo.dp.impl.server.beans.PostConstructInterceptor;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;

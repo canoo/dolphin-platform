@@ -29,7 +29,7 @@ import com.canoo.dolphin.internal.EventDispatcher;
 import com.canoo.dolphin.internal.collections.ListMapper;
 import com.canoo.dolphin.internal.info.PropertyInfo;
 import com.canoo.dolphin.mapping.Property;
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.impl.server.gc.GarbageCollector;
 import org.opendolphin.core.Attribute;
 import org.opendolphin.core.PresentationModel;

@@ -15,7 +15,7 @@
  */
 package com.canoo.impl.server.event;
 
-import com.canoo.impl.server.config.RemotingConfiguration;
+import com.canoo.dp.impl.server.config.RemotingConfiguration;
 import com.canoo.platform.server.spi.EventBusProvider;
 import com.canoo.platform.server.event.DolphinEventBus;
 import org.slf4j.Logger;

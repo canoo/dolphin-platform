@@ -1,7 +1,7 @@
 package com.canoo.dolphin.impl.codec.encoders;
 
 import com.canoo.dolphin.impl.commands.DestroyContextCommand;
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 import com.google.gson.JsonObject;
 
 import static com.canoo.dolphin.impl.codec.CommandConstants.DESTROY_CONTEXT_COMMAND_ID;

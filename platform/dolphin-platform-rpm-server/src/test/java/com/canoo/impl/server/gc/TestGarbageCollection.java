@@ -15,9 +15,9 @@
  */
 package com.canoo.impl.server.gc;
 
-import com.canoo.impl.platform.core.Assert;
-import com.canoo.impl.server.config.DefaultPlatformConfiguration;
-import com.canoo.impl.server.config.RemotingConfiguration;
+import com.canoo.dp.impl.platform.core.Assert;
+import com.canoo.dp.impl.server.config.DefaultPlatformConfiguration;
+import com.canoo.dp.impl.server.config.RemotingConfiguration;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;

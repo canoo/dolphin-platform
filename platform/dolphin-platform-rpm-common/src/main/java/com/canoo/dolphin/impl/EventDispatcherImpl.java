@@ -17,7 +17,7 @@ package com.canoo.dolphin.impl;
 
 import com.canoo.dolphin.internal.DolphinEventHandler;
 import com.canoo.dolphin.internal.EventDispatcher;
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 import org.opendolphin.RemotingConstants;
 import org.opendolphin.core.ModelStore;
 import org.opendolphin.core.ModelStoreEvent;

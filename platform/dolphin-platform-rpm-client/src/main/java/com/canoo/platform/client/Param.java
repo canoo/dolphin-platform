@@ -15,7 +15,7 @@
  */
 package com.canoo.platform.client;
 
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 
 /**
  * The class defines a param that can be used as a action param when calling a action on the server side

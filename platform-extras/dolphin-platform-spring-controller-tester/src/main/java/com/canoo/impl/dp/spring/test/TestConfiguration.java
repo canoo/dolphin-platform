@@ -16,14 +16,14 @@
 package com.canoo.impl.dp.spring.test;
 
 import com.canoo.dp.impl.client.ClientContextImpl;
-import com.canoo.impl.platform.core.Assert;
-import com.canoo.impl.server.client.ClientSessionProvider;
-import com.canoo.impl.server.config.ConfigurationFileLoader;
-import com.canoo.impl.server.config.RemotingConfiguration;
+import com.canoo.dp.impl.platform.core.Assert;
+import com.canoo.dp.impl.server.client.ClientSessionProvider;
+import com.canoo.dp.impl.server.config.ConfigurationFileLoader;
+import com.canoo.dp.impl.server.config.RemotingConfiguration;
 import com.canoo.impl.server.context.DolphinContext;
 import com.canoo.impl.server.controller.ControllerRepository;
 import com.canoo.impl.server.controller.ControllerValidationException;
-import com.canoo.impl.server.scanner.DefaultClasspathScanner;
+import com.canoo.dp.impl.server.scanner.DefaultClasspathScanner;
 import com.canoo.platform.client.ClientConfiguration;
 import com.canoo.platform.client.ClientContext;
 import com.canoo.platform.server.client.ClientSession;

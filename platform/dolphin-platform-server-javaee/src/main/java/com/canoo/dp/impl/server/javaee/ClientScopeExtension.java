@@ -15,7 +15,7 @@
  */
 package com.canoo.dp.impl.server.javaee;
 
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.platform.server.javaee.ClientScoped;
 
 import javax.enterprise.event.Observes;

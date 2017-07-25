@@ -21,7 +21,7 @@ import com.canoo.dolphin.impl.AbstractControllerActionCallBean;
 import com.canoo.dolphin.impl.Converters;
 import com.canoo.dolphin.impl.PlatformRemotingConstants;
 import com.canoo.dolphin.mapping.MappingException;
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 import org.opendolphin.core.client.ClientModelStore;
 import org.opendolphin.core.client.ClientPresentationModel;
 

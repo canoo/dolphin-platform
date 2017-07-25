@@ -15,10 +15,10 @@
  */
 package com.canoo.impl.server.context;
 
-import com.canoo.impl.platform.core.Assert;
-import com.canoo.impl.server.beans.ManagedBeanFactory;
-import com.canoo.impl.server.client.ClientSessionProvider;
-import com.canoo.impl.server.config.RemotingConfiguration;
+import com.canoo.dp.impl.platform.core.Assert;
+import com.canoo.dp.impl.server.beans.ManagedBeanFactory;
+import com.canoo.dp.impl.server.client.ClientSessionProvider;
+import com.canoo.dp.impl.server.config.RemotingConfiguration;
 import com.canoo.impl.server.controller.ControllerRepository;
 import com.canoo.impl.server.controller.ControllerValidationException;
 import com.canoo.platform.core.functional.Callback;

@@ -17,9 +17,9 @@ package com.canoo.impl.dp.spring.test;
 
 import com.canoo.dolphin.BeanManager;
 import com.canoo.dp.impl.server.spring.ClientScope;
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.impl.server.binding.PropertyBinderImpl;
-import com.canoo.impl.server.client.ClientSessionLifecycleHandlerImpl;
+import com.canoo.dp.impl.server.client.ClientSessionLifecycleHandlerImpl;
 import com.canoo.impl.server.context.DolphinContext;
 import com.canoo.impl.server.context.DolphinContextProvider;
 import com.canoo.impl.server.event.DefaultDolphinEventBus;

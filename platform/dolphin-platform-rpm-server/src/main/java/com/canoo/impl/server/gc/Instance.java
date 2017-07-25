@@ -16,7 +16,7 @@
 package com.canoo.impl.server.gc;
 
 import com.canoo.dolphin.collections.ObservableList;
-import com.canoo.impl.platform.core.IdentitySet;
+import com.canoo.dp.impl.platform.core.IdentitySet;
 import com.canoo.dolphin.mapping.Property;
 import com.canoo.platform.server.DolphinModel;
 

@@ -15,7 +15,7 @@
  */
 package com.canoo.impl.dp.spring.test;
 
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.platform.client.ClientContext;
 import com.canoo.platform.client.ControllerProxy;
 import com.canoo.platform.client.Param;

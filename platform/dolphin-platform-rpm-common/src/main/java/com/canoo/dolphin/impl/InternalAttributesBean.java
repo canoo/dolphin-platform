@@ -17,7 +17,7 @@ package com.canoo.dolphin.impl;
 
 import com.canoo.dolphin.internal.BeanRepository;
 import com.canoo.dolphin.internal.PresentationModelBuilder;
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 import org.opendolphin.core.Attribute;
 import org.opendolphin.core.PresentationModel;
 

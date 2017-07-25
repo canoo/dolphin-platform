@@ -15,16 +15,16 @@
  */
 package com.canoo.impl.server;
 
-import com.canoo.impl.server.beans.ManagedBeanFactory;
-import com.canoo.impl.server.bootstrap.modules.ClientSessionModule;
-import com.canoo.impl.server.client.ClientSessionLifecycleHandler;
-import com.canoo.impl.server.client.ClientSessionProvider;
-import com.canoo.impl.server.config.RemotingConfiguration;
+import com.canoo.dp.impl.server.beans.ManagedBeanFactory;
+import com.canoo.dp.impl.server.bootstrap.modules.ClientSessionModule;
+import com.canoo.dp.impl.server.client.ClientSessionLifecycleHandler;
+import com.canoo.dp.impl.server.client.ClientSessionProvider;
+import com.canoo.dp.impl.server.config.RemotingConfiguration;
 import com.canoo.impl.server.context.*;
 import com.canoo.impl.server.controller.ControllerValidationException;
 import com.canoo.impl.server.event.AbstractEventBus;
-import com.canoo.impl.server.servlet.DolphinPlatformServlet;
-import com.canoo.impl.server.servlet.InterruptServlet;
+import com.canoo.dp.impl.server.servlet.DolphinPlatformServlet;
+import com.canoo.dp.impl.server.servlet.InterruptServlet;
 import com.canoo.platform.server.client.ClientSession;
 import com.canoo.platform.server.event.DolphinEventBus;
 import com.canoo.platform.server.spi.*;
@@ -37,8 +37,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ServiceLoader;
 
-import static com.canoo.impl.server.servlet.ServletConstants.DOLPHIN_SERVLET_NAME;
-import static com.canoo.impl.server.servlet.ServletConstants.INTERRUPT_SERVLET_NAME;
+import static com.canoo.dp.impl.server.servlet.ServletConstants.DOLPHIN_SERVLET_NAME;
+import static com.canoo.dp.impl.server.servlet.ServletConstants.INTERRUPT_SERVLET_NAME;
 
 @ModuleDefinition(value = "RPM", order = 101)
 public class RemotingModule implements ServerModule {

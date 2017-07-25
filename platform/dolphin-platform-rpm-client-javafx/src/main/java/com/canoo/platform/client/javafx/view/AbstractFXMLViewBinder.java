@@ -16,7 +16,7 @@
 package com.canoo.platform.client.javafx.view;
 
 import com.canoo.platform.client.ClientContext;
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 

@@ -15,7 +15,7 @@
  */
 package com.canoo.platform.client.javafx;
 
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.platform.client.*;
 import com.canoo.platform.core.DolphinRuntimeException;
 import javafx.application.Application;

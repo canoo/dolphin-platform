@@ -29,8 +29,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-import static com.canoo.impl.platform.core.PlatformConstants.REMOTING_DATE_FORMAT_PATTERN;
-import static com.canoo.impl.platform.core.PlatformConstants.TIMEZONE_UTC;
+import static com.canoo.dp.impl.platform.core.PlatformConstants.REMOTING_DATE_FORMAT_PATTERN;
+import static com.canoo.dp.impl.platform.core.PlatformConstants.TIMEZONE_UTC;
 import static com.canoo.dolphin.converters.ValueFieldTypes.LOCAL_DATE_FIELD_TYPE;
 
 public class LocalDateConverterFactory extends AbstractConverterFactory {

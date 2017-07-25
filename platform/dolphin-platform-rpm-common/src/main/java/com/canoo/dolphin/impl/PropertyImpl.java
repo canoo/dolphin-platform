@@ -20,7 +20,7 @@ import com.canoo.dolphin.event.ValueChangeListener;
 import com.canoo.dolphin.internal.info.PropertyInfo;
 import com.canoo.dolphin.mapping.MappingException;
 import com.canoo.dolphin.mapping.Property;
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 import org.opendolphin.core.Attribute;
 
 import java.beans.PropertyChangeEvent;

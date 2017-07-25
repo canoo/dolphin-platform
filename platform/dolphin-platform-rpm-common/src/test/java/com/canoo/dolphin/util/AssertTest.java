@@ -15,7 +15,7 @@
  */
 package com.canoo.dolphin.util;
 
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;

@@ -15,8 +15,8 @@
  */
 package com.canoo.impl.server.controller;
 
-import com.canoo.impl.platform.core.Assert;
-import com.canoo.impl.platform.core.ReflectionHelper;
+import com.canoo.dp.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.ReflectionHelper;
 import com.canoo.platform.server.DolphinAction;
 import com.canoo.platform.server.DolphinModel;
 import com.canoo.platform.server.Param;

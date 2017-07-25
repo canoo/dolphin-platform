@@ -15,7 +15,7 @@
  */
 package com.canoo.impl.platform.core;
 
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;

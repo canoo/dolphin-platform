@@ -18,7 +18,7 @@ package com.canoo.dolphin.impl;
 import com.canoo.dolphin.collections.ObservableList;
 import com.canoo.dolphin.mapping.DolphinBean;
 import com.canoo.dolphin.mapping.Property;
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;

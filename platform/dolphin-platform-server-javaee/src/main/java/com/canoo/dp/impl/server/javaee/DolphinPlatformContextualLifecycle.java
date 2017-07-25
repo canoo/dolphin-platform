@@ -15,8 +15,8 @@
  */
 package com.canoo.dp.impl.server.javaee;
 
-import com.canoo.impl.platform.core.Assert;
-import com.canoo.impl.server.beans.PostConstructInterceptor;
+import com.canoo.dp.impl.platform.core.Assert;
+import com.canoo.dp.impl.server.beans.PostConstructInterceptor;
 import org.apache.deltaspike.core.util.metadata.builder.ContextualLifecycle;
 
 import javax.enterprise.context.spi.CreationalContext;

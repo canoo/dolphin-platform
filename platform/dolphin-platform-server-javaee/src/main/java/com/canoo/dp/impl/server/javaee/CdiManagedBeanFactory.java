@@ -15,9 +15,9 @@
  */
 package com.canoo.dp.impl.server.javaee;
 
-import com.canoo.impl.platform.core.Assert;
-import com.canoo.impl.server.beans.ManagedBeanFactory;
-import com.canoo.impl.server.beans.PostConstructInterceptor;
+import com.canoo.dp.impl.platform.core.Assert;
+import com.canoo.dp.impl.server.beans.ManagedBeanFactory;
+import com.canoo.dp.impl.server.beans.PostConstructInterceptor;
 import org.apache.deltaspike.core.api.provider.BeanManagerProvider;
 import org.apache.deltaspike.core.util.bean.BeanBuilder;
 import org.apache.deltaspike.core.util.metadata.builder.DelegatingContextualLifecycle;

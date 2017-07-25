@@ -16,9 +16,9 @@
 package com.canoo.dp.impl.server.javaee;
 
 import com.canoo.dolphin.BeanManager;
-import com.canoo.impl.platform.core.Assert;
-import com.canoo.impl.server.bootstrap.PlatformBootstrap;
-import com.canoo.impl.server.client.ClientSessionProvider;
+import com.canoo.dp.impl.platform.core.Assert;
+import com.canoo.dp.impl.server.bootstrap.PlatformBootstrap;
+import com.canoo.dp.impl.server.client.ClientSessionProvider;
 import com.canoo.impl.server.context.DolphinContext;
 import com.canoo.impl.server.context.DolphinContextProvider;
 import com.canoo.impl.server.context.RemotingContextImpl;

@@ -17,7 +17,7 @@ package com.canoo.platform.spring.test;
 
 import com.canoo.impl.dp.spring.test.ClientTestFactory;
 import com.canoo.impl.dp.spring.test.DolphinPlatformSpringTestBootstrap;
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.platform.client.ClientContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

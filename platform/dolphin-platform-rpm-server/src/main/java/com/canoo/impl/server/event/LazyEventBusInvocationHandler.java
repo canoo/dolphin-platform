@@ -1,6 +1,6 @@
 package com.canoo.impl.server.event;
 
-import com.canoo.impl.server.bootstrap.PlatformBootstrap;
+import com.canoo.dp.impl.server.bootstrap.PlatformBootstrap;
 import com.canoo.platform.server.event.DolphinEventBus;
 
 import java.lang.reflect.InvocationHandler;

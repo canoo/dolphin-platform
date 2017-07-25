@@ -15,9 +15,9 @@
  */
 package com.canoo.impl.platform.client;
 
-import com.canoo.impl.platform.core.PlatformConstants;
+import com.canoo.dp.impl.platform.core.PlatformConstants;
 import com.canoo.platform.core.DolphinRuntimeException;
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

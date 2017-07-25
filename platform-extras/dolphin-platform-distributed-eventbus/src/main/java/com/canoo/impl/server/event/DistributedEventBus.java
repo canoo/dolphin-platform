@@ -15,7 +15,7 @@
  */
 package com.canoo.impl.server.event;
 
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.platform.core.functional.Subscription;
 import com.canoo.platform.server.event.MessageListener;
 import com.canoo.platform.server.event.Topic;

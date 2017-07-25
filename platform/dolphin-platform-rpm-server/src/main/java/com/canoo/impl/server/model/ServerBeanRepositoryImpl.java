@@ -17,7 +17,7 @@ package com.canoo.impl.server.model;
 
 import com.canoo.dolphin.impl.BeanRepositoryImpl;
 import com.canoo.dolphin.internal.EventDispatcher;
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.impl.server.gc.GarbageCollector;
 import org.opendolphin.core.Dolphin;
 

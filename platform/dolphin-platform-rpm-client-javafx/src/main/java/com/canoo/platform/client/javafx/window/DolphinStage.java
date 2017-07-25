@@ -16,7 +16,7 @@
 package com.canoo.platform.client.javafx.window;
 
 import com.canoo.platform.client.javafx.view.AbstractViewBinder;
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 

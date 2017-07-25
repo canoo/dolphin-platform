@@ -15,7 +15,7 @@
  */
 package com.canoo.impl.server;
 
-import com.canoo.impl.server.client.HttpClientSessionImpl;
+import com.canoo.dp.impl.server.client.HttpClientSessionImpl;
 import com.canoo.platform.server.client.ClientSession;
 import org.testng.Assert;
 import org.testng.annotations.Test;

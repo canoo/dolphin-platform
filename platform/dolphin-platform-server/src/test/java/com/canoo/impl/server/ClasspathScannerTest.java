@@ -18,7 +18,7 @@ package com.canoo.impl.server;
 import com.canoo.impl.server.special.SpecialAnnotatedClass;
 import com.canoo.impl.server.util.AnnotatedClassForClasspathScan;
 import com.canoo.impl.server.util.AnnotationForClasspathScanTest;
-import com.canoo.impl.server.scanner.DefaultClasspathScanner;
+import com.canoo.dp.impl.server.scanner.DefaultClasspathScanner;
 import org.testng.annotations.Test;
 
 import javax.annotation.Resources;

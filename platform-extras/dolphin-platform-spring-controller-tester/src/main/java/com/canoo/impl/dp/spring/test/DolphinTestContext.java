@@ -15,10 +15,10 @@
  */
 package com.canoo.impl.dp.spring.test;
 
-import com.canoo.impl.server.beans.ManagedBeanFactory;
-import com.canoo.impl.server.client.ClientSessionProvider;
-import com.canoo.impl.server.client.HttpClientSessionImpl;
-import com.canoo.impl.server.config.RemotingConfiguration;
+import com.canoo.dp.impl.server.beans.ManagedBeanFactory;
+import com.canoo.dp.impl.server.client.ClientSessionProvider;
+import com.canoo.dp.impl.server.client.HttpClientSessionImpl;
+import com.canoo.dp.impl.server.config.RemotingConfiguration;
 import com.canoo.impl.server.context.DolphinContext;
 import com.canoo.impl.server.controller.ControllerRepository;
 import com.canoo.platform.core.functional.Callback;

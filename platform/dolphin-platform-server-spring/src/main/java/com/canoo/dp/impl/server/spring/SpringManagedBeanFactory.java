@@ -15,7 +15,7 @@
  */
 package com.canoo.dp.impl.server.spring;
 
-import com.canoo.impl.server.beans.ManagedBeanFactory;
+import com.canoo.dp.impl.server.beans.ManagedBeanFactory;
 import org.springframework.context.ApplicationContext;
 
 import javax.servlet.ServletContext;

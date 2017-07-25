@@ -16,7 +16,7 @@
 package com.canoo.dolphin.impl.commands;
 
 import com.canoo.dolphin.impl.PlatformRemotingConstants;
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 import org.opendolphin.core.comm.Command;
 
 import java.util.Collections;

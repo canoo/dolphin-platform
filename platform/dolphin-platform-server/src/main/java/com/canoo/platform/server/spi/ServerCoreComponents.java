@@ -15,7 +15,7 @@
  */
 package com.canoo.platform.server.spi;
 
-import com.canoo.impl.server.beans.ManagedBeanFactory;
+import com.canoo.dp.impl.server.beans.ManagedBeanFactory;
 import com.canoo.platform.core.PlatformThreadFactory;
 
 import javax.servlet.ServletContext;

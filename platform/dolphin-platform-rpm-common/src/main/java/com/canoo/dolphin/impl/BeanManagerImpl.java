@@ -20,7 +20,7 @@ import com.canoo.dolphin.event.BeanAddedListener;
 import com.canoo.platform.core.functional.Subscription;
 import com.canoo.dolphin.internal.BeanBuilder;
 import com.canoo.dolphin.internal.BeanRepository;
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 
 import java.util.List;
 

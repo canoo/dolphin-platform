@@ -25,7 +25,7 @@ import com.canoo.platform.client.Param;
 import com.canoo.dolphin.impl.InternalAttributesBean;
 import com.canoo.dolphin.impl.commands.CallActionCommand;
 import com.canoo.dolphin.impl.commands.DestroyControllerCommand;
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 import org.opendolphin.core.client.comm.AbstractClientConnector;
 import org.opendolphin.core.client.comm.OnFinishedHandler;
 import org.slf4j.Logger;

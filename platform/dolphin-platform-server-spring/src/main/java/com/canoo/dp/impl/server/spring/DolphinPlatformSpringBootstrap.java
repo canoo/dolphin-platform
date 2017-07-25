@@ -15,9 +15,9 @@
  */
 package com.canoo.dp.impl.server.spring;
 
-import com.canoo.impl.server.bootstrap.PlatformBootstrap;
-import com.canoo.impl.server.config.ConfigurationFileLoader;
-import com.canoo.impl.server.config.DefaultPlatformConfiguration;
+import com.canoo.dp.impl.server.bootstrap.PlatformBootstrap;
+import com.canoo.dp.impl.server.config.ConfigurationFileLoader;
+import com.canoo.dp.impl.server.config.DefaultPlatformConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;

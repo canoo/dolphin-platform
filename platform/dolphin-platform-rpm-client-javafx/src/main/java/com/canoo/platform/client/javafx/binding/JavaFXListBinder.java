@@ -20,7 +20,7 @@ import com.canoo.dolphin.collections.ObservableList;
 
 import java.util.function.Function;
 
-import static com.canoo.impl.platform.core.Assert.*;
+import static com.canoo.dp.impl.platform.core.Assert.*;
 
 public interface JavaFXListBinder<S> {
 

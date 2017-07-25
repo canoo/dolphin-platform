@@ -15,8 +15,8 @@
  */
 package com.canoo.impl.server;
 
-import com.canoo.impl.server.config.DefaultPlatformConfiguration;
-import com.canoo.impl.server.servlet.CrossSiteOriginFilter;
+import com.canoo.dp.impl.server.config.DefaultPlatformConfiguration;
+import com.canoo.dp.impl.server.servlet.CrossSiteOriginFilter;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;

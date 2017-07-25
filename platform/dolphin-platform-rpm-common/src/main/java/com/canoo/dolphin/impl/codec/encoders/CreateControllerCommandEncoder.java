@@ -16,7 +16,7 @@
 package com.canoo.dolphin.impl.codec.encoders;
 
 import com.canoo.dolphin.impl.commands.CreateControllerCommand;
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 

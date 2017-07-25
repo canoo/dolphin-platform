@@ -19,7 +19,7 @@ import com.canoo.platform.client.ClientContext;
 import com.canoo.platform.client.ControllerActionException;
 import com.canoo.platform.client.ControllerProxy;
 import com.canoo.platform.client.Param;
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanWrapper;
 import javafx.beans.property.ReadOnlyObjectProperty;

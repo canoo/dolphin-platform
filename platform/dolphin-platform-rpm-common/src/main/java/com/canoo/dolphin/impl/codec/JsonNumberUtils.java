@@ -1,7 +1,7 @@
 package com.canoo.dolphin.impl.codec;
 
-import com.canoo.impl.platform.core.Assert;
-import com.canoo.impl.platform.core.ReflectionHelper;
+import com.canoo.dp.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.ReflectionHelper;
 
 /**
  * Some helper classes since GSON uses {@link com.google.gson.internal.LazilyParsedNumber} internally.

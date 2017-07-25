@@ -28,7 +28,7 @@ import com.canoo.dolphin.impl.commands.CreateContextCommand;
 import com.canoo.dolphin.impl.commands.CreateControllerCommand;
 import com.canoo.dolphin.impl.commands.DestroyContextCommand;
 import com.canoo.dolphin.impl.commands.DestroyControllerCommand;
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;

@@ -17,9 +17,9 @@ package com.canoo.platform.client;
 
 import com.canoo.impl.platform.client.DefaultHttpURLConnectionFactory;
 import com.canoo.impl.platform.client.DefaultHttpURLConnectionResponseHandler;
-import com.canoo.impl.platform.core.Assert;
-import com.canoo.impl.platform.core.IdentitySet;
-import com.canoo.impl.platform.core.SimpleDolphinPlatformThreadFactory;
+import com.canoo.dp.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.IdentitySet;
+import com.canoo.dp.impl.platform.core.SimpleDolphinPlatformThreadFactory;
 import com.canoo.platform.core.PlatformThreadFactory;
 import com.canoo.platform.core.functional.Subscription;
 import org.opendolphin.core.client.comm.RemotingExceptionHandler;

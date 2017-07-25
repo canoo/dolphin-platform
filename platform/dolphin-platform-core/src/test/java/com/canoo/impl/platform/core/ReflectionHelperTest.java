@@ -15,6 +15,7 @@
  */
 package com.canoo.impl.platform.core;
 
+import com.canoo.dp.impl.platform.core.ReflectionHelper;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

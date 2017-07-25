@@ -15,8 +15,8 @@
  */
 package com.canoo.impl.server.event;
 
-import com.canoo.impl.platform.core.Assert;
-import com.canoo.impl.server.client.ClientSessionLifecycleHandler;
+import com.canoo.dp.impl.platform.core.Assert;
+import com.canoo.dp.impl.server.client.ClientSessionLifecycleHandler;
 import com.canoo.impl.server.context.DolphinContext;
 import com.canoo.impl.server.context.DolphinContextProvider;
 import com.canoo.platform.core.functional.Callback;

@@ -15,7 +15,7 @@
  */
 package com.canoo.impl.server.controller;
 
-import com.canoo.impl.server.scanner.DefaultClasspathScanner;
+import com.canoo.dp.impl.server.scanner.DefaultClasspathScanner;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;

@@ -15,9 +15,9 @@
  */
 package com.canoo.dp.impl.server.javaee;
 
-import com.canoo.impl.server.bootstrap.PlatformBootstrap;
-import com.canoo.impl.server.config.ConfigurationFileLoader;
-import com.canoo.impl.server.config.DefaultPlatformConfiguration;
+import com.canoo.dp.impl.server.bootstrap.PlatformBootstrap;
+import com.canoo.dp.impl.server.config.ConfigurationFileLoader;
+import com.canoo.dp.impl.server.config.DefaultPlatformConfiguration;
 
 import javax.servlet.ServletContainerInitializer;
 import javax.servlet.ServletContext;

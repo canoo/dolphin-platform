@@ -28,8 +28,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
-import static com.canoo.impl.platform.core.PlatformConstants.REMOTING_DATE_FORMAT_PATTERN;
-import static com.canoo.impl.platform.core.PlatformConstants.TIMEZONE_UTC;
+import static com.canoo.dp.impl.platform.core.PlatformConstants.REMOTING_DATE_FORMAT_PATTERN;
+import static com.canoo.dp.impl.platform.core.PlatformConstants.TIMEZONE_UTC;
 import static com.canoo.dolphin.converters.ValueFieldTypes.ZONED_DATE_TIME_FIELD_TYPE;
 
 public class ZonedDateTimeConverterFactory extends AbstractConverterFactory {

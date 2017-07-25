@@ -16,7 +16,7 @@
 package com.canoo.dolphin.impl.info;
 
 import com.canoo.dolphin.converter.Converter;
-import com.canoo.impl.platform.core.ReflectionHelper;
+import com.canoo.dp.impl.platform.core.ReflectionHelper;
 import com.canoo.dolphin.internal.info.PropertyInfo;
 
 import java.lang.reflect.Field;

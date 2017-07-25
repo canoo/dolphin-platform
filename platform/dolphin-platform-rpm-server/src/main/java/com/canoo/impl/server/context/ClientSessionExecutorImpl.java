@@ -15,7 +15,7 @@
  */
 package com.canoo.impl.server.context;
 
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.platform.server.ClientSessionExecutor;
 import com.google.common.util.concurrent.SettableFuture;
 

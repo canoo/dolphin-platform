@@ -19,7 +19,7 @@ import com.canoo.platform.core.functional.Subscription;
 import com.canoo.dolphin.event.ValueChangeEvent;
 import com.canoo.dolphin.event.ValueChangeListener;
 import com.canoo.dolphin.mapping.Property;
-import com.canoo.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.Assert;
 import rx.Observable;
 import rx.functions.Func1;
 import rx.subjects.PublishSubject;

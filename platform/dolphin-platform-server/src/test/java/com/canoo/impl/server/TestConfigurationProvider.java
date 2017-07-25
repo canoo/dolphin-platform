@@ -15,7 +15,7 @@
  */
 package com.canoo.impl.server;
 
-import com.canoo.impl.server.config.DefaultModuleConfig;
+import com.canoo.dp.impl.server.config.DefaultModuleConfig;
 import com.canoo.platform.server.spi.ConfigurationProviderAdapter;
 
 import java.util.HashMap;
