@@ -13,17 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.canoo.dp.impl.remoting.legacy.communication;
+package com.canoo.dp.impl.remoting.legacy.commands;
 
-/**
- * A notification that does nothing on the server.
- * It is only used to hook into the communication at a known point
- * such that the onFinished handler can be executed
- * in the expected sequence.
- */
-@Deprecated
-public final class EmptyCommand extends Command {
-    public EmptyCommand() {
-        super(CommandConstants.EMPTY_COMMAND_ID);
+public final class DeletePresentationModelCommand extends Command {
+
+    private String pmId;
+
+    public DeletePresentationModelCommand() {
+        super(CommandConstants.DELETE_PRESENTATION_MODEL_COMMAND_ID);
     }
+
+    public DeletePresentationModelCommand(final String pmId) {
+        this();
+        this.pmId = pmId;
+    }
+
+    public String getPmId() {
+        return pmId;
+    }
+
+    public void setPmId(final String pmId) {
+        this.pmId = pmId;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + " pmId " + pmId;
+    }
+
 }

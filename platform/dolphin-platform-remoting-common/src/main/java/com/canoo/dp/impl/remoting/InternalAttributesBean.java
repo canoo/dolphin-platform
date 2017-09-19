@@ -40,12 +40,12 @@ public class InternalAttributesBean {
 
     public InternalAttributesBean(final BeanRepository beanRepository, final PresentationModelBuilder builder) {
         this(
-            beanRepository,
+                beanRepository,
                 Assert.requireNonNull(builder, "builder").withType(PlatformRemotingConstants.INTERNAL_ATTRIBUTES_BEAN_NAME)
-                .withAttribute(CONTROLLER_NAME)
-                .withAttribute(CONTROLLER_ID)
-                .withAttribute(MODEL)
-                .create()
+                        .withAttribute(CONTROLLER_NAME, null)
+                        .withAttribute(CONTROLLER_ID, null)
+                        .withAttribute(MODEL, null)
+                        .create()
         );
     }
 
@@ -66,7 +66,7 @@ public class InternalAttributesBean {
     }
 
     public <T> T getModel() {
-        if(modelAttribute.getValue() == null) {
+        if (modelAttribute.getValue() == null) {
             throw new RuntimeException("Dolphin Platform internal error: No model defined");
         }
         return (T) beanRepository.getBean(modelAttribute.getValue().toString());

@@ -15,9 +15,7 @@
  */
 package com.canoo.dp.impl.remoting.legacy.commands;
 
-import com.canoo.dp.impl.remoting.legacy.communication.Command;
-
-import static com.canoo.dp.impl.remoting.legacy.communication.CommandConstants.INTERRUPT_LONG_POLL_COMMAND_ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.INTERRUPT_LONG_POLL_COMMAND_ID;
 
 public final class InterruptLongPollCommand extends Command {
 

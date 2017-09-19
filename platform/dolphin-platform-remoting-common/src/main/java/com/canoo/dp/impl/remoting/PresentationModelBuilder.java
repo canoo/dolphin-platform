@@ -23,11 +23,7 @@ public interface PresentationModelBuilder<T extends PresentationModel> {
 
     PresentationModelBuilder<T> withId(String id);
 
-    PresentationModelBuilder withAttribute(String name);
-
     PresentationModelBuilder withAttribute(String name, Object value);
-
-    PresentationModelBuilder withAttribute(String name, Object value, String qualifier);
 
     T create();
 }

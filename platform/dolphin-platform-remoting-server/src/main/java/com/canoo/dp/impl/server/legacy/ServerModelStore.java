@@ -16,10 +16,10 @@
 package com.canoo.dp.impl.server.legacy;
 
 import com.canoo.dp.impl.platform.core.Assert;
-import com.canoo.dp.impl.remoting.legacy.communication.Command;
-import com.canoo.dp.impl.remoting.legacy.communication.CreatePresentationModelCommand;
-import com.canoo.dp.impl.remoting.legacy.communication.DeletePresentationModelCommand;
-import com.canoo.dp.impl.remoting.legacy.communication.ValueChangedCommand;
+import com.canoo.dp.impl.remoting.legacy.commands.Command;
+import com.canoo.dp.impl.remoting.legacy.commands.CreatePresentationModelCommand;
+import com.canoo.dp.impl.remoting.legacy.commands.DeletePresentationModelCommand;
+import com.canoo.dp.impl.remoting.legacy.commands.ValueChangedCommand;
 import com.canoo.dp.impl.remoting.legacy.core.ModelStore;
 import com.canoo.dp.impl.remoting.legacy.core.ModelStoreConfig;
 import org.slf4j.Logger;
@@ -46,17 +46,7 @@ public class ServerModelStore extends ModelStore<ServerAttribute, ServerPresenta
      */
     private static final AtomicInteger storeCount = new AtomicInteger(0);
 
-    /**
-     * unique identification of the current user session.
-     */
-    public final int id = storeCount.getAndIncrement();
-
-    protected List<Command> currentResponse = null;
-
-    /**
-     * Used to create unique presentation model ids within one server model store.
-     */
-    protected long pmInstanceCount = 0L;
+    private List<Command> currentResponse = null;
 
     public ServerModelStore() {
     }
@@ -108,10 +98,6 @@ public class ServerModelStore extends ModelStore<ServerAttribute, ServerPresenta
         return true;
     }
 
-    public int getId() {
-        return id;
-    }
-
     /**
      * Convenience method to let Dolphin removePresentationModel a presentation model directly on the server and notify the client.
      */
@@ -121,16 +107,6 @@ public class ServerModelStore extends ModelStore<ServerAttribute, ServerPresenta
             throw new IllegalStateException("Model " + pm + " not found on the server!");
         }
         deleteCommand(getCurrentResponse(), pm.getId());
-        return deleted;
-    }
-
-    public boolean checkClientRemoved(final ServerPresentationModel pm) {
-        boolean deleted = super.remove(pm);
-
-        //FIXME: Currently the client has the same event for a remove answer and a remove trigger
-      //  if (!deleted) {
-      //      throw new IllegalStateException("Model " + pm + " not found on the server!");
-      //  }
         return deleted;
     }
 
@@ -177,16 +153,16 @@ public class ServerModelStore extends ModelStore<ServerAttribute, ServerPresenta
      * The server model store remains untouched until the client has issued the notification.
      */
     @Deprecated
-    public static void presentationModelCommand(final List<Command> response, final String id, final String presentationModelType, final DTO dto) {
+    public static void presentationModelCommand(final List<Command> response, final String id, final String presentationModelType, final List<ServerAttribute> attributes) {
         if (response == null) {
             return;
         }
-        List<Map<String, Object>> list = new ArrayList<>();
-        for (Slot slot : dto.getSlots()) {
+        final List<Map<String, Object>> list = new ArrayList<>();
+        for (ServerAttribute attribute : attributes) {
             Map<String, Object> map = new HashMap<>();
-            map.put("propertyName", slot.getPropertyName());
-            map.put("value", slot.getValue());
-            map.put("qualifier", slot.getQualifier());
+            map.put("propertyName", attribute.getPropertyName());
+            map.put("value", attribute.getValue());
+            map.put("qualifier", attribute.getQualifier());
             list.add(map);
         }
         response.add(new CreatePresentationModelCommand(id, presentationModelType, list));
@@ -198,19 +174,7 @@ public class ServerModelStore extends ModelStore<ServerAttribute, ServerPresenta
      *
      * @throws IllegalArgumentException if a presentation model for this id already exists. No commands are sent in this case.
      */
-    public ServerPresentationModel presentationModel(final String id, final String presentationModelType, final DTO dto) {
-        List<ServerAttribute> attributes = new ArrayList<ServerAttribute>();
-        for (final Slot slot : dto.getSlots()) {
-            final ServerAttribute result = new ServerAttribute(slot.getPropertyName(), slot.getValue(), slot.getQualifier());
-            result.silently(new Runnable() {
-                @Override
-                public void run() {
-                    result.setValue(slot.getValue());
-                }
-
-            });
-            attributes.add(result);
-        }
+    public ServerPresentationModel presentationModel(final String id, final String presentationModelType, final List<ServerAttribute> attributes) {
         ServerPresentationModel model = new ServerPresentationModel(id, attributes, this);
         model.setPresentationModelType(presentationModelType);
         add(model);

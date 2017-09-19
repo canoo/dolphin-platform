@@ -15,24 +15,28 @@
  */
 package com.canoo.dp.impl.remoting;
 
-import com.canoo.platform.core.functional.Subscription;
 import com.canoo.dp.impl.platform.core.Assert;
+import com.canoo.dp.impl.remoting.legacy.core.PresentationModel;
+import com.canoo.dp.impl.remoting.legacy.core.ModelStore;
+import com.canoo.platform.core.functional.Subscription;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import com.canoo.dp.impl.remoting.legacy.core.ModelStore;
-import com.canoo.dp.impl.remoting.legacy.core.PresentationModel;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.IdentityHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A {@code BeanRepository} keeps a list of all registered Dolphin Beans and the mapping between OpenDolphin IDs and
  * the associated Dolphin Bean.
- *
+ * <p>
  * A new bean needs to be registered with the {@link #registerBean(Object, PresentationModel, UpdateSource)} method and can be deleted
  * with the {@link #delete(Object)} method.
  */
 // TODO mapDolphinToObject() does not really fit here, we should probably move it to Converters, but first we need to fix scopes
-public class BeanRepositoryImpl implements BeanRepository{
+public class BeanRepositoryImpl implements BeanRepository {
 
     private final Map<Object, PresentationModel> objectPmToDolphinPm = new IdentityHashMap<>();
     private final Map<String, Object> dolphinIdToObjectPm = new HashMap<>();
@@ -139,10 +143,10 @@ public class BeanRepositoryImpl implements BeanRepository{
 
     @Override
     public Object getBean(String sourceId) {
-        if(sourceId == null) {
+        if (sourceId == null) {
             return null;
         }
-        if(!dolphinIdToObjectPm.containsKey(sourceId)) {
+        if (!dolphinIdToObjectPm.containsKey(sourceId)) {
             throw new IllegalArgumentException("No bean instance found with id " + sourceId);
         }
         return dolphinIdToObjectPm.get(sourceId);

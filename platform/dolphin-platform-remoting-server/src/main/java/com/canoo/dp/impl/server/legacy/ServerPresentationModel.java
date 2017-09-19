@@ -16,13 +16,13 @@
 package com.canoo.dp.impl.server.legacy;
 
 import com.canoo.dp.impl.remoting.legacy.RemotingConstants;
-import com.canoo.dp.impl.remoting.legacy.core.BasePresentationModel;
+import com.canoo.dp.impl.remoting.legacy.core.PresentationModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-public class ServerPresentationModel extends BasePresentationModel<ServerAttribute> {
+public class ServerPresentationModel extends PresentationModel<ServerAttribute> {
 
     private static final Logger LOG = LoggerFactory.getLogger(ServerPresentationModel.class);
 
@@ -39,8 +39,10 @@ public class ServerPresentationModel extends BasePresentationModel<ServerAttribu
         modelStore = serverModelStore;
     }
 
+    private static long pmInstanceCount = 0L;
+
     private static String makeId(final ServerModelStore serverModelStore) {
-        long newId = serverModelStore.pmInstanceCount++;
+        long newId = pmInstanceCount++;
         return String.valueOf(newId) + RemotingConstants.SERVER_PM_AUTO_ID_SUFFIX;
     }
 

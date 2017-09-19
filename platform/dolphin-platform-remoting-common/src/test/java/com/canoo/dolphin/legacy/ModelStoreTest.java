@@ -15,7 +15,7 @@
  */
 package com.canoo.dolphin.legacy;
 
-import com.canoo.dp.impl.remoting.legacy.core.BasePresentationModel;
+import com.canoo.dp.impl.remoting.legacy.core.PresentationModel;
 import com.canoo.dp.impl.remoting.legacy.core.ModelStore;
 import com.canoo.dp.impl.remoting.legacy.core.ModelStoreEvent;
 import org.testng.Assert;
@@ -29,9 +29,9 @@ public class ModelStoreTest {
 
         //given:
 
-        BasePresentationModel parent = new BasePresentationModel("0", new ArrayList());
+        PresentationModel parent = new PresentationModel("0", new ArrayList());
         parent.setPresentationModelType("parent");
-        BasePresentationModel child1 = new BasePresentationModel("1", new ArrayList());
+        PresentationModel child1 = new PresentationModel("1", new ArrayList());
         TestStoreListener storeListener = new TestStoreListener();
         TestStoreListener parentStoreListener = new TestStoreListener();
         ModelStore modelStore = new ModelStore();

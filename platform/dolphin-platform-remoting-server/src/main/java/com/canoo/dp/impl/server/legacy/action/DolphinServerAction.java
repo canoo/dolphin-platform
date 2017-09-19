@@ -15,8 +15,7 @@
  */
 package com.canoo.dp.impl.server.legacy.action;
 
-import com.canoo.dp.impl.remoting.legacy.communication.Command;
-import com.canoo.dp.impl.server.legacy.DTO;
+import com.canoo.dp.impl.remoting.legacy.commands.Command;
 import com.canoo.dp.impl.server.legacy.ServerAttribute;
 import com.canoo.dp.impl.server.legacy.ServerModelStore;
 
@@ -32,8 +31,8 @@ public abstract class DolphinServerAction implements ServerAction {
 
     private List<Command> dolphinResponse;
 
-    public void presentationModel(final String id, final String presentationModelType, final DTO dto) {
-        ServerModelStore.presentationModelCommand(dolphinResponse, id, presentationModelType, dto);
+    public void presentationModel(final String id, final String presentationModelType, final List<ServerAttribute> attributes) {
+        ServerModelStore.presentationModelCommand(dolphinResponse, id, presentationModelType, attributes);
     }
 
     public void changeValue(final ServerAttribute attribute, final String value) {

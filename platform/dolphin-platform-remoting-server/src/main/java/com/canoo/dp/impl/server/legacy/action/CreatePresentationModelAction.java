@@ -16,7 +16,7 @@
 package com.canoo.dp.impl.server.legacy.action;
 
 import com.canoo.dp.impl.remoting.legacy.RemotingConstants;
-import com.canoo.dp.impl.remoting.legacy.communication.CreatePresentationModelCommand;
+import com.canoo.dp.impl.remoting.legacy.commands.CreatePresentationModelCommand;
 import com.canoo.dp.impl.server.legacy.ServerAttribute;
 import com.canoo.dp.impl.server.legacy.ServerModelStore;
 import com.canoo.dp.impl.server.legacy.ServerPresentationModel;
@@ -55,7 +55,8 @@ public class CreatePresentationModelAction extends DolphinServerAction {
 
         List<ServerAttribute> attributes = new LinkedList();
         for (Map<String, Object> attr : command.getAttributes()) {
-            ServerAttribute attribute = new ServerAttribute((String) attr.get("propertyName"), attr.get("value"), (String) attr.get("qualifier"));
+            ServerAttribute attribute = new ServerAttribute((String) attr.get("propertyName"), attr.get("value"));
+            attribute.setQualifier((String) attr.get("qualifier"));
             attribute.setId((String) attr.get("id"));
             attributes.add(attribute);
         }

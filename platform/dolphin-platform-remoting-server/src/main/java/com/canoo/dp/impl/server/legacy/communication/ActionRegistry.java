@@ -15,7 +15,7 @@
  */
 package com.canoo.dp.impl.server.legacy.communication;
 
-import com.canoo.dp.impl.remoting.legacy.communication.Command;
+import com.canoo.dp.impl.remoting.legacy.commands.Command;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

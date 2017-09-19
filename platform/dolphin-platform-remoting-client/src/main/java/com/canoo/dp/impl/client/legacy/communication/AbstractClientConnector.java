@@ -16,9 +16,9 @@
 package com.canoo.dp.impl.client.legacy.communication;
 
 import com.canoo.dp.impl.client.legacy.ClientModelStore;
+import com.canoo.dp.impl.remoting.legacy.commands.Command;
 import com.canoo.dp.impl.remoting.legacy.commands.InterruptLongPollCommand;
 import com.canoo.dp.impl.remoting.legacy.commands.StartLongPollCommand;
-import com.canoo.dp.impl.remoting.legacy.communication.Command;
 import com.canoo.platform.remoting.DolphinRemotingException;
 import com.canoo.platform.remoting.client.RemotingExceptionHandler;
 import org.slf4j.Logger;
@@ -43,7 +43,7 @@ public abstract class AbstractClientConnector {
 
     private final ClientResponseHandler responseHandler;
 
-    private final ICommandBatcher commandBatcher;
+    private final CommandBatcher commandBatcher;
 
     /**
      * whether we currently wait for push events (internal state) and may need to release
@@ -60,7 +60,7 @@ public abstract class AbstractClientConnector {
 
     private InterruptLongPollCommand releaseCommand;
 
-    protected AbstractClientConnector(final ClientModelStore clientModelStore, final Executor uiExecutor, final ICommandBatcher commandBatcher, final RemotingExceptionHandler remotingExceptionHandler, final Executor backgroundExecutor) {
+    protected AbstractClientConnector(final ClientModelStore clientModelStore, final Executor uiExecutor, final CommandBatcher commandBatcher, final RemotingExceptionHandler remotingExceptionHandler, final Executor backgroundExecutor) {
         this.uiExecutor = Objects.requireNonNull(uiExecutor);
         this.commandBatcher = Objects.requireNonNull(commandBatcher);
         this.remotingExceptionHandler = Objects.requireNonNull(remotingExceptionHandler);
@@ -139,7 +139,7 @@ public abstract class AbstractClientConnector {
 
     protected abstract List<Command> transmit(final List<Command> commands) throws DolphinRemotingException;
 
-    public void send(final Command command, final OnFinishedHandler callback, final HandlerType handlerType) {
+    public void send(final Command command, final OnFinishedHandler callback) {
         LOG.trace("Command of type {} should be send to server", command.getClass().getSimpleName());
         if (!connectedFlag.get()) {
             //TODO: Change to DolphinRemotingException
@@ -150,12 +150,8 @@ public abstract class AbstractClientConnector {
             release();
         }
         // we are inside the UI thread and events calls come in strict order as received by the UI toolkit
-        CommandAndHandler handler = new CommandAndHandler(command, callback, handlerType);
+        CommandAndHandler handler = new CommandAndHandler(command, callback);
         commandBatcher.batch(handler);
-    }
-
-    public void send(final Command command, final OnFinishedHandler callback) {
-        send(command, callback, HandlerType.UI);
     }
 
     public void send(final Command command) {

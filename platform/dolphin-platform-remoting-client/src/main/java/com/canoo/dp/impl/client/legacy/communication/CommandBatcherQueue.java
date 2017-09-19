@@ -21,7 +21,7 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class CommandBatcherQueue implements DataflowQueue<List<CommandAndHandler>> {
+public class CommandBatcherQueue {
 
     private final List<List<CommandAndHandler>> internalQueue = new LinkedList<>();
 
@@ -29,7 +29,6 @@ public class CommandBatcherQueue implements DataflowQueue<List<CommandAndHandler
 
     private final Condition emptyCondition = queueLock.newCondition();
 
-    @Override
     public List<CommandAndHandler> getVal() throws InterruptedException {
         queueLock.lock();
         try {
@@ -45,7 +44,6 @@ public class CommandBatcherQueue implements DataflowQueue<List<CommandAndHandler
         }
     }
 
-    @Override
     public void add(final List<CommandAndHandler> value) {
         queueLock.lock();
         try {
@@ -56,7 +54,6 @@ public class CommandBatcherQueue implements DataflowQueue<List<CommandAndHandler
         }
     }
 
-    @Override
     public int length() {
         queueLock.lock();
         try {

@@ -15,11 +15,12 @@
  */
 package com.canoo.dp.impl.server.legacy.action;
 
-import com.canoo.dp.impl.remoting.legacy.communication.ChangeAttributeMetadataCommand;
-import com.canoo.dp.impl.remoting.legacy.communication.Command;
+import com.canoo.dp.impl.remoting.legacy.commands.ChangeAttributeMetadataCommand;
+import com.canoo.dp.impl.remoting.legacy.commands.Command;
 import com.canoo.dp.impl.server.legacy.DefaultServerDolphin;
 import com.canoo.dp.impl.server.legacy.ServerAttribute;
-import com.canoo.dp.impl.server.legacy.ServerDolphinFactory;
+import com.canoo.dp.impl.server.legacy.ServerConnector;
+import com.canoo.dp.impl.server.legacy.ServerModelStore;
 import com.canoo.dp.impl.server.legacy.ServerPresentationModel;
 import com.canoo.dp.impl.server.legacy.communication.ActionRegistry;
 import org.testng.Assert;
@@ -33,7 +34,7 @@ public class StoreAttributeActionTests {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        dolphin = ((DefaultServerDolphin) (ServerDolphinFactory.create()));
+        dolphin = new DefaultServerDolphin(new ServerModelStore(), new ServerConnector());
         dolphin.getModelStore().setCurrentResponse(new ArrayList<Command>());
         registry = new ActionRegistry();
     }

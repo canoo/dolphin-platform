@@ -16,7 +16,10 @@
 package com.canoo.impl.dp.spring.test;
 
 import com.canoo.dp.impl.client.ClientContextImpl;
+import com.canoo.dp.impl.client.legacy.ClientModelStore;
+import com.canoo.dp.impl.client.legacy.communication.AbstractClientConnector;
 import com.canoo.dp.impl.platform.core.Assert;
+import com.canoo.dp.impl.remoting.legacy.commands.Command;
 import com.canoo.dp.impl.server.client.ClientSessionProvider;
 import com.canoo.dp.impl.server.config.ConfigurationFileLoader;
 import com.canoo.dp.impl.server.config.RemotingConfiguration;
@@ -24,13 +27,10 @@ import com.canoo.dp.impl.server.context.DolphinContext;
 import com.canoo.dp.impl.server.controller.ControllerRepository;
 import com.canoo.dp.impl.server.controller.ControllerValidationException;
 import com.canoo.dp.impl.server.scanner.DefaultClasspathScanner;
+import com.canoo.platform.core.functional.Function;
 import com.canoo.platform.remoting.client.ClientConfiguration;
 import com.canoo.platform.remoting.client.ClientContext;
 import com.canoo.platform.server.client.ClientSession;
-import com.canoo.dp.impl.client.legacy.ClientModelStore;
-import com.canoo.dp.impl.client.legacy.communication.AbstractClientConnector;
-import com.canoo.dp.impl.remoting.legacy.communication.Command;
-import com.canoo.dp.impl.remoting.legacy.util.Function;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.http.HttpSession;

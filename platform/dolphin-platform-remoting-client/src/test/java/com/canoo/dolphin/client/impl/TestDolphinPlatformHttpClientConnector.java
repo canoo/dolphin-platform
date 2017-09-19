@@ -15,32 +15,41 @@
  */
 package com.canoo.dolphin.client.impl;
 
-import com.canoo.dp.impl.client.DolphinPlatformHttpClientConnector;
-import com.canoo.dp.impl.platform.core.PlatformConstants;
-import com.canoo.platform.remoting.client.ClientConfiguration;
 import com.canoo.dolphin.client.DummyUiThreadHandler;
-import com.canoo.platform.client.HttpURLConnectionFactory;
-import com.canoo.dp.impl.remoting.commands.CreateContextCommand;
+import com.canoo.dp.impl.client.DolphinPlatformHttpClientConnector;
 import com.canoo.dp.impl.client.legacy.ClientDolphin;
 import com.canoo.dp.impl.client.legacy.ClientModelStore;
-import com.canoo.dp.impl.client.legacy.DefaultModelSynchronizer;
+import com.canoo.dp.impl.client.legacy.ModelSynchronizer;
 import com.canoo.dp.impl.client.legacy.communication.AbstractClientConnector;
 import com.canoo.dp.impl.client.legacy.communication.SimpleExceptionHandler;
-import com.canoo.dp.impl.remoting.legacy.communication.Command;
-import com.canoo.dp.impl.remoting.legacy.communication.CreatePresentationModelCommand;
-import com.canoo.dp.impl.remoting.legacy.communication.JsonCodec;
+import com.canoo.dp.impl.platform.core.PlatformConstants;
+import com.canoo.dp.impl.remoting.commands.CreateContextCommand;
+import com.canoo.dp.impl.remoting.legacy.commands.Command;
+import com.canoo.dp.impl.remoting.legacy.commands.CreatePresentationModelCommand;
+import com.canoo.platform.client.HttpURLConnectionFactory;
+import com.canoo.platform.core.functional.Provider;
 import com.canoo.platform.remoting.DolphinRemotingException;
-import com.canoo.dp.impl.remoting.legacy.util.Provider;
+import com.canoo.platform.remoting.client.ClientConfiguration;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.CREATE_PRESENTATION_MODEL_COMMAND_ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.PM_ATTRIBUTES;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.PM_ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.PM_TYPE;
 
 public class TestDolphinPlatformHttpClientConnector {
 
@@ -73,7 +82,7 @@ public class TestDolphinPlatformHttpClientConnector {
 
                     @Override
                     public InputStream getInputStream() throws IOException {
-                        String response = "[{\"pmId\":\"p1\",\"clientSideOnly\":false,\"id\":\"CreatePresentationModel\",\"attributes\":[],\"pmType\":null,\"className\":\"com.canoo.dp.impl.remoting.legacy.communication.CreatePresentationModelCommand\"}]";
+                        String response = "[{" + PM_ID + ":\"p1\"," + ID + ":" + CREATE_PRESENTATION_MODEL_COMMAND_ID + "," + PM_ATTRIBUTES + ":[]," + PM_TYPE + ":null}]";
                         return new ByteArrayInputStream(response.getBytes("UTF-8"));
                     }
 
@@ -89,13 +98,13 @@ public class TestDolphinPlatformHttpClientConnector {
         });
 
         ClientDolphin clientDolphin = new ClientDolphin();
-        clientDolphin.setClientModelStore(new ClientModelStore(new DefaultModelSynchronizer(new Provider<AbstractClientConnector>() {
+        clientDolphin.setClientModelStore(new ClientModelStore(new ModelSynchronizer(new Provider<AbstractClientConnector>() {
             @Override
             public AbstractClientConnector get() {
                 return null;
             }
         })));
-        DolphinPlatformHttpClientConnector connector = new DolphinPlatformHttpClientConnector(clientConfiguration, clientDolphin.getModelStore(), new JsonCodec(), new SimpleExceptionHandler());
+        DolphinPlatformHttpClientConnector connector = new DolphinPlatformHttpClientConnector(clientConfiguration, clientDolphin.getModelStore(), new SimpleExceptionHandler());
 
         CreatePresentationModelCommand command = new CreatePresentationModelCommand();
         command.setPmId("p1");
@@ -140,13 +149,13 @@ public class TestDolphinPlatformHttpClientConnector {
         });
 
         ClientDolphin clientDolphin = new ClientDolphin();
-        clientDolphin.setClientModelStore(new ClientModelStore(new DefaultModelSynchronizer(new Provider<AbstractClientConnector>() {
+        clientDolphin.setClientModelStore(new ClientModelStore(new ModelSynchronizer(new Provider<AbstractClientConnector>() {
             @Override
             public AbstractClientConnector get() {
                 return null;
             }
         })));
-        DolphinPlatformHttpClientConnector connector = new DolphinPlatformHttpClientConnector(clientConfiguration, clientDolphin.getModelStore(), new JsonCodec(), new SimpleExceptionHandler());
+        DolphinPlatformHttpClientConnector connector = new DolphinPlatformHttpClientConnector(clientConfiguration, clientDolphin.getModelStore(), new SimpleExceptionHandler());
 
         List<Command> commands = new ArrayList<>();
         commands.add(new CreateContextCommand());

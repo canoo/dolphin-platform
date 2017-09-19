@@ -17,10 +17,8 @@ package com.canoo.dp.impl.client.legacy.communication;
 
 import com.canoo.dp.impl.client.legacy.ClientAttribute;
 import com.canoo.dp.impl.client.legacy.ClientModelStore;
-import com.canoo.dp.impl.client.legacy.ClientPresentationModel;
 import com.canoo.dp.impl.client.legacy.ModelSynchronizer;
 import com.canoo.dp.impl.remoting.legacy.core.Attribute;
-import com.canoo.dp.impl.remoting.legacy.core.PresentationModel;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -40,38 +38,20 @@ public class AttributeChangeListener implements PropertyChangeListener {
     @Override
     public void propertyChange(final PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals(Attribute.VALUE_NAME)) {
-            if (evt.getOldValue() == null && evt.getNewValue() == null || evt.getOldValue() != null && evt.getNewValue() != null && evt.getOldValue().equals(evt.getNewValue())) {
+            if (evt.getOldValue() == null && evt.getNewValue() == null || (
+                    evt.getOldValue() != null && evt.getNewValue() != null &&
+                            evt.getOldValue().equals(evt.getNewValue()))) {
                 return;
             }
-
-            if (isSendable(evt)) {
-                modelSynchronizer.onPropertyChanged(evt);
-            }
-
-            List<ClientAttribute> attributes = clientModelStore.findAllAttributesByQualifier(((Attribute) evt.getSource()).getQualifier());
+            modelSynchronizer.onPropertyChanged(evt);
+            final String qualifier = ((Attribute) evt.getSource()).getQualifier();
+            final List<ClientAttribute> attributes = clientModelStore.findAllAttributesByQualifier(qualifier);
             for (ClientAttribute attribute : attributes) {
                 attribute.setValue(evt.getNewValue());
             }
-
         } else {
-            // we assume the change is on a metadata property such as qualifier
-            if (isSendable(evt)) {
-                modelSynchronizer.onMetadataChanged(evt);
-            }
+            modelSynchronizer.onMetadataChanged(evt);
         }
-    }
-
-    private boolean isSendable(final PropertyChangeEvent evt) {
-        PresentationModel pmOfAttribute = ((Attribute) evt.getSource()).getPresentationModel();
-        if (pmOfAttribute == null) {
-            return true;
-        }
-
-        if (pmOfAttribute instanceof ClientPresentationModel && ((ClientPresentationModel) pmOfAttribute).isClientSideOnly()) {
-            return false;
-        }
-
-        return true;
     }
 
 }

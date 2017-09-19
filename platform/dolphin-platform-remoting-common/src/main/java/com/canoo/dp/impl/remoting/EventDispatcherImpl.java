@@ -17,9 +17,9 @@ package com.canoo.dp.impl.remoting;
 
 import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.dp.impl.remoting.legacy.RemotingConstants;
+import com.canoo.dp.impl.remoting.legacy.core.PresentationModel;
 import com.canoo.dp.impl.remoting.legacy.core.ModelStore;
 import com.canoo.dp.impl.remoting.legacy.core.ModelStoreEvent;
-import com.canoo.dp.impl.remoting.legacy.core.PresentationModel;
 
 import java.util.ArrayList;
 import java.util.List;

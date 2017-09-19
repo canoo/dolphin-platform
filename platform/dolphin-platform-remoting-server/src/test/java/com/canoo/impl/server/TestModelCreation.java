@@ -15,8 +15,9 @@
  */
 package com.canoo.impl.server;
 
-import com.canoo.platform.remoting.BeanManager;
 import com.canoo.dp.impl.remoting.BeanDefinitionException;
+import com.canoo.dp.impl.remoting.BeanRepository;
+import com.canoo.dp.impl.remoting.EventDispatcher;
 import com.canoo.dp.impl.remoting.PlatformRemotingConstants;
 import com.canoo.dp.impl.remoting.converters.BooleanConverterFactory;
 import com.canoo.dp.impl.remoting.converters.ByteConverterFactory;
@@ -30,8 +31,12 @@ import com.canoo.dp.impl.remoting.converters.IntegerConverterFactory;
 import com.canoo.dp.impl.remoting.converters.LongConverterFactory;
 import com.canoo.dp.impl.remoting.converters.ShortConverterFactory;
 import com.canoo.dp.impl.remoting.converters.StringConverterFactory;
-import com.canoo.dp.impl.remoting.BeanRepository;
-import com.canoo.dp.impl.remoting.EventDispatcher;
+import com.canoo.dp.impl.remoting.legacy.RemotingConstants;
+import com.canoo.dp.impl.remoting.legacy.core.Attribute;
+import com.canoo.dp.impl.remoting.legacy.core.PresentationModel;
+import com.canoo.dp.impl.server.legacy.ServerAttribute;
+import com.canoo.dp.impl.server.legacy.ServerDolphin;
+import com.canoo.dp.impl.server.legacy.ServerPresentationModel;
 import com.canoo.impl.server.util.AbstractDolphinBasedTest;
 import com.canoo.impl.server.util.ChildModel;
 import com.canoo.impl.server.util.ComplexDataTypesModel;
@@ -40,13 +45,8 @@ import com.canoo.impl.server.util.PrimitiveDataTypesModel;
 import com.canoo.impl.server.util.SimpleAnnotatedTestModel;
 import com.canoo.impl.server.util.SimpleTestModel;
 import com.canoo.impl.server.util.SingleReferenceModel;
+import com.canoo.platform.remoting.BeanManager;
 import org.hamcrest.Matchers;
-import com.canoo.dp.impl.remoting.legacy.RemotingConstants;
-import com.canoo.dp.impl.remoting.legacy.core.Attribute;
-import com.canoo.dp.impl.remoting.legacy.core.PresentationModel;
-import com.canoo.dp.impl.server.legacy.ServerAttribute;
-import com.canoo.dp.impl.server.legacy.ServerDolphin;
-import com.canoo.dp.impl.server.legacy.ServerPresentationModel;
 import org.testng.annotations.Test;
 
 import java.util.List;
@@ -215,7 +215,7 @@ public class TestModelCreation extends AbstractDolphinBasedTest {
         List<ServerAttribute> attributes = dolphinModel.getAttributes();
         assertThat(attributes, hasSize(9));
 
-        for(Attribute attribute : attributes) {
+        for (Attribute attribute : attributes) {
             if (RemotingConstants.SOURCE_SYSTEM.equals(attribute.getPropertyName())) {
                 assertThat(attribute.getValue(), Matchers.<Object>is(RemotingConstants.SOURCE_SYSTEM_SERVER));
             } else {
@@ -232,7 +232,7 @@ public class TestModelCreation extends AbstractDolphinBasedTest {
         final List<Attribute> classAttributes = classModel.getAttributes();
         assertThat(classAttributes, hasSize(10));
 
-        for(Attribute attribute : classAttributes) {
+        for (Attribute attribute : classAttributes) {
             if (PlatformRemotingConstants.JAVA_CLASS.equals(attribute.getPropertyName())) {
                 assertThat(attribute.getValue(), Matchers.<Object>is(PrimitiveDataTypesModel.class.getName()));
             } else if (RemotingConstants.SOURCE_SYSTEM.equals(attribute.getPropertyName())) {

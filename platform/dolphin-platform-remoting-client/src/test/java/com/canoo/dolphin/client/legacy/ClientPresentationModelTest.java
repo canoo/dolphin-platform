@@ -33,8 +33,8 @@ public class ClientPresentationModelTest {
 
     @Test
     public void testNullIdCtor() {
-        ClientPresentationModel model1 = new ClientPresentationModel(Collections.<ClientAttribute>emptyList());
-        ClientPresentationModel model2 = new ClientPresentationModel(Collections.<ClientAttribute>emptyList());
+        ClientPresentationModel model1 = new ClientPresentationModel(null, Collections.<ClientAttribute>emptyList());
+        ClientPresentationModel model2 = new ClientPresentationModel(null, Collections.<ClientAttribute>emptyList());
         Assert.assertNotEquals(model1.getId(), model2.getId());
     }
 

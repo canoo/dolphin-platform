@@ -20,9 +20,9 @@ import com.canoo.dp.impl.remoting.commands.DestroyControllerCommand;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import static com.canoo.dp.impl.remoting.legacy.communication.CommandConstants.CONTROLLER_ID;
-import static com.canoo.dp.impl.remoting.legacy.communication.CommandConstants.DESTROY_CONTROLLER_COMMAND_ID;
-import static com.canoo.dp.impl.remoting.legacy.communication.CommandConstants.ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.CONTROLLER_ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.DESTROY_CONTROLLER_COMMAND_ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.ID;
 
 public class DestroyControllerCommandEncoder extends AbstractCommandTranscoder<DestroyControllerCommand> {
 

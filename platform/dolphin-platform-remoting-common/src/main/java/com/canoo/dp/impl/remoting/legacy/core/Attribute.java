@@ -16,48 +16,95 @@
 package com.canoo.dp.impl.remoting.legacy.core;
 
 /**
- * A presentation model contains a list of Attribute objects.
- * Every Attribute object belongs to only one presentation model.
- * <p/>
- * Each Attribute is uniquely identified by a property name and a tag value (which if not specified defaults to "VALUE".)
- * <p/>
- * Each Attribute stores a value and a base (or original) value.  An Attribute also maintains a dirty flag, which is
- * true whenever the current value and the base (original) value are different.
- * <p/>
- * In addition, a qualifier string may be specified for an attribute; a qualifier has application-specific
- * semantics, but is generally used to identify all attributes (regardless of the presentation model to which
- * they belong) which refer to the same domain model object.
+ * The value may be null as long as the Attribute is used as a "placeholder".
  */
-public interface Attribute extends Observable {
-    String QUALIFIER_NAME = "qualifier";
-    String VALUE_NAME = "value";
-    String PROPERTY_NAME = "propertyName";
-    String ID = "id";
 
-    /** Returns the current value of this attribute. */
-    Object getValue();
+public abstract class Attribute extends Observable {
 
-    /** Sets the current value of this attribute. */
-    void setValue(Object value);
+    public static final String QUALIFIER_NAME = "qualifier";
+    public static final String VALUE_NAME = "value";
+    public static final String PROPERTY_NAME = "propertyName";
+    public static final String ID = "id";
+    private static long instanceCount = 0;
 
-    /** Returns the property name of this attribute.  Several attributes in a presentation model may share the
-     * same property name, but these attributes must all have different tags.
-     */
-    String getPropertyName();
+    private final String propertyName;
 
-    /** Returns the qualifier (if any) of this attribute. */
-    String getQualifier();
+    private Object value;
 
-    /** Returns a string which uniquely identifies every attribute.  Acts as an atom which can be passed between
-     * client and server dolphin layers to reference a common attribute.  This string is created by the Attribute
-     * constructor and cannot be changed.
-     */
-    String getId();
+    private PresentationModel presentationModel;
+
+    private String id ;
+
+    private String qualifier; // application specific semantics apply
+
+    public Attribute(String propertyName, Object value) {
+        this(propertyName, value, null);
+    }
+
+    public Attribute(String propertyName, Object value, String qualifier) {
+        this.id = (instanceCount++) + getOrigin();
+        this.propertyName = propertyName;
+        this.value = value;
+        this.qualifier = qualifier;
+    }
 
     /**
-     * Every attribute belongs to at most one presentation model.  If it has been added to a presentation model,
-     * then this method returns that model, otherwise null.
-     * @return the presentation model to which this attribute belongs.
+     * @return 'C' for client or 'S' for server
      */
-    PresentationModel getPresentationModel();
+    protected abstract String getOrigin();
+
+    public void setPresentationModel(PresentationModel presentationModel) {
+        if (this.presentationModel != null) {
+            throw new IllegalStateException("You can not set a presentation model for an attribute that is already bound.");
+        }
+        this.presentationModel = presentationModel;
+    }
+
+    public PresentationModel getPresentationModel() {
+        return this.presentationModel;
+    }
+
+    public Object getValue() {
+        return value;
+    }
+
+    public void setValue(Object newValue) {
+        if (isDifferent(value, newValue)) {
+            firePropertyChange(VALUE_NAME, value, value = newValue);
+        }
+    }
+
+    private boolean isDifferent(Object oldValue, Object newValue) {
+        return oldValue == null ? newValue != null : !oldValue.equals(newValue);
+    }
+
+    public String toString() {
+        return new StringBuilder()
+                .append(id)
+                .append(" : ")
+                .append(propertyName)
+                .append(" (")
+                .append(qualifier).append(") ")
+                .append(value).toString();
+    }
+
+    public String getPropertyName() {
+        return propertyName;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getQualifier() {
+        return qualifier;
+    }
+
+    public void setQualifier(String qualifier) {
+        firePropertyChange(QUALIFIER_NAME, this.qualifier, this.qualifier = qualifier);
+    }
 }

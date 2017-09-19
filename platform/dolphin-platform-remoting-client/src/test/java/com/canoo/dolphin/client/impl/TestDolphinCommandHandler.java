@@ -19,13 +19,15 @@ import com.canoo.dolphin.client.util.AbstractDolphinBasedTest;
 import com.canoo.dp.impl.client.DolphinCommandHandler;
 import com.canoo.dp.impl.client.legacy.ClientAttribute;
 import com.canoo.dp.impl.client.legacy.ClientDolphin;
-import com.canoo.dp.impl.remoting.legacy.communication.Command;
+import com.canoo.dp.impl.client.legacy.ClientPresentationModel;
+import com.canoo.dp.impl.remoting.legacy.commands.Command;
 import com.canoo.dp.impl.server.legacy.ServerDolphin;
 import com.canoo.dp.impl.server.legacy.action.DolphinServerAction;
 import com.canoo.dp.impl.server.legacy.communication.ActionRegistry;
 import com.canoo.dp.impl.server.legacy.communication.CommandHandler;
 import org.testng.annotations.Test;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,7 +49,9 @@ public class TestDolphinCommandHandler extends AbstractDolphinBasedTest {
         final ClientDolphin clientDolphin = configuration.getClientDolphin();
         final DolphinCommandHandler dolphinCommandHandler = new DolphinCommandHandler(clientDolphin.getClientConnector());
         final String modelId = UUID.randomUUID().toString();
-        clientDolphin.getModelStore().createModel(modelId, null, new ClientAttribute("myAttribute", "UNKNOWN"));
+
+        final ClientPresentationModel model = new ClientPresentationModel(modelId, Collections.singletonList(new ClientAttribute("myAttribute", "UNKNOWN")));
+        clientDolphin.getModelStore().add(model);
         serverDolphin.getServerConnector().register(new DolphinServerAction() {
             @Override
             public void registerIn(ActionRegistry registry) {

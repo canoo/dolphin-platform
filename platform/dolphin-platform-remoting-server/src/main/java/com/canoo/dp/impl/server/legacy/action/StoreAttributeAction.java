@@ -15,7 +15,7 @@
  */
 package com.canoo.dp.impl.server.legacy.action;
 
-import com.canoo.dp.impl.remoting.legacy.communication.ChangeAttributeMetadataCommand;
+import com.canoo.dp.impl.remoting.legacy.commands.ChangeAttributeMetadataCommand;
 import com.canoo.dp.impl.remoting.legacy.core.Attribute;
 import com.canoo.dp.impl.server.legacy.ServerAttribute;
 import com.canoo.dp.impl.server.legacy.communication.ActionRegistry;

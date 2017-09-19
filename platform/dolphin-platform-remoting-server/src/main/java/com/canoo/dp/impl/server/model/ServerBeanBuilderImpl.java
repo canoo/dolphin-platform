@@ -15,24 +15,24 @@
  */
 package com.canoo.dp.impl.server.model;
 
-import com.canoo.platform.remoting.ListChangeEvent;
-import com.canoo.platform.remoting.ListChangeListener;
-import com.canoo.platform.remoting.ObservableList;
-import com.canoo.platform.remoting.ValueChangeEvent;
+import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.dp.impl.remoting.AbstractBeanBuilder;
-import com.canoo.dp.impl.remoting.PresentationModelBuilderFactory;
-import com.canoo.dp.impl.remoting.PropertyImpl;
-import com.canoo.dp.impl.remoting.collections.ObservableArrayList;
 import com.canoo.dp.impl.remoting.BeanRepository;
 import com.canoo.dp.impl.remoting.ClassRepository;
 import com.canoo.dp.impl.remoting.EventDispatcher;
 import com.canoo.dp.impl.remoting.ListMapper;
+import com.canoo.dp.impl.remoting.PresentationModelBuilderFactory;
+import com.canoo.dp.impl.remoting.PropertyImpl;
+import com.canoo.dp.impl.remoting.collections.ObservableArrayList;
 import com.canoo.dp.impl.remoting.info.PropertyInfo;
-import com.canoo.platform.remoting.Property;
-import com.canoo.dp.impl.platform.core.Assert;
-import com.canoo.dp.impl.server.gc.GarbageCollector;
 import com.canoo.dp.impl.remoting.legacy.core.Attribute;
 import com.canoo.dp.impl.remoting.legacy.core.PresentationModel;
+import com.canoo.dp.impl.server.gc.GarbageCollector;
+import com.canoo.platform.remoting.ListChangeEvent;
+import com.canoo.platform.remoting.ListChangeListener;
+import com.canoo.platform.remoting.ObservableList;
+import com.canoo.platform.remoting.Property;
+import com.canoo.platform.remoting.ValueChangeEvent;
 
 public class ServerBeanBuilderImpl extends AbstractBeanBuilder implements ServerBeanBuilder {
 

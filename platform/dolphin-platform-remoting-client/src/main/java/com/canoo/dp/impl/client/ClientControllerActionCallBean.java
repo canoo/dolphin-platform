@@ -37,7 +37,7 @@ public class ClientControllerActionCallBean extends AbstractControllerActionCall
         builder.withType(PlatformRemotingConstants.CONTROLLER_ACTION_CALL_BEAN_NAME)
                 .withAttribute(CONTROLLER_ID, controllerId)
                 .withAttribute(ACTION_NAME, actionName)
-                .withAttribute(ERROR_CODE);
+                .withAttribute(ERROR_CODE, null);
 
         for (final Param param : params) {
             final Object value = param.getValue();

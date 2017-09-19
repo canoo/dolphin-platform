@@ -16,17 +16,51 @@
 package com.canoo.dp.impl.remoting.legacy.core;
 
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
-public interface Observable {
-    void addPropertyChangeListener(PropertyChangeListener listener);
+public class Observable {
 
-    void addPropertyChangeListener(String propertyName, PropertyChangeListener listener);
+    private final PropertyChangeSupport pcs;
 
-    void removePropertyChangeListener(PropertyChangeListener listener);
+    public Observable() {
+        pcs = new PropertyChangeSupport(this);
+    }
 
-    void removePropertyChangeListener(String propertyName, PropertyChangeListener listener);
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        if (listener == null || containsListener(listener, getPropertyChangeListeners())) return;
+        pcs.addPropertyChangeListener(listener);
+    }
 
-    PropertyChangeListener[] getPropertyChangeListeners();
+    public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+        if (listener == null || containsListener(listener, getPropertyChangeListeners(propertyName))) return;
+        pcs.addPropertyChangeListener(propertyName, listener);
+    }
 
-    PropertyChangeListener[] getPropertyChangeListeners(String propertyName);
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        pcs.removePropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+        pcs.removePropertyChangeListener(propertyName, listener);
+    }
+
+    public PropertyChangeListener[] getPropertyChangeListeners() {
+        return pcs.getPropertyChangeListeners();
+    }
+
+    public PropertyChangeListener[] getPropertyChangeListeners(String propertyName) {
+        return pcs.getPropertyChangeListeners(propertyName);
+    }
+
+    protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+        if (oldValue == newValue) return;
+        pcs.firePropertyChange(propertyName, oldValue, newValue);
+    }
+
+    private boolean containsListener(PropertyChangeListener listener, PropertyChangeListener[] listeners) {
+        for (PropertyChangeListener subject : listeners) {
+            if (subject == listener) return true;
+        }
+        return false;
+    }
 }

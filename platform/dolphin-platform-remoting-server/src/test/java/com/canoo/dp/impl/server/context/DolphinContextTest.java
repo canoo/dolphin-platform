@@ -33,7 +33,7 @@ import com.canoo.dp.impl.server.scanner.DefaultClasspathScanner;
 import com.canoo.impl.server.util.HttpSessionMock;
 import com.canoo.platform.core.functional.Callback;
 import com.canoo.platform.server.client.ClientSession;
-import com.canoo.dp.impl.remoting.legacy.communication.Command;
+import com.canoo.dp.impl.remoting.legacy.commands.Command;
 import com.canoo.dp.impl.server.legacy.communication.CommandHandler;
 import org.testng.annotations.Test;
 

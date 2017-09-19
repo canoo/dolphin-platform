@@ -16,10 +16,8 @@
 package com.canoo.dp.impl.server.legacy;
 
 import com.canoo.dp.impl.remoting.legacy.commands.InterruptLongPollCommand;
-import com.canoo.dp.impl.remoting.legacy.communication.Codec;
-import com.canoo.dp.impl.remoting.legacy.communication.Command;
+import com.canoo.dp.impl.remoting.legacy.commands.Command;
 import com.canoo.dp.impl.server.legacy.action.CreatePresentationModelAction;
-import com.canoo.dp.impl.server.legacy.action.DeletePresentationModelAction;
 import com.canoo.dp.impl.server.legacy.action.DolphinServerAction;
 import com.canoo.dp.impl.server.legacy.action.StoreAttributeAction;
 import com.canoo.dp.impl.server.legacy.action.StoreValueChangeAction;
@@ -42,9 +40,6 @@ public class ServerConnector {
     private final List<DolphinServerAction> dolphinServerActions = new ArrayList<DolphinServerAction>();
 
     private final AtomicBoolean initialized = new AtomicBoolean(false);
-
-    @Deprecated
-    private Codec codec;
 
     private ServerModelStore serverModelStore;
 
@@ -100,17 +95,6 @@ public class ServerConnector {
         register(new StoreValueChangeAction());
         register(new StoreAttributeAction());
         register(new CreatePresentationModelAction());
-        register(new DeletePresentationModelAction());
-    }
-
-    @Deprecated
-    public Codec getCodec() {
-        return codec;
-    }
-
-    @Deprecated
-    public void setCodec(final Codec codec) {
-        this.codec = codec;
     }
 
     public void setServerModelStore(final ServerModelStore serverModelStore) {

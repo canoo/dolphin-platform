@@ -15,49 +15,38 @@
  */
 package com.canoo.dp.impl.server.model;
 
-import com.canoo.dp.impl.remoting.AbstractPresentationModelBuilder;
 import com.canoo.dp.impl.platform.core.Assert;
+import com.canoo.dp.impl.remoting.AbstractPresentationModelBuilder;
 import com.canoo.dp.impl.remoting.legacy.RemotingConstants;
-import com.canoo.dp.impl.server.legacy.DTO;
+import com.canoo.dp.impl.server.legacy.ServerAttribute;
 import com.canoo.dp.impl.server.legacy.ServerDolphin;
 import com.canoo.dp.impl.server.legacy.ServerPresentationModel;
-import com.canoo.dp.impl.server.legacy.Slot;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ServerPresentationModelBuilder extends AbstractPresentationModelBuilder<ServerPresentationModel> {
 
-    private final List<Slot> slots = new ArrayList<>();
+    private final List<ServerAttribute> attributes = new ArrayList<>();
     private final ServerDolphin dolphin;
 
     public ServerPresentationModelBuilder(ServerDolphin dolphin) {
         Assert.requireNonNull(dolphin, "dolphin");
         this.dolphin = dolphin;
-        this.slots.add(new Slot(RemotingConstants.SOURCE_SYSTEM, RemotingConstants.SOURCE_SYSTEM_SERVER));
+        withAttribute(RemotingConstants.SOURCE_SYSTEM, RemotingConstants.SOURCE_SYSTEM_SERVER);
     }
 
-    @Override
-    public ServerPresentationModelBuilder withAttribute(String name) {
-        slots.add(new Slot(name, null));
-        return this;
-    }
 
     @Override
     public ServerPresentationModelBuilder withAttribute(String name, Object value) {
-        slots.add(new Slot(name, value));
+        attributes.add(new ServerAttribute(name, value));
         return this;
     }
 
-    @Override
-    public ServerPresentationModelBuilder withAttribute(String name, Object value, String qualifier) {
-        slots.add(new Slot(name, value, qualifier));
-        return this;
-    }
 
     @Override
     public ServerPresentationModel create() {
-        return dolphin.getModelStore().presentationModel(id, type, new DTO(slots));
+        return dolphin.getModelStore().presentationModel(id, type, attributes);
     }
 
 }

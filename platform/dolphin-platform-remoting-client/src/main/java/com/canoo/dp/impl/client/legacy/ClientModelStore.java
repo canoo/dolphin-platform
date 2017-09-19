@@ -19,7 +19,6 @@ import com.canoo.dp.impl.client.legacy.communication.AttributeChangeListener;
 import com.canoo.dp.impl.remoting.legacy.core.ModelStore;
 import com.canoo.dp.impl.remoting.legacy.core.ModelStoreConfig;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -36,6 +35,7 @@ public class ClientModelStore extends ModelStore<ClientAttribute, ClientPresenta
 
     /**
      * Constructs a client model store with default capacities.
+     *
      * @see ModelStoreConfig
      */
     public ClientModelStore(final ModelSynchronizer modelSynchronizer) {
@@ -43,7 +43,6 @@ public class ClientModelStore extends ModelStore<ClientAttribute, ClientPresenta
         this.modelSynchronizer = modelSynchronizer;
         attributeChangeListener = new AttributeChangeListener(this, modelSynchronizer);
     }
-
 
     @Override
     public boolean add(final ClientPresentationModel model) {
@@ -53,9 +52,7 @@ public class ClientModelStore extends ModelStore<ClientAttribute, ClientPresenta
             for (ClientAttribute attribute : attributes) {
                 attribute.addPropertyChangeListener(attributeChangeListener);
             }
-            if (!model.isClientSideOnly()) {
-                modelSynchronizer.onAdded(model);
-            }
+            modelSynchronizer.onAdded(model);
         }
         return success;
     }
@@ -69,7 +66,6 @@ public class ClientModelStore extends ModelStore<ClientAttribute, ClientPresenta
         if (containsPresentationModel(model.getId())) {
             remove(model);
             if (!notify) return;
-            if (model.isClientSideOnly()) return;
             modelSynchronizer.onDeleted(model);
         }
     }
@@ -84,18 +80,9 @@ public class ClientModelStore extends ModelStore<ClientAttribute, ClientPresenta
     }
 
     @Override
-    @Deprecated
-    public void registerAttribute(final ClientAttribute attribute) {
+    protected void registerAttribute(final ClientAttribute attribute) {
         super.registerAttribute(attribute);
         attribute.addPropertyChangeListener(attributeChangeListener);
-    }
-
-
-    public ClientPresentationModel createModel(final String id, final String presentationModelType, final ClientAttribute... attributes) {
-        ClientPresentationModel result = new ClientPresentationModel(id, Arrays.asList(attributes));
-        result.setPresentationModelType(presentationModelType);
-        add(result);
-        return result;
     }
 
     @Deprecated

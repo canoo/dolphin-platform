@@ -15,47 +15,59 @@
  */
 package com.canoo.dolphin.client;
 
-import com.canoo.platform.remoting.BeanManager;
 import com.canoo.dolphin.client.util.AbstractDolphinBasedTest;
 import com.canoo.dolphin.client.util.ListReferenceModel;
 import com.canoo.dolphin.client.util.SimpleTestModel;
-import com.canoo.dp.impl.remoting.PlatformRemotingConstants;
-import com.canoo.dp.impl.remoting.converters.DolphinBeanConverterFactory;
-import mockit.Mocked;
-import com.canoo.dp.impl.remoting.legacy.RemotingConstants;
-import com.canoo.dp.impl.remoting.legacy.core.PresentationModel;
 import com.canoo.dp.impl.client.legacy.ClientAttribute;
 import com.canoo.dp.impl.client.legacy.ClientDolphin;
 import com.canoo.dp.impl.client.legacy.ClientPresentationModel;
 import com.canoo.dp.impl.client.legacy.communication.AbstractClientConnector;
+import com.canoo.dp.impl.remoting.PlatformRemotingConstants;
+import com.canoo.dp.impl.remoting.converters.DolphinBeanConverterFactory;
+import com.canoo.dp.impl.remoting.legacy.RemotingConstants;
+import com.canoo.dp.impl.remoting.legacy.core.PresentationModel;
+import com.canoo.platform.remoting.BeanManager;
+import mockit.Mocked;
 import org.testng.annotations.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 
 public class TestObservableListSync extends AbstractDolphinBasedTest {
 
-    private static class PresentationModelBuilder {
+    private static class BasePresentationModelBuilder {
 
         private final List<ClientAttribute> attributes = new ArrayList<>();
         private final ClientDolphin dolphin;
         private final String type;
 
-        public PresentationModelBuilder(ClientDolphin dolphin, String type) {
+        public BasePresentationModelBuilder(ClientDolphin dolphin, String type) {
             this.dolphin = dolphin;
             this.type = type;
             this.attributes.add(new ClientAttribute(RemotingConstants.SOURCE_SYSTEM, RemotingConstants.SOURCE_SYSTEM_SERVER));
         }
 
-        public PresentationModelBuilder withAttribute(String name, Object value) {
+        public BasePresentationModelBuilder withAttribute(String name, Object value) {
             attributes.add(new ClientAttribute(name, value));
             return this;
         }
 
         public PresentationModel create() {
-            return dolphin.getModelStore().createModel(UUID.randomUUID().toString(), type, attributes.toArray(new ClientAttribute[attributes.size()]));
+            final ClientPresentationModel model = new ClientPresentationModel(UUID.randomUUID().toString(), attributes);
+            model.setPresentationModelType(type);
+            dolphin.getModelStore().add(model);
+            return model;
         }
 
     }
@@ -941,7 +953,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         final PresentationModel objectModel = dolphin.getModelStore().findAllPresentationModelsByType(SimpleTestModel.class.getName()).get(0);
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "objectList")
                 .withAttribute("from", 0)
@@ -967,7 +979,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         classDescription.getAttribute("objectList").setValue(DolphinBeanConverterFactory.FIELD_TYPE_DOLPHIN_BEAN);
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "objectList")
                 .withAttribute("from", 0)
@@ -992,7 +1004,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         final String value = "Hello";
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "primitiveList")
                 .withAttribute("from", 0)
@@ -1016,7 +1028,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         final PresentationModel sourceModel = dolphin.getModelStore().findAllPresentationModelsByType(ListReferenceModel.class.getName()).get(0);
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "primitiveList")
                 .withAttribute("from", 0)
@@ -1041,7 +1053,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         manager.create(SimpleTestModel.class);
         final PresentationModel objectModel = dolphin.getModelStore().findAllPresentationModelsByType(SimpleTestModel.class.getName()).get(0);
 
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "objectList")
                 .withAttribute("from", 0)
@@ -1052,7 +1064,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         assertThat(model.getObjectList(), hasSize(1));
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "objectList")
                 .withAttribute("from", 0)
@@ -1074,7 +1086,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         final ListReferenceModel model = manager.create(ListReferenceModel.class);
         final PresentationModel sourceModel = dolphin.getModelStore().findAllPresentationModelsByType(ListReferenceModel.class.getName()).get(0);
 
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "objectList")
                 .withAttribute("from", 0)
@@ -1085,7 +1097,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         assertThat(model.getObjectList(), hasSize(1));
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "objectList")
                 .withAttribute("from", 0)
@@ -1108,7 +1120,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         final PresentationModel sourceModel = dolphin.getModelStore().findAllPresentationModelsByType(ListReferenceModel.class.getName()).get(0);
         final String value = "Hello";
 
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "primitiveList")
                 .withAttribute("from", 0)
@@ -1119,7 +1131,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         assertThat(model.getPrimitiveList(), hasSize(1));
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "primitiveList")
                 .withAttribute("from", 0)
@@ -1141,7 +1153,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         final ListReferenceModel model = manager.create(ListReferenceModel.class);
         final PresentationModel sourceModel = dolphin.getModelStore().findAllPresentationModelsByType(ListReferenceModel.class.getName()).get(0);
 
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "primitiveList")
                 .withAttribute("from", 0)
@@ -1152,7 +1164,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         assertThat(model.getPrimitiveList(), hasSize(1));
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "primitiveList")
                 .withAttribute("from", 0)
@@ -1181,7 +1193,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         final List<ClientPresentationModel> models = dolphin.getModelStore().findAllPresentationModelsByType(SimpleTestModel.class.getName());
         final PresentationModel newObjectModel = oldObjectModel == models.get(1) ? models.get(0) : models.get(1);
 
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "objectList")
                 .withAttribute("from", 0)
@@ -1192,7 +1204,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         assertThat(model.getObjectList(), is(Collections.singletonList(oldObject)));
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "objectList")
                 .withAttribute("pos", 0)
@@ -1220,7 +1232,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         final SimpleTestModel oldObject = manager.create(SimpleTestModel.class);
         final PresentationModel oldObjectModel = dolphin.getModelStore().findAllPresentationModelsByType(SimpleTestModel.class.getName()).get(0);
 
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "objectList")
                 .withAttribute("from", 0)
@@ -1231,7 +1243,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         assertThat(model.getObjectList(), is(Collections.singletonList(oldObject)));
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "objectList")
                 .withAttribute("from", 0)
@@ -1258,7 +1270,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         final SimpleTestModel newObject = manager.create(SimpleTestModel.class);
         final PresentationModel newObjectModel = dolphin.getModelStore().findAllPresentationModelsByType(SimpleTestModel.class.getName()).get(0);
 
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "objectList")
                 .withAttribute("from", 0)
@@ -1269,7 +1281,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         assertThat(model.getObjectList(), is(Collections.singletonList((SimpleTestModel) null)));
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "objectList")
                 .withAttribute("from", 0)
@@ -1294,7 +1306,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         final String oldValue = "Hello";
         final String newValue = "Goodbye";
 
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "primitiveList")
                 .withAttribute("from", 0)
@@ -1305,7 +1317,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         assertThat(model.getPrimitiveList(), is(Collections.singletonList(oldValue)));
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "primitiveList")
                 .withAttribute("from", 0)
@@ -1329,7 +1341,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         final PresentationModel sourceModel = dolphin.getModelStore().findAllPresentationModelsByType(ListReferenceModel.class.getName()).get(0);
         final String oldValue = "Hello";
 
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "primitiveList")
                 .withAttribute("from", 0)
@@ -1340,7 +1352,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         assertThat(model.getPrimitiveList(), is(Collections.singletonList(oldValue)));
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "primitiveList")
                 .withAttribute("from", 0)
@@ -1364,7 +1376,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         final PresentationModel sourceModel = dolphin.getModelStore().findAllPresentationModelsByType(ListReferenceModel.class.getName()).get(0);
         final String newValue = "Goodbye";
 
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "primitiveList")
                 .withAttribute("from", 0)
@@ -1375,7 +1387,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         assertThat(model.getPrimitiveList(), is(Collections.singletonList((String) null)));
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "primitiveList")
                 .withAttribute("from", 0)
@@ -1403,7 +1415,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         final PresentationModel sourceModel = dolphin.getModelStore().findAllPresentationModelsByType(ListReferenceModel.class.getName()).get(0);
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "primitiveList")
                 .withAttribute("from", 0)
@@ -1433,7 +1445,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         deleteAllPresentationModelsOfType(dolphin, PlatformRemotingConstants.LIST_SPLICE);
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "primitiveList")
                 .withAttribute("from", 0)
@@ -1460,7 +1472,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         deleteAllPresentationModelsOfType(dolphin, PlatformRemotingConstants.LIST_SPLICE);
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "primitiveList")
                 .withAttribute("from", 0)
@@ -1490,7 +1502,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         deleteAllPresentationModelsOfType(dolphin, PlatformRemotingConstants.LIST_SPLICE);
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "primitiveList")
                 .withAttribute("from", 1)
@@ -1517,7 +1529,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         deleteAllPresentationModelsOfType(dolphin, PlatformRemotingConstants.LIST_SPLICE);
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "primitiveList")
                 .withAttribute("from", 1)
@@ -1546,7 +1558,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         model.getPrimitiveList().addAll(Arrays.asList("1", "2", "3"));
         deleteAllPresentationModelsOfType(dolphin, PlatformRemotingConstants.LIST_SPLICE);
 
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "primitiveList")
                 .withAttribute("from", 3)
@@ -1572,7 +1584,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         deleteAllPresentationModelsOfType(dolphin, PlatformRemotingConstants.LIST_SPLICE);
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "primitiveList")
                 .withAttribute("from", 3)
@@ -1605,7 +1617,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         deleteAllPresentationModelsOfType(dolphin, PlatformRemotingConstants.LIST_SPLICE);
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "primitiveList")
                 .withAttribute("from", 0)
@@ -1631,7 +1643,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         deleteAllPresentationModelsOfType(dolphin, PlatformRemotingConstants.LIST_SPLICE);
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "primitiveList")
                 .withAttribute("from", 0)
@@ -1657,7 +1669,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         deleteAllPresentationModelsOfType(dolphin, PlatformRemotingConstants.LIST_SPLICE);
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "primitiveList")
                 .withAttribute("from", 1)
@@ -1683,7 +1695,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         deleteAllPresentationModelsOfType(dolphin, PlatformRemotingConstants.LIST_SPLICE);
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "primitiveList")
                 .withAttribute("from", 2)
@@ -1709,7 +1721,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         deleteAllPresentationModelsOfType(dolphin, PlatformRemotingConstants.LIST_SPLICE);
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "primitiveList")
                 .withAttribute("from", 2)
@@ -1735,7 +1747,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         deleteAllPresentationModelsOfType(dolphin, PlatformRemotingConstants.LIST_SPLICE);
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "primitiveList")
                 .withAttribute("from", 4)
@@ -1773,7 +1785,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         deleteAllPresentationModelsOfType(dolphin, PlatformRemotingConstants.LIST_SPLICE);
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "primitiveList")
                 .withAttribute("from", 0)
@@ -1799,7 +1811,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         deleteAllPresentationModelsOfType(dolphin, PlatformRemotingConstants.LIST_SPLICE);
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "primitiveList")
                 .withAttribute("from", 0)
@@ -1828,7 +1840,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         deleteAllPresentationModelsOfType(dolphin, PlatformRemotingConstants.LIST_SPLICE);
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "primitiveList")
                 .withAttribute("from", 1)
@@ -1855,7 +1867,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         deleteAllPresentationModelsOfType(dolphin, PlatformRemotingConstants.LIST_SPLICE);
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "primitiveList")
                 .withAttribute("from", 1)
@@ -1884,7 +1896,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         deleteAllPresentationModelsOfType(dolphin, PlatformRemotingConstants.LIST_SPLICE);
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "primitiveList")
                 .withAttribute("from", 2)
@@ -1912,7 +1924,7 @@ public class TestObservableListSync extends AbstractDolphinBasedTest {
         deleteAllPresentationModelsOfType(dolphin, PlatformRemotingConstants.LIST_SPLICE);
 
         // when :
-        new PresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
+        new BasePresentationModelBuilder(dolphin, PlatformRemotingConstants.LIST_SPLICE)
                 .withAttribute("source", sourceModel.getId())
                 .withAttribute("attribute", "primitiveList")
                 .withAttribute("from", 2)

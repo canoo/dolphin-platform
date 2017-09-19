@@ -15,14 +15,14 @@
  */
 package com.canoo.dp.impl.client;
 
-import com.canoo.platform.remoting.client.Param;
-import com.canoo.dp.impl.remoting.Converters;
-import com.canoo.dp.impl.remoting.InternalAttributesBean;
+import com.canoo.dp.impl.client.legacy.ClientModelStore;
 import com.canoo.dp.impl.remoting.BeanRepository;
+import com.canoo.dp.impl.remoting.Converters;
 import com.canoo.dp.impl.remoting.DolphinEventHandler;
 import com.canoo.dp.impl.remoting.EventDispatcher;
+import com.canoo.dp.impl.remoting.InternalAttributesBean;
 import com.canoo.dp.impl.remoting.legacy.core.PresentationModel;
-import com.canoo.dp.impl.client.legacy.ClientModelStore;
+import com.canoo.platform.remoting.client.Param;
 
 public class ClientPlatformBeanRepository {
 

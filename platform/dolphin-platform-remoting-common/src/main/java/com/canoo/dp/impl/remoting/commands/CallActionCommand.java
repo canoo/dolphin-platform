@@ -16,8 +16,8 @@
 package com.canoo.dp.impl.remoting.commands;
 
 import com.canoo.dp.impl.platform.core.Assert;
-import com.canoo.dp.impl.remoting.legacy.communication.Command;
-import com.canoo.dp.impl.remoting.legacy.communication.CommandConstants;
+import com.canoo.dp.impl.remoting.legacy.commands.Command;
+import com.canoo.dp.impl.remoting.legacy.commands.CommandConstants;
 
 import java.util.Collections;
 import java.util.HashMap;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.canoo.dp.impl.remoting.legacy.communication;
+package com.canoo.dp.impl.remoting.legacy.commands;
 
 //Deprecated because the only type that can change is the qualifier. We should name it to QualifierChangedCommand or something
 @Deprecated

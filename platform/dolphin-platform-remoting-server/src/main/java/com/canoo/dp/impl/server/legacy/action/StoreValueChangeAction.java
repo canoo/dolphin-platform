@@ -15,7 +15,7 @@
  */
 package com.canoo.dp.impl.server.legacy.action;
 
-import com.canoo.dp.impl.remoting.legacy.communication.ValueChangedCommand;
+import com.canoo.dp.impl.remoting.legacy.commands.ValueChangedCommand;
 import com.canoo.dp.impl.server.legacy.ServerAttribute;
 import com.canoo.dp.impl.server.legacy.communication.ActionRegistry;
 import com.canoo.dp.impl.server.legacy.communication.CommandHandler;

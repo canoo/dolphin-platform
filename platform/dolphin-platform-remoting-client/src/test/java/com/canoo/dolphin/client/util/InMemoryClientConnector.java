@@ -17,9 +17,9 @@ package com.canoo.dolphin.client.util;
 
 import com.canoo.dp.impl.client.legacy.ClientModelStore;
 import com.canoo.dp.impl.client.legacy.communication.AbstractClientConnector;
-import com.canoo.dp.impl.client.legacy.communication.ICommandBatcher;
+import com.canoo.dp.impl.client.legacy.communication.CommandBatcher;
 import com.canoo.dp.impl.client.legacy.communication.SimpleExceptionHandler;
-import com.canoo.dp.impl.remoting.legacy.communication.Command;
+import com.canoo.dp.impl.remoting.legacy.commands.Command;
 import com.canoo.dp.impl.server.legacy.ServerConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +39,7 @@ public class InMemoryClientConnector extends AbstractClientConnector {
 
     private long sleepMillis = 0;
 
-    public InMemoryClientConnector(final ClientModelStore clientModelStore, final ServerConnector serverConnector, final ICommandBatcher commandBatcher, final Executor uiExecutor) {
+    public InMemoryClientConnector(final ClientModelStore clientModelStore, final ServerConnector serverConnector, final CommandBatcher commandBatcher, final Executor uiExecutor) {
         super(clientModelStore, uiExecutor, commandBatcher, new SimpleExceptionHandler(), Executors.newCachedThreadPool());
         this.serverConnector = Objects.requireNonNull(serverConnector);
         connect(false);

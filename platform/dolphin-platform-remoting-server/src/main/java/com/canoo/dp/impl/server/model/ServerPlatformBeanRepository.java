@@ -15,13 +15,13 @@
  */
 package com.canoo.dp.impl.server.model;
 
-import com.canoo.dp.impl.remoting.Converters;
-import com.canoo.dp.impl.remoting.InternalAttributesBean;
-import com.canoo.dp.impl.remoting.PlatformRemotingConstants;
+import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.dp.impl.remoting.BeanRepository;
+import com.canoo.dp.impl.remoting.Converters;
 import com.canoo.dp.impl.remoting.DolphinEventHandler;
 import com.canoo.dp.impl.remoting.EventDispatcher;
-import com.canoo.dp.impl.platform.core.Assert;
+import com.canoo.dp.impl.remoting.InternalAttributesBean;
+import com.canoo.dp.impl.remoting.PlatformRemotingConstants;
 import com.canoo.dp.impl.remoting.legacy.core.PresentationModel;
 import com.canoo.dp.impl.server.legacy.ServerDolphin;
 

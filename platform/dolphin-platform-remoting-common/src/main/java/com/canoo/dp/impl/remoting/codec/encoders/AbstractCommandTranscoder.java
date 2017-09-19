@@ -18,7 +18,7 @@ package com.canoo.dp.impl.remoting.codec.encoders;
 import com.canoo.dp.impl.platform.core.Assert;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.canoo.dp.impl.remoting.legacy.communication.Command;
+import com.canoo.dp.impl.remoting.legacy.commands.Command;
 
 public abstract class AbstractCommandTranscoder<C extends Command> implements CommandTranscoder<C> {
 
@@ -27,7 +27,11 @@ public abstract class AbstractCommandTranscoder<C extends Command> implements Co
     }
 
     protected String getStringElement(final JsonObject jsonObject, final String jsonElementName) {
-        return getElement(jsonObject, jsonElementName).getAsString();
+        JsonElement element = getElement(jsonObject, jsonElementName);
+        if(element.isJsonNull()) {
+            return null;
+        }
+        return element.getAsString();
     }
 
     private JsonElement getElement(final JsonObject jsonObject, final String jsonElementName) {

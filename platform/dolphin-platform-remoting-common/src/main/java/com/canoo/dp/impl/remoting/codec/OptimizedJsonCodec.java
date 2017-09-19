@@ -29,9 +29,9 @@ import com.canoo.dp.impl.remoting.codec.encoders.DestroyContextCommandEncoder;
 import com.canoo.dp.impl.remoting.codec.encoders.DestroyControllerCommandEncoder;
 import com.canoo.dp.impl.remoting.codec.encoders.EmptyCommandEncoder;
 import com.canoo.dp.impl.remoting.codec.encoders.InterruptLongPollCommandEncoder;
-import com.canoo.dp.impl.remoting.codec.encoders.PresentationModelDeletedCommandEncoder;
 import com.canoo.dp.impl.remoting.codec.encoders.StartLongPollCommandEncoder;
 import com.canoo.dp.impl.remoting.codec.encoders.ValueChangedCommandEncoder;
+import com.canoo.dp.impl.remoting.legacy.commands.Command;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -40,8 +40,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
-import com.canoo.dp.impl.remoting.legacy.communication.Codec;
-import com.canoo.dp.impl.remoting.legacy.communication.Command;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,9 +48,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.canoo.dp.impl.remoting.legacy.communication.CommandConstants.*;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.ATTRIBUTE_METADATA_CHANGED_COMMAND_ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.CALL_ACTION_COMMAND_ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.CHANGE_ATTRIBUTE_METADATA_COMMAND_ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.CREATE_CONTEXT_COMMAND_ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.CREATE_CONTROLLER_COMMAND_ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.CREATE_PRESENTATION_MODEL_COMMAND_ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.DELETE_PRESENTATION_MODEL_COMMAND_ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.DESTROY_CONTEXT_COMMAND_ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.DESTROY_CONTROLLER_COMMAND_ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.EMPTY_COMMAND_ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.INTERRUPT_LONG_POLL_COMMAND_ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.START_LONG_POLL_COMMAND_ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.VALUE_CHANGED_COMMAND_ID;
 
-public final class OptimizedJsonCodec implements Codec {
+public final class OptimizedJsonCodec {
 
     private static final Logger LOG = LoggerFactory.getLogger(OptimizedJsonCodec.class);
 
@@ -69,7 +79,6 @@ public final class OptimizedJsonCodec implements Codec {
         addTranscoder(new InterruptLongPollCommandEncoder(), INTERRUPT_LONG_POLL_COMMAND_ID);
         addTranscoder(new CreatePresentationModelCommandEncoder(), CREATE_PRESENTATION_MODEL_COMMAND_ID);
         addTranscoder(new DeletePresentationModelCommandEncoder(), DELETE_PRESENTATION_MODEL_COMMAND_ID);
-        addTranscoder(new PresentationModelDeletedCommandEncoder(), PRESENTATION_MODEL_DELETED_COMMAND_ID);
         addTranscoder(new ValueChangedCommandEncoder(), VALUE_CHANGED_COMMAND_ID);
         addTranscoder(new ChangeAttributeMetadataCommandEncoder(), CHANGE_ATTRIBUTE_METADATA_COMMAND_ID);
         addTranscoder(new AttributeMetadataChangedCommandEncoder(), ATTRIBUTE_METADATA_CHANGED_COMMAND_ID);
@@ -85,13 +94,12 @@ public final class OptimizedJsonCodec implements Codec {
         Assert.requireNonNull(transcoder, "transcoder");
         Assert.requireNonNull(commandId, "commandId");
 
-        if(transcoders.containsKey(commandId)) {
+        if (transcoders.containsKey(commandId)) {
             throw new IllegalStateException("Transcoder for " + commandId + " already defined!");
         }
         transcoders.put(commandId, transcoder);
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public String encode(final List<? extends Command> commands) {
         Assert.requireNonNull(commands, "commands");
@@ -122,7 +130,6 @@ public final class OptimizedJsonCodec implements Codec {
         return builder.toString();
     }
 
-    @Override
     public List<Command> decode(final String transmitted) {
         Assert.requireNonNull(transmitted, "transmitted");
         LOG.trace("Decoding message: {}", transmitted);

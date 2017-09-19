@@ -41,11 +41,6 @@ public class DefaultServerDolphin implements ServerDolphin {
         this.serverConnector.setServerModelStore(serverModelStore);
     }
 
-    @Deprecated
-    protected DefaultServerDolphin() {
-        this(new ServerModelStore(), new ServerConnector());
-    }
-
     @Override
     public ServerModelStore getModelStore() {
         return serverModelStore;

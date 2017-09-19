@@ -15,8 +15,8 @@
  */
 package com.canoo.dp.impl.remoting;
 
-import com.canoo.platform.core.functional.Subscription;
 import com.canoo.dp.impl.remoting.legacy.core.PresentationModel;
+import com.canoo.platform.core.functional.Subscription;
 
 import java.util.List;
 

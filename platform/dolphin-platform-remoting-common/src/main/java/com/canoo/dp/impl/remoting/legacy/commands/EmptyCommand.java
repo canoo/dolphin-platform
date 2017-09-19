@@ -13,8 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.canoo.dp.impl.client.legacy.communication;
+package com.canoo.dp.impl.remoting.legacy.commands;
 
-public enum HandlerType {
-    UI, BACKGROUND;
+/**
+ * A notification that does nothing on the server.
+ * It is only used to hook into the communication at a known point
+ * such that the onFinished handler can be executed
+ * in the expected sequence.
+ */
+@Deprecated
+public final class EmptyCommand extends Command {
+    public EmptyCommand() {
+        super(CommandConstants.EMPTY_COMMAND_ID);
+    }
 }

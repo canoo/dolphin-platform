@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.canoo.dp.impl.remoting.legacy.communication;
+package com.canoo.dp.impl.remoting.legacy.commands;
 
 public interface CommandConstants {
 
@@ -29,7 +29,6 @@ public interface CommandConstants {
     String CHANGE_ATTRIBUTE_METADATA_COMMAND_ID = "ChangeAttributeMetadata";
     String ATTRIBUTE_METADATA_CHANGED_COMMAND_ID = "AttributeMetadataChanged";
     String EMPTY_COMMAND_ID = "Empty";
-    String PRESENTATION_MODEL_DELETED_COMMAND_ID = "PresentationModelDeleted";
     String DELETE_PRESENTATION_MODEL_COMMAND_ID = "DeletePresentationModelCommand";
 
     String ID = "id";

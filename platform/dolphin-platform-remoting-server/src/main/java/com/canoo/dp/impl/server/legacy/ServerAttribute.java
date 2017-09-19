@@ -17,22 +17,17 @@ package com.canoo.dp.impl.server.legacy;
 
 
 import com.canoo.dp.impl.remoting.legacy.RemotingConstants;
-import com.canoo.dp.impl.remoting.legacy.communication.AttributeMetadataChangedCommand;
+import com.canoo.dp.impl.remoting.legacy.commands.AttributeMetadataChangedCommand;
 import com.canoo.dp.impl.remoting.legacy.core.Attribute;
-import com.canoo.dp.impl.remoting.legacy.core.BaseAttribute;
 
 import java.util.List;
 
-public class ServerAttribute extends BaseAttribute {
+public class ServerAttribute extends Attribute {
 
     private boolean notifyClient = true;
 
     public ServerAttribute(final String propertyName, final Object initialValue) {
         super(propertyName, initialValue);
-    }
-
-    public ServerAttribute(final String propertyName, final Object baseValue, final String qualifier) {
-        super(propertyName, baseValue, qualifier);
     }
 
     @Override
@@ -74,13 +69,13 @@ public class ServerAttribute extends BaseAttribute {
     @Override
     public void setQualifier(final String value) {
         super.setQualifier(value);
-        if (notifyClient) {
+        if (notifyClient && getPresentationModel() != null && getPresentationModel().getModelStore() != null) {
             getPresentationModel().getModelStore().getCurrentResponse().add(new AttributeMetadataChangedCommand(getId(), Attribute.QUALIFIER_NAME, value));
         }
 
     }
 
-    public String getOrigin() {
+    protected String getOrigin() {
         return RemotingConstants.SERVER_ORIGIN;
     }
 

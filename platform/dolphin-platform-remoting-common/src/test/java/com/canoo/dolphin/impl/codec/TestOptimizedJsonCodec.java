@@ -17,12 +17,12 @@ package com.canoo.dolphin.impl.codec;
 
 import com.canoo.dp.impl.remoting.codec.OptimizedJsonCodec;
 import com.canoo.dp.impl.remoting.commands.CallActionCommand;
-import org.hamcrest.Matchers;
 import com.canoo.dp.impl.remoting.legacy.core.Attribute;
-import com.canoo.dp.impl.remoting.legacy.communication.Command;
-import com.canoo.dp.impl.remoting.legacy.communication.CreatePresentationModelCommand;
-import com.canoo.dp.impl.remoting.legacy.communication.EmptyCommand;
-import com.canoo.dp.impl.remoting.legacy.communication.ValueChangedCommand;
+import org.hamcrest.Matchers;
+import com.canoo.dp.impl.remoting.legacy.commands.Command;
+import com.canoo.dp.impl.remoting.legacy.commands.CreatePresentationModelCommand;
+import com.canoo.dp.impl.remoting.legacy.commands.EmptyCommand;
+import com.canoo.dp.impl.remoting.legacy.commands.ValueChangedCommand;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

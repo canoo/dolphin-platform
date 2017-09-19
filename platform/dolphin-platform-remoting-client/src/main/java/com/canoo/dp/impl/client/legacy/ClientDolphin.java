@@ -17,7 +17,7 @@ package com.canoo.dp.impl.client.legacy;
 
 import com.canoo.dp.impl.client.legacy.communication.AbstractClientConnector;
 import com.canoo.dp.impl.client.legacy.communication.OnFinishedHandler;
-import com.canoo.dp.impl.remoting.legacy.communication.EmptyCommand;
+import com.canoo.dp.impl.remoting.legacy.commands.EmptyCommand;
 import com.canoo.dp.impl.remoting.legacy.core.Dolphin;
 
 /**

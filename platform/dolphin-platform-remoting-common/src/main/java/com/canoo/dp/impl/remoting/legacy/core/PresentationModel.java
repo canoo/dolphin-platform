@@ -15,57 +15,95 @@
  */
 package com.canoo.dp.impl.remoting.legacy.core;
 
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
- * A presentation model is uniquely identified by a string ID, and consists of a list of attributes.
- * The presentation model may also be given a type.
- * @param <A>
- * @see Attribute
+ * A PresentationModel is a collection of {@link Attribute}s.
+ * PresentationModels are not meant to be extended for the normal use, i.e. you typically don't need something like
+ * a specialized "PersonPresentationModel" or so.
  */
-public interface PresentationModel<A extends Attribute> extends Observable {
+
+public class PresentationModel<A extends Attribute> extends Observable {
+
+    protected final List<A> attributes = new LinkedList<A>();
+
+    private final String id;
+
+    private       String presentationModelType;
+
 
     /**
-     *
-     * @return the presentation model's unique ID.
+     * @throws AssertionError if the list of attributes is null or empty
      */
-    String getId();
+    public PresentationModel(String id, List<A> attributes) {
+        this.id = id;
+        for (A attr : attributes) {
+            _internal_addAttribute(attr);
+        }
+    }
+
+    public void _internal_addAttribute(A attribute) {
+        if (null == attribute || attributes.contains(attribute)) return;
+        if (null != getAttribute(attribute.getPropertyName())) {
+            throw new IllegalStateException("There already is an attribute with property name '"
+                                            + attribute.getPropertyName()
+                                            + "' in presentation model with id '" + this.id + "'.");
+        }
+        if (attribute.getQualifier() != null && this.findAttributeByQualifier(attribute.getQualifier()) != null) {
+            throw  new IllegalStateException("There already is an attribute with qualifier '" + attribute.getQualifier()
+                    + "' in presentation model with id '" + this.id + "'.");
+        }
+        ((Attribute)attribute).setPresentationModel(this);
+        attributes.add(attribute);
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getPresentationModelType() {
+        return presentationModelType;
+    }
+
+    public void setPresentationModelType(String presentationModelType) {
+        this.presentationModelType = presentationModelType;
+    }
 
     /**
-     *
-     * @return the presentation model's list of attributes.
+     * @return the immutable internal representation
      */
-    List<A> getAttributes();
+    public List<A> getAttributes() {
+        return Collections.unmodifiableList(attributes);
+    }
 
-    /**
-     * Convenience (shorthand) method for finding a value attribute by property name.
-     * @param propertyName attribute's property name
-     * @return value attribute for the given property; null if non-existent
-     */
-    A getAttribute(String propertyName);
+    public A getAttribute(String propertyName) {
+        if (null == propertyName) return null;
+        for (A attribute : attributes) {
+            if (propertyName.equals(attribute.getPropertyName())) {
+                return attribute;
+            }
+        }
+        return null;
+    }
 
-    /**
-     * Returns the first attribute whose qualifier matches the supplied value.
-     */
-    A findAttributeByQualifier(String qualifier);
+    public A findAttributeByQualifier(String qualifier) {
+        if (null == qualifier) return null;
+        for (A attribute : attributes) {
+            if (qualifier.equals(attribute.getQualifier())) {
+                return attribute;
+            }
+        }
+        return null;
+    }
 
-    /**
-     * Returns the attribute whose ID matches the supplied value.
-     */
-    A findAttributeById(String id);
-
-    /**
-     * Returns the type (a String value) of the presentation model.  The type defaults to null.
-     * @return
-     */
-    String getPresentationModelType();
-
-    /**
-     * Warning: should only be called from the open-dolphin command layer, not from applications,
-     * since it does not register all required listeners. Consider using ClientDolphin.addAttributeToModel().
-     * @param attribute
-     */
-    @Deprecated
-    void _internal_addAttribute(A attribute);
-
+    public A findAttributeById(String id) {
+        for (A attribute : attributes) {
+            if (attribute.getId().equals(id)) {
+                return attribute;
+            }
+        }
+        return null;
+    }
 }

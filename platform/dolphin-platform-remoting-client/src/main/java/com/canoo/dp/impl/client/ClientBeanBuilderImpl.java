@@ -15,21 +15,21 @@
  */
 package com.canoo.dp.impl.client;
 
-import com.canoo.platform.remoting.ListChangeEvent;
-import com.canoo.platform.remoting.ObservableList;
+import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.dp.impl.remoting.AbstractBeanBuilder;
-import com.canoo.dp.impl.remoting.PresentationModelBuilderFactory;
-import com.canoo.dp.impl.remoting.PropertyImpl;
-import com.canoo.dp.impl.remoting.collections.ObservableArrayList;
 import com.canoo.dp.impl.remoting.BeanRepository;
 import com.canoo.dp.impl.remoting.ClassRepository;
 import com.canoo.dp.impl.remoting.EventDispatcher;
 import com.canoo.dp.impl.remoting.ListMapper;
+import com.canoo.dp.impl.remoting.PresentationModelBuilderFactory;
+import com.canoo.dp.impl.remoting.PropertyImpl;
+import com.canoo.dp.impl.remoting.collections.ObservableArrayList;
 import com.canoo.dp.impl.remoting.info.PropertyInfo;
-import com.canoo.platform.remoting.Property;
-import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.dp.impl.remoting.legacy.core.Attribute;
 import com.canoo.dp.impl.remoting.legacy.core.PresentationModel;
+import com.canoo.platform.remoting.ListChangeEvent;
+import com.canoo.platform.remoting.ObservableList;
+import com.canoo.platform.remoting.Property;
 
 public class ClientBeanBuilderImpl extends AbstractBeanBuilder {
 

@@ -16,14 +16,14 @@
 package com.canoo.dp.impl.remoting.codec.encoders;
 
 import com.canoo.dp.impl.platform.core.Assert;
-import com.canoo.dp.impl.remoting.legacy.communication.ValueChangedCommand;
+import com.canoo.dp.impl.remoting.legacy.commands.ValueChangedCommand;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import static com.canoo.dp.impl.remoting.legacy.communication.CommandConstants.ATTRIBUTE_ID;
-import static com.canoo.dp.impl.remoting.legacy.communication.CommandConstants.ID;
-import static com.canoo.dp.impl.remoting.legacy.communication.CommandConstants.VALUE;
-import static com.canoo.dp.impl.remoting.legacy.communication.CommandConstants.VALUE_CHANGED_COMMAND_ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.ATTRIBUTE_ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.VALUE;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.VALUE_CHANGED_COMMAND_ID;
 
 public class ValueChangedCommandEncoder extends AbstractCommandTranscoder<ValueChangedCommand> {
 

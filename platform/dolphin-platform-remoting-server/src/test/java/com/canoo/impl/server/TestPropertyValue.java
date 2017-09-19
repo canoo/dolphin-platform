@@ -15,7 +15,10 @@
  */
 package com.canoo.impl.server;
 
-import com.canoo.platform.remoting.BeanManager;
+import com.canoo.dp.impl.remoting.legacy.core.Attribute;
+import com.canoo.dp.impl.remoting.legacy.core.PresentationModel;
+import com.canoo.dp.impl.server.legacy.ServerDolphin;
+import com.canoo.dp.impl.server.legacy.ServerPresentationModel;
 import com.canoo.impl.server.util.AbstractDolphinBasedTest;
 import com.canoo.impl.server.util.ChildModel;
 import com.canoo.impl.server.util.ComplexDataTypesModel;
@@ -23,10 +26,7 @@ import com.canoo.impl.server.util.PrimitiveDataTypesModel;
 import com.canoo.impl.server.util.SimpleAnnotatedTestModel;
 import com.canoo.impl.server.util.SimpleTestModel;
 import com.canoo.impl.server.util.SingleReferenceModel;
-import com.canoo.dp.impl.remoting.legacy.core.Attribute;
-import com.canoo.dp.impl.remoting.legacy.core.PresentationModel;
-import com.canoo.dp.impl.server.legacy.ServerDolphin;
-import com.canoo.dp.impl.server.legacy.ServerPresentationModel;
+import com.canoo.platform.remoting.BeanManager;
 import org.testng.annotations.Test;
 
 import java.util.Calendar;
@@ -195,8 +195,8 @@ public class TestPropertyValue extends AbstractDolphinBasedTest {
         final SimpleTestModel ref2 = manager.create(SimpleTestModel.class);
         ref2.getTextProperty().set("ref2_text");
         final List<ServerPresentationModel> refPMs = dolphin.getModelStore().findAllPresentationModelsByType(SimpleTestModel.class.getName());
-        final ServerPresentationModel ref1PM = "ref1_text".equals(refPMs.get(0).getAttribute("text").getValue())? refPMs.get(0) : refPMs.get(1);
-        final ServerPresentationModel ref2PM = "ref2_text".equals(refPMs.get(0).getAttribute("text").getValue())? refPMs.get(0) : refPMs.get(1);
+        final ServerPresentationModel ref1PM = "ref1_text".equals(refPMs.get(0).getAttribute("text").getValue()) ? refPMs.get(0) : refPMs.get(1);
+        final ServerPresentationModel ref2PM = "ref2_text".equals(refPMs.get(0).getAttribute("text").getValue()) ? refPMs.get(0) : refPMs.get(1);
 
         final SingleReferenceModel model = manager.create(SingleReferenceModel.class);
 

@@ -4,8 +4,8 @@ import com.canoo.dp.impl.remoting.legacy.commands.StartLongPollCommand;
 import com.canoo.dp.impl.platform.core.Assert;
 import com.google.gson.JsonObject;
 
-import static com.canoo.dp.impl.remoting.legacy.communication.CommandConstants.ID;
-import static com.canoo.dp.impl.remoting.legacy.communication.CommandConstants.START_LONG_POLL_COMMAND_ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.START_LONG_POLL_COMMAND_ID;
 
 public class StartLongPollCommandEncoder extends AbstractCommandTranscoder<StartLongPollCommand> {
 

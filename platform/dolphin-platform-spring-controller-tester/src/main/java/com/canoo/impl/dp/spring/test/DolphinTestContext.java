@@ -22,7 +22,7 @@ import com.canoo.dp.impl.server.config.RemotingConfiguration;
 import com.canoo.dp.impl.server.context.DolphinContext;
 import com.canoo.dp.impl.server.controller.ControllerRepository;
 import com.canoo.platform.core.functional.Callback;
-import com.canoo.dp.impl.remoting.legacy.communication.Command;
+import com.canoo.dp.impl.remoting.legacy.commands.Command;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;

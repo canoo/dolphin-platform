@@ -22,10 +22,6 @@ public class DolphinRemotingException extends Exception {
 
     private static final long serialVersionUID = 1934440187016337212L;
 
-    public DolphinRemotingException(String message) {
-        super(message);
-    }
-
     public DolphinRemotingException(String message, Throwable cause) {
         super(message, cause);
     }

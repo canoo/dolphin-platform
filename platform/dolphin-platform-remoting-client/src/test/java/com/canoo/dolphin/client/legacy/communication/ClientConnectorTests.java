@@ -4,36 +4,36 @@ import com.canoo.dp.impl.client.legacy.ClientAttribute;
 import com.canoo.dp.impl.client.legacy.ClientDolphin;
 import com.canoo.dp.impl.client.legacy.ClientModelStore;
 import com.canoo.dp.impl.client.legacy.ClientPresentationModel;
-import com.canoo.dp.impl.client.legacy.DefaultModelSynchronizer;
 import com.canoo.dp.impl.client.legacy.ModelSynchronizer;
 import com.canoo.dp.impl.client.legacy.communication.AbstractClientConnector;
 import com.canoo.dp.impl.client.legacy.communication.AttributeChangeListener;
 import com.canoo.dp.impl.client.legacy.communication.CommandBatcher;
 import com.canoo.dp.impl.client.legacy.communication.SimpleExceptionHandler;
+import com.canoo.dp.impl.remoting.legacy.commands.AttributeMetadataChangedCommand;
+import com.canoo.dp.impl.remoting.legacy.commands.ChangeAttributeMetadataCommand;
+import com.canoo.dp.impl.remoting.legacy.commands.Command;
+import com.canoo.dp.impl.remoting.legacy.commands.CreatePresentationModelCommand;
+import com.canoo.dp.impl.remoting.legacy.commands.DeletePresentationModelCommand;
+import com.canoo.dp.impl.remoting.legacy.commands.EmptyCommand;
 import com.canoo.dp.impl.remoting.legacy.commands.InterruptLongPollCommand;
 import com.canoo.dp.impl.remoting.legacy.commands.StartLongPollCommand;
-import com.canoo.dp.impl.remoting.legacy.communication.AttributeMetadataChangedCommand;
-import com.canoo.dp.impl.remoting.legacy.communication.ChangeAttributeMetadataCommand;
-import com.canoo.dp.impl.remoting.legacy.communication.Command;
-import com.canoo.dp.impl.remoting.legacy.communication.CreatePresentationModelCommand;
-import com.canoo.dp.impl.remoting.legacy.communication.DeletePresentationModelCommand;
-import com.canoo.dp.impl.remoting.legacy.communication.EmptyCommand;
-import com.canoo.dp.impl.remoting.legacy.communication.PresentationModelDeletedCommand;
-import com.canoo.dp.impl.remoting.legacy.communication.ValueChangedCommand;
+import com.canoo.dp.impl.remoting.legacy.commands.ValueChangedCommand;
 import com.canoo.dp.impl.remoting.legacy.core.Attribute;
 import com.canoo.dp.impl.remoting.legacy.util.DirectExecutor;
-import com.canoo.dp.impl.remoting.legacy.util.Provider;
+import com.canoo.platform.core.functional.Provider;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -44,7 +44,7 @@ public class ClientConnectorTests {
     @BeforeMethod
     public void setUp() {
         dolphin = new ClientDolphin();
-        ModelSynchronizer defaultModelSynchronizer = new DefaultModelSynchronizer(new Provider<AbstractClientConnector>() {
+        ModelSynchronizer defaultModelSynchronizer = new ModelSynchronizer(new Provider<AbstractClientConnector>() {
             @Override
             public AbstractClientConnector get() {
                 return dolphin.getClientConnector();
@@ -128,11 +128,13 @@ public class ClientConnectorTests {
 
     @Test
     public void testValueChange_noQualifier() {
-        ClientAttribute attribute = new ClientAttribute("attr", "initialValue");
-        dolphin.getModelStore().registerAttribute(attribute);
+        final ClientAttribute attribute = new ClientAttribute("attr", "initialValue");
+        final ClientPresentationModel model = new ClientPresentationModel("id", Collections.singletonList(attribute));
+
+        dolphin.getModelStore().add(model);
         attributeChangeListener.propertyChange(new PropertyChangeEvent(attribute, Attribute.VALUE_NAME, attribute.getValue(), "newValue"));
         syncAndWaitUntilDone();
-        assertCommandsTransmitted(2);
+        assertCommandsTransmitted(3);
         Assert.assertEquals("initialValue", attribute.getValue());
 
         boolean valueChangedCommandFound = false;
@@ -149,11 +151,13 @@ public class ClientConnectorTests {
     @Test
     public void testValueChange_withQualifier() {
         syncDone = new CountDownLatch(1);
-        ClientAttribute attribute = new ClientAttribute("attr", "initialValue", "qualifier");
-        dolphin.getModelStore().registerAttribute(attribute);
+        ClientAttribute attribute = new ClientAttribute("attr", "initialValue");
+        attribute.setQualifier("qualifier");
+        ClientPresentationModel model = new ClientPresentationModel("id", Collections.singletonList(attribute));
+        dolphin.getModelStore().add(model);
         attributeChangeListener.propertyChange(new PropertyChangeEvent(attribute, Attribute.VALUE_NAME, attribute.getValue(), "newValue"));
         syncAndWaitUntilDone();
-        assertCommandsTransmitted(3);
+        assertCommandsTransmitted(4);
         Assert.assertEquals("newValue", attribute.getValue());
 
         boolean valueChangedCommandFound = false;
@@ -169,12 +173,18 @@ public class ClientConnectorTests {
 
     @Test(expectedExceptions = IllegalStateException.class)
     public void testAddTwoAttributesInConstructorWithSameQualifierToSamePMIsNotAllowed() {
-        dolphin.getModelStore().createModel("1", null, new ClientAttribute("a", "0", "QUAL"), new ClientAttribute("b", "0", "QUAL"));
+        final ClientAttribute attribute1 = new ClientAttribute("a", "0");
+        attribute1.setQualifier("QUAL");
+        final ClientAttribute attribute2 = new ClientAttribute("b", "0");
+        attribute2.setQualifier("QUAL");
+        final ClientPresentationModel model = new ClientPresentationModel(UUID.randomUUID().toString(), Arrays.asList(attribute1, attribute2));
+        dolphin.getModelStore().add(model);
     }
 
     @Test
     public void testMetaDataChange_UnregisteredAttribute() {
-        ClientAttribute attribute = new ExtendedAttribute("attr", "initialValue", "qualifier");
+        ClientAttribute attribute = new ExtendedAttribute("attr", "initialValue");
+        attribute.setQualifier("qualifier");
         ((ExtendedAttribute) attribute).setAdditionalParam("oldValue");
         attributeChangeListener.propertyChange(new PropertyChangeEvent(attribute, "additionalParam", null, "newTag"));
         syncAndWaitUntilDone();
@@ -186,16 +196,20 @@ public class ClientConnectorTests {
 
     @Test
     public void testHandle_ValueChangedWithBadBaseValueIgnoredInNonStrictMode() {
-        ClientAttribute attribute = new ClientAttribute("attr", "initialValue");
-        dolphin.getModelStore().registerAttribute(attribute);
+        final ClientAttribute attribute = new ClientAttribute("attr", "initialValue");
+        final ClientPresentationModel model = new ClientPresentationModel("id", Collections.singletonList(attribute));
+
+        dolphin.getModelStore().add(model);
         clientConnector.dispatchHandle(new ValueChangedCommand(attribute.getId(), "newValue"));
         Assert.assertEquals("newValue", attribute.getValue());
     }
 
     @Test
     public void testHandle_ValueChanged() {
-        ClientAttribute attribute = new ClientAttribute("attr", "initialValue");
-        dolphin.getModelStore().registerAttribute(attribute);
+        final ClientAttribute attribute = new ClientAttribute("attr", "initialValue");
+        final ClientPresentationModel model = new ClientPresentationModel("id", Collections.singletonList(attribute));
+
+        dolphin.getModelStore().add(model);
 
         clientConnector.dispatchHandle(new ValueChangedCommand(attribute.getId(), "newValue"));
         Assert.assertEquals("newValue", attribute.getValue());
@@ -233,34 +247,19 @@ public class ClientConnectorTests {
         Assert.assertEquals(CreatePresentationModelCommand.class, clientConnector.getTransmittedCommands().get(0).getClass());
     }
 
-    @Test
-    public void testHandle_CreatePresentationModel_ClientSideOnly() {
-        List<Map<String, Object>> attributes = new ArrayList<Map<String, Object>>();
-        Map map = new HashMap();
-        map.put("propertyName", "attr");
-        map.put("value", "initialValue");
-        map.put("qualifier", "qualifier");
-        ((ArrayList<Map<String, Object>>) attributes).add(map);
-        clientConnector.dispatchHandle(new CreatePresentationModelCommand("p1", "type", attributes, true));
-        Assert.assertNotNull(dolphin.getModelStore().findPresentationModelById("p1"));
-        Assert.assertNotNull(dolphin.getModelStore().findPresentationModelById("p1").getAttribute("attr"));
-        Assert.assertEquals("initialValue", dolphin.getModelStore().findPresentationModelById("p1").getAttribute("attr").getValue());
-        Assert.assertEquals("qualifier", dolphin.getModelStore().findPresentationModelById("p1").getAttribute("attr").getQualifier());
-        syncAndWaitUntilDone();
-        assertOnlySyncCommandWasTransmitted();
-    }
-
     @Test(expectedExceptions = IllegalStateException.class)
     public void testHandle_CreatePresentationModel_MergeAttributesToExistingModel() {
-        dolphin.getModelStore().createModel("p1", null);
+        final ClientPresentationModel model = new ClientPresentationModel("p1", Collections.<ClientAttribute>emptyList());
+        dolphin.getModelStore().add(model);
         clientConnector.dispatchHandle(new CreatePresentationModelCommand("p1", "type", Collections.<Map<String, Object>>emptyList()));
     }
 
     @Test
     public void testHandle_DeletePresentationModel() {
-        ClientPresentationModel p1 = dolphin.getModelStore().createModel("p1", null);
-        p1.setClientSideOnly(true);
-        ClientPresentationModel p2 = dolphin.getModelStore().createModel("p2", null);
+        ClientPresentationModel p1 = new ClientPresentationModel("p1", Collections.<ClientAttribute>emptyList());
+        dolphin.getModelStore().add(p1);
+        ClientPresentationModel p2 = new ClientPresentationModel("p2", Collections.<ClientAttribute>emptyList());
+        dolphin.getModelStore().add(p2);
         clientConnector.dispatchHandle(new DeletePresentationModelCommand(null));
         ClientPresentationModel model = new ClientPresentationModel("p3", Collections.<ClientAttribute>emptyList());
         clientConnector.dispatchHandle(new DeletePresentationModelCommand(model.getId()));
@@ -268,21 +267,7 @@ public class ClientConnectorTests {
         clientConnector.dispatchHandle(new DeletePresentationModelCommand(p2.getId()));
         Assert.assertNull(dolphin.getModelStore().findPresentationModelById(p1.getId()));
         Assert.assertNull(dolphin.getModelStore().findPresentationModelById(p2.getId()));
-        syncAndWaitUntilDone();
-        // 3 commands will have been transferred:
-        // 1: delete of p1 (causes no DeletedPresentationModelNotification since client side only)
-        // 2: delete of p2
-        // 3: DeletedPresentationModelNotification caused by delete of p2
-        assertCommandsTransmitted(4);
-
-        int deletedPresentationModelNotificationCount = 0;
-        for (Command c : clientConnector.getTransmittedCommands()) {
-            if (c instanceof PresentationModelDeletedCommand) {
-                deletedPresentationModelNotificationCount = deletedPresentationModelNotificationCount + 1;
-            }
-
-        }
-        Assert.assertEquals(1, deletedPresentationModelNotificationCount);
+        assertCommandsTransmitted(2);
     }
 
     private TestClientConnector clientConnector;
@@ -352,8 +337,8 @@ public class ClientConnectorTests {
     }
 
     public class ExtendedAttribute extends ClientAttribute {
-        public ExtendedAttribute(String propertyName, Object initialValue, String qualifier) {
-            super(propertyName, initialValue, qualifier);
+        public ExtendedAttribute(String propertyName, Object initialValue) {
+            super(propertyName, initialValue);
         }
 
         public String getAdditionalParam() {

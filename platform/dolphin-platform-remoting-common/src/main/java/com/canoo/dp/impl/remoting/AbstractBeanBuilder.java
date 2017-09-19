@@ -15,20 +15,20 @@
  */
 package com.canoo.dp.impl.remoting;
 
-import com.canoo.platform.remoting.ObservableList;
+import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.dp.impl.remoting.info.ClassInfo;
 import com.canoo.dp.impl.remoting.info.PropertyInfo;
-import com.canoo.platform.remoting.Property;
-import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.dp.impl.remoting.legacy.core.Attribute;
 import com.canoo.dp.impl.remoting.legacy.core.PresentationModel;
+import com.canoo.platform.remoting.ObservableList;
+import com.canoo.platform.remoting.Property;
 
 
 /**
  * A {@code BeanBuilder} is responsible for building a Dolphin Bean that is specified as a class. The main
  * (and only public) method is {@link #create(Class)}, which expects the {@code Class} of the Dolphin Bean and
  * returns the generated Bean.
- *
+ * <p>
  * The generated Dolphin Bean will be registered in the {@link BeanRepositoryImpl}.
  */
 public abstract class AbstractBeanBuilder implements BeanBuilder {
@@ -42,7 +42,8 @@ public abstract class AbstractBeanBuilder implements BeanBuilder {
         this.classRepository = Assert.requireNonNull(classRepository, "classRepository");
         this.beanRepository = Assert.requireNonNull(beanRepository, "beanRepository");
         this.listMapper = listMapper;
-        this.builderFactory = Assert.requireNonNull(builderFactory, "builderFactory");;
+        this.builderFactory = Assert.requireNonNull(builderFactory, "builderFactory");
+        ;
 
         dispatcher.addAddedHandler(new DolphinEventHandler() {
             @Override
@@ -90,7 +91,7 @@ public abstract class AbstractBeanBuilder implements BeanBuilder {
             @Override
             public void call(final PropertyInfo propertyInfo) {
                 Assert.requireNonNull(propertyInfo, "propertyInfo");
-                builder.withAttribute(propertyInfo.getAttributeName());
+                builder.withAttribute(propertyInfo.getAttributeName(), null);
             }
         });
 

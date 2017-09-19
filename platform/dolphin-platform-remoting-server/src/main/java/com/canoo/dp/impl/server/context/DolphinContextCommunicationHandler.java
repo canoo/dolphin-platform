@@ -15,14 +15,13 @@
  */
 package com.canoo.dp.impl.server.context;
 
+import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.dp.impl.remoting.codec.OptimizedJsonCodec;
 import com.canoo.dp.impl.remoting.commands.CreateContextCommand;
-import com.canoo.dp.impl.platform.core.Assert;
-import com.canoo.platform.core.functional.Callback;
+import com.canoo.dp.impl.remoting.legacy.commands.Command;
 import com.canoo.dp.impl.server.client.ClientSessionProvider;
+import com.canoo.platform.core.functional.Callback;
 import com.canoo.platform.server.client.ClientSession;
-import com.canoo.dp.impl.remoting.legacy.communication.Codec;
-import com.canoo.dp.impl.remoting.legacy.communication.Command;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,8 +41,6 @@ public class DolphinContextCommunicationHandler {
     private final static String DOLPHIN_CONTEXT_ATTRIBUTE_NAME = "DolphinContext";
 
     private final ClientSessionProvider sessionProvider;
-
-    private final Codec codec = OptimizedJsonCodec.getInstance();
 
     private final DolphinContextFactory contextFactory;
 
@@ -169,14 +166,14 @@ public class DolphinContextCommunicationHandler {
         while ((line = request.getReader().readLine()) != null) {
             requestJson.append(line).append("\n");
         }
-        commands.addAll(codec.decode(requestJson.toString()));
+        commands.addAll(OptimizedJsonCodec.getInstance().decode(requestJson.toString()));
         return commands;
     }
 
     private void writeCommands(final List<Command> commands, final HttpServletResponse response) throws IOException {
         response.setHeader("Content-Type", "application/json");
         response.setCharacterEncoding("UTF-8");
-        final String jsonResponse = codec.encode(commands);
+        final String jsonResponse = OptimizedJsonCodec.getInstance().encode(commands);
         response.getWriter().print(jsonResponse);
     }
 

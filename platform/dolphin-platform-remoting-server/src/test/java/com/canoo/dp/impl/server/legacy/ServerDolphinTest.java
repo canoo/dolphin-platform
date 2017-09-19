@@ -1,9 +1,9 @@
 package com.canoo.dp.impl.server.legacy;
 
-import com.canoo.dp.impl.remoting.legacy.communication.Command;
+import com.canoo.dp.impl.remoting.legacy.commands.Command;
+import com.canoo.dp.impl.remoting.legacy.core.PresentationModel;
 import com.canoo.dp.impl.remoting.legacy.core.ModelStoreEvent;
 import com.canoo.dp.impl.remoting.legacy.core.ModelStoreListener;
-import com.canoo.dp.impl.remoting.legacy.core.PresentationModel;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -18,7 +18,7 @@ public class ServerDolphinTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        dolphin = ((DefaultServerDolphin) (ServerDolphinFactory.create()));
+        dolphin = new DefaultServerDolphin(new ServerModelStore(), new ServerConnector());
         dolphin.getModelStore().setCurrentResponse(new ArrayList<Command>());
     }
 

@@ -17,13 +17,14 @@ package com.canoo.dolphin.client.util;
 
 import com.canoo.dp.impl.client.legacy.ClientDolphin;
 import com.canoo.dp.impl.client.legacy.ClientModelStore;
-import com.canoo.dp.impl.client.legacy.DefaultModelSynchronizer;
 import com.canoo.dp.impl.client.legacy.ModelSynchronizer;
 import com.canoo.dp.impl.client.legacy.communication.AbstractClientConnector;
 import com.canoo.dp.impl.client.legacy.communication.CommandBatcher;
-import com.canoo.dp.impl.remoting.legacy.util.Provider;
+import com.canoo.dp.impl.server.legacy.DefaultServerDolphin;
+import com.canoo.dp.impl.server.legacy.ServerConnector;
 import com.canoo.dp.impl.server.legacy.ServerDolphin;
-import com.canoo.dp.impl.server.legacy.ServerDolphinFactory;
+import com.canoo.dp.impl.server.legacy.ServerModelStore;
+import com.canoo.platform.core.functional.Provider;
 
 import java.util.concurrent.Executor;
 
@@ -43,8 +44,8 @@ public class DefaultInMemoryConfig implements Provider<AbstractClientConnector> 
 
     public DefaultInMemoryConfig(final Executor uiExecutor) {
         clientDolphin = new ClientDolphin();
-        serverDolphin = ServerDolphinFactory.create();
-        ModelSynchronizer defaultModelSynchronizer = new DefaultModelSynchronizer(this);
+        serverDolphin = new DefaultServerDolphin(new ServerModelStore(), new ServerConnector());
+        ModelSynchronizer defaultModelSynchronizer = new ModelSynchronizer(this);
         ClientModelStore modelStore = new ClientModelStore(defaultModelSynchronizer);
         clientConnector = new InMemoryClientConnector(modelStore, serverDolphin.getServerConnector(), new CommandBatcher(), uiExecutor);
         clientDolphin.setClientModelStore(modelStore);

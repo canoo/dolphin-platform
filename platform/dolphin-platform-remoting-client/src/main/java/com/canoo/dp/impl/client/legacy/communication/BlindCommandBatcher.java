@@ -15,7 +15,7 @@
  */
 package com.canoo.dp.impl.client.legacy.communication;
 
-import com.canoo.dp.impl.remoting.legacy.communication.ValueChangedCommand;
+import com.canoo.dp.impl.remoting.legacy.commands.ValueChangedCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

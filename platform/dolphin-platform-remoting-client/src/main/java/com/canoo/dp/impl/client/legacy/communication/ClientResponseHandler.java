@@ -18,11 +18,12 @@ package com.canoo.dp.impl.client.legacy.communication;
 import com.canoo.dp.impl.client.legacy.ClientAttribute;
 import com.canoo.dp.impl.client.legacy.ClientModelStore;
 import com.canoo.dp.impl.client.legacy.ClientPresentationModel;
-import com.canoo.dp.impl.remoting.legacy.communication.AttributeMetadataChangedCommand;
-import com.canoo.dp.impl.remoting.legacy.communication.Command;
-import com.canoo.dp.impl.remoting.legacy.communication.CreatePresentationModelCommand;
-import com.canoo.dp.impl.remoting.legacy.communication.DeletePresentationModelCommand;
-import com.canoo.dp.impl.remoting.legacy.communication.ValueChangedCommand;
+import com.canoo.dp.impl.platform.core.Assert;
+import com.canoo.dp.impl.remoting.legacy.commands.AttributeMetadataChangedCommand;
+import com.canoo.dp.impl.remoting.legacy.commands.Command;
+import com.canoo.dp.impl.remoting.legacy.commands.CreatePresentationModelCommand;
+import com.canoo.dp.impl.remoting.legacy.commands.DeletePresentationModelCommand;
+import com.canoo.dp.impl.remoting.legacy.commands.ValueChangedCommand;
 import com.canoo.dp.impl.remoting.legacy.core.Attribute;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +53,7 @@ public class ClientResponseHandler {
         } else if (command instanceof AttributeMetadataChangedCommand) {
             handleAttributeMetadataChangedCommand((AttributeMetadataChangedCommand) command);
         } else {
-            LOG.error("C: cannot handle unknown command '{}'", command );
+            LOG.error("C: cannot handle unknown command '{}'", command);
         }
 
     }
@@ -78,7 +79,8 @@ public class ClientResponseHandler {
             Object qualifier = attr.get("qualifier");
             Object id = attr.get("id");
 
-            ClientAttribute attribute = new ClientAttribute(propertyName != null ? propertyName.toString() : null, value, qualifier != null ? qualifier.toString() : null);
+            ClientAttribute attribute = new ClientAttribute(propertyName != null ? propertyName.toString() : null, value);
+            attribute.setQualifier(qualifier != null ? qualifier.toString() : null);
             if (id != null && id.toString().endsWith("S")) {
                 attribute.setId(id.toString());
             }
@@ -88,18 +90,16 @@ public class ClientResponseHandler {
 
         ClientPresentationModel model = new ClientPresentationModel(serverCommand.getPmId(), attributes);
         model.setPresentationModelType(serverCommand.getPmType());
-        if (serverCommand.isClientSideOnly()) {
-            model.setClientSideOnly(true);
-        }
 
         clientModelStore.add(model);
         clientModelStore.updateQualifiers(model);
     }
 
     private void handleValueChangedCommand(final ValueChangedCommand serverCommand) {
-        Attribute attribute = clientModelStore.findAttributeById(serverCommand.getAttributeId());
+        Assert.requireNonNull(serverCommand, "serverCommand");
+        final ClientAttribute attribute = clientModelStore.findAttributeById(serverCommand.getAttributeId());
         if (attribute == null) {
-            LOG.warn("C: attribute with id '{}' not found, cannot update to new value '{}'", serverCommand.getAttributeId() , serverCommand.getNewValue() );
+            LOG.warn("C: attribute with id '{}' not found, cannot update to new value '{}'", serverCommand.getAttributeId(), serverCommand.getNewValue());
             return;
         }
 
@@ -108,7 +108,7 @@ public class ClientResponseHandler {
         }
 
         LOG.trace("C: updating '{}' id '{}' from '{}' to '{}' ", attribute.getPropertyName(), serverCommand.getAttributeId(), attribute.getValue(), serverCommand.getNewValue());
-        attribute.setValue(serverCommand.getNewValue());
+        attribute.setValueFromServer(serverCommand.getNewValue());
         return;
     }
 

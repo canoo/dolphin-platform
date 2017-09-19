@@ -15,12 +15,12 @@
  */
 package com.canoo.dp.impl.client;
 
-import com.canoo.dp.impl.remoting.AbstractPresentationModelBuilder;
-import com.canoo.dp.impl.platform.core.Assert;
-import com.canoo.dp.impl.remoting.legacy.RemotingConstants;
 import com.canoo.dp.impl.client.legacy.ClientAttribute;
 import com.canoo.dp.impl.client.legacy.ClientModelStore;
 import com.canoo.dp.impl.client.legacy.ClientPresentationModel;
+import com.canoo.dp.impl.platform.core.Assert;
+import com.canoo.dp.impl.remoting.AbstractPresentationModelBuilder;
+import com.canoo.dp.impl.remoting.legacy.RemotingConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,26 +36,17 @@ public class ClientPresentationModelBuilder extends AbstractPresentationModelBui
     }
 
     @Override
-    public ClientPresentationModelBuilder withAttribute(String name) {
-        attributes.add(new ClientAttribute(name, null));
-        return this;
-    }
-
-    @Override
     public ClientPresentationModelBuilder withAttribute(String name, Object value) {
         attributes.add(new ClientAttribute(name, value));
         return this;
     }
 
     @Override
-    public ClientPresentationModelBuilder withAttribute(String name, Object value, String qualifier) {
-        attributes.add(new ClientAttribute(name, value, qualifier));
-        return this;
-    }
-
-    @Override
     public ClientPresentationModel create() {
-        return modelStore.createModel(id, type, attributes.toArray(new ClientAttribute[attributes.size()]));
+        ClientPresentationModel model = new ClientPresentationModel(id, attributes);
+        model.setPresentationModelType(type);
+        modelStore.add(model);
+        return model;
     }
 
 }

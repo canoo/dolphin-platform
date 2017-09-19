@@ -15,6 +15,21 @@
  */
 package com.canoo.dolphin.client;
 
+import com.canoo.dolphin.client.util.AbstractDolphinBasedTest;
+import com.canoo.dolphin.client.util.ChildModel;
+import com.canoo.dolphin.client.util.ComplexDataTypesModel;
+import com.canoo.dolphin.client.util.ListReferenceModel;
+import com.canoo.dolphin.client.util.PrimitiveDataTypesModel;
+import com.canoo.dolphin.client.util.SimpleAnnotatedTestModel;
+import com.canoo.dolphin.client.util.SimpleTestModel;
+import com.canoo.dolphin.client.util.SingleReferenceModel;
+import com.canoo.dp.impl.client.legacy.ClientDolphin;
+import com.canoo.dp.impl.client.legacy.ClientPresentationModel;
+import com.canoo.dp.impl.client.legacy.communication.AbstractClientConnector;
+import com.canoo.dp.impl.remoting.BeanDefinitionException;
+import com.canoo.dp.impl.remoting.BeanRepository;
+import com.canoo.dp.impl.remoting.EventDispatcher;
+import com.canoo.dp.impl.remoting.PlatformRemotingConstants;
 import com.canoo.dp.impl.remoting.converters.BooleanConverterFactory;
 import com.canoo.dp.impl.remoting.converters.ByteConverterFactory;
 import com.canoo.dp.impl.remoting.converters.CalendarConverterFactory;
@@ -27,26 +42,26 @@ import com.canoo.dp.impl.remoting.converters.IntegerConverterFactory;
 import com.canoo.dp.impl.remoting.converters.LongConverterFactory;
 import com.canoo.dp.impl.remoting.converters.ShortConverterFactory;
 import com.canoo.dp.impl.remoting.converters.StringConverterFactory;
-import com.canoo.platform.remoting.BeanManager;
-import com.canoo.dolphin.client.util.*;
-import com.canoo.dp.impl.remoting.BeanDefinitionException;
-import com.canoo.dp.impl.remoting.PlatformRemotingConstants;
-import com.canoo.dp.impl.remoting.BeanRepository;
-import com.canoo.dp.impl.remoting.EventDispatcher;
-import mockit.Mocked;
-import org.hamcrest.Matchers;
 import com.canoo.dp.impl.remoting.legacy.RemotingConstants;
 import com.canoo.dp.impl.remoting.legacy.core.Attribute;
 import com.canoo.dp.impl.remoting.legacy.core.PresentationModel;
-import com.canoo.dp.impl.client.legacy.ClientDolphin;
-import com.canoo.dp.impl.client.legacy.ClientPresentationModel;
-import com.canoo.dp.impl.client.legacy.communication.AbstractClientConnector;
+import com.canoo.platform.remoting.BeanManager;
+import mockit.Mocked;
+import org.hamcrest.Matchers;
 import org.testng.annotations.Test;
 
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.testng.Assert.fail;
 
 public class TestModelCreation extends AbstractDolphinBasedTest {

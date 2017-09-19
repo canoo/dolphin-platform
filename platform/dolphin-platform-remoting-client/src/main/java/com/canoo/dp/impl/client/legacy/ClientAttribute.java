@@ -17,7 +17,7 @@ package com.canoo.dp.impl.client.legacy;
 
 
 import com.canoo.dp.impl.remoting.legacy.RemotingConstants;
-import com.canoo.dp.impl.remoting.legacy.core.BaseAttribute;
+import com.canoo.dp.impl.remoting.legacy.core.Attribute;
 
 /**
  * A client side (remote) ClientAttribute is considered a remote representation of a ServerAttribute.
@@ -26,18 +26,17 @@ import com.canoo.dp.impl.remoting.legacy.core.BaseAttribute;
  * a) as a PropertyChangeListener
  * b) through the valueProperty() method for JavaFx
  */
-public class ClientAttribute extends BaseAttribute {
-
-    public ClientAttribute(final String propertyName, final Object initialValue, final String qualifier) {
-        super(propertyName, initialValue, qualifier);
-    }
+public class ClientAttribute extends Attribute {
 
     public ClientAttribute(final String propertyName, final Object initialValue) {
-        this(propertyName, initialValue, null);
+        super(propertyName, initialValue);
     }
 
-    public String getOrigin() {
+    protected String getOrigin() {
         return RemotingConstants.CLIENT_ORIGIN;
     }
 
+    public void setValueFromServer(Object value) {
+        this.setValue(value);
+    }
 }

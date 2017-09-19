@@ -46,7 +46,7 @@ import com.canoo.dp.impl.server.gc.Instance;
 import com.canoo.dp.impl.server.mbean.DolphinContextMBeanRegistry;
 import com.canoo.dp.impl.server.model.*;
 import com.canoo.platform.server.client.ClientSession;
-import com.canoo.dp.impl.remoting.legacy.communication.Command;
+import com.canoo.dp.impl.remoting.legacy.commands.Command;
 import com.canoo.dp.impl.server.legacy.DefaultServerDolphin;
 import com.canoo.dp.impl.server.legacy.action.DolphinServerAction;
 import com.canoo.dp.impl.server.legacy.communication.ActionRegistry;

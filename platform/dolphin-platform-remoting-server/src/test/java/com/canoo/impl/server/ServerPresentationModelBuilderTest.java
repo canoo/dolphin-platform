@@ -48,7 +48,7 @@ public class ServerPresentationModelBuilderTest extends AbstractDolphinBasedTest
     public void testWithAttributeCreation() {
         ServerDolphin serverDolphin = createServerDolphin();
         ServerPresentationModelBuilder builder = new ServerPresentationModelBuilder(serverDolphin);
-        ServerPresentationModel model = builder.withAttribute("testName").create();
+        ServerPresentationModel model = builder.withAttribute("testName", null).create();
         assertNotNull(model);
         assertEquals(model.getAttributes().size(), 2);
         assertNotNull(model.getAttribute(RemotingConstants.SOURCE_SYSTEM));

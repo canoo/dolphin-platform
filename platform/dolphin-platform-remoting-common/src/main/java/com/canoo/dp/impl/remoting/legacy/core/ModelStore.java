@@ -153,7 +153,7 @@ public class ModelStore<A extends Attribute, P extends PresentationModel<A>> {
             removePresentationModelByType(model);
             presentationModels.remove(model.getId());
             for (A attribute : model.getAttributes()) {
-                removeAttributeById(attribute);
+                attributesPerId.remove(attribute.getId());
                 removeAttributeByQualifier(attribute);
                 attribute.removePropertyChangeListener(Attribute.QUALIFIER_NAME, ATTRIBUTE_WORKER);
             }
@@ -163,17 +163,12 @@ public class ModelStore<A extends Attribute, P extends PresentationModel<A>> {
         return removed;
     }
 
-    protected void addAttributeById(A attribute) {
+    private void addAttributeById(A attribute) {
         if (null == attribute || attributesPerId.containsKey(attribute.getId())) return;
         attributesPerId.put(attribute.getId(), attribute);
     }
 
-    protected void removeAttributeById(A attribute) {
-        if (null == attribute) return;
-        attributesPerId.remove(attribute.getId());
-    }
-
-    protected void addAttributeByQualifier(A attribute) {
+    private void addAttributeByQualifier(A attribute) {
         if (null == attribute) return;
         String qualifier = attribute.getQualifier();
         if (Assert.isBlank(qualifier)) return;
@@ -185,7 +180,7 @@ public class ModelStore<A extends Attribute, P extends PresentationModel<A>> {
         if (!list.contains(attribute)) list.add(attribute);
     }
 
-    protected void removeAttributeByQualifier(A attribute) {
+    private void removeAttributeByQualifier(A attribute) {
         if (null == attribute) return;
         String qualifier = attribute.getQualifier();
         if (Assert.isBlank(qualifier)) return;
@@ -195,7 +190,7 @@ public class ModelStore<A extends Attribute, P extends PresentationModel<A>> {
         }
     }
 
-    protected void addPresentationModelByType(P model) {
+    private void addPresentationModelByType(P model) {
         if (null == model) return;
         String type = model.getPresentationModelType();
         if (Assert.isBlank(type)) return;
@@ -207,7 +202,7 @@ public class ModelStore<A extends Attribute, P extends PresentationModel<A>> {
         if (!list.contains(model)) list.add(model);
     }
 
-    protected void removePresentationModelByType(P model) {
+    private void removePresentationModelByType(P model) {
         if (null == model) return;
         String type = model.getPresentationModelType();
         if (Assert.isBlank(type)) return;
@@ -219,7 +214,7 @@ public class ModelStore<A extends Attribute, P extends PresentationModel<A>> {
         }
     }
 
-    protected void removeAttributeByQualifier(A attribute, String qualifier) {
+    private void removeAttributeByQualifier(A attribute, String qualifier) {
         if (Assert.isBlank(qualifier)) return;
         List<A> list = attributesPerQualifier.get(qualifier);
         if (null == list) return;
@@ -291,8 +286,7 @@ public class ModelStore<A extends Attribute, P extends PresentationModel<A>> {
      * @param attribute attribute to be added to the model store
      * @see #add(PresentationModel)
      */
-    @Deprecated
-    public void registerAttribute(A attribute) {
+    protected void registerAttribute(A attribute) {
         if (null == attribute) return;
         boolean listeningAlready = false;
         for (PropertyChangeListener listener : attribute.getPropertyChangeListeners(Attribute.QUALIFIER_NAME)) {
@@ -338,7 +332,7 @@ public class ModelStore<A extends Attribute, P extends PresentationModel<A>> {
                 modelStoreListeners.contains(new ModelStoreListenerWrapper<A, P>(presentationModelType, listener));
     }
 
-    protected void fireModelStoreChangedEvent(P model, ModelStoreEvent.Type eventType) {
+    private void fireModelStoreChangedEvent(P model, ModelStoreEvent.Type eventType) {
         if (modelStoreListeners.isEmpty()) return;
         ModelStoreEvent<A, P> event = new ModelStoreEvent<A, P>(eventType, model);
         for (ModelStoreListener<A, P> listener : modelStoreListeners) {

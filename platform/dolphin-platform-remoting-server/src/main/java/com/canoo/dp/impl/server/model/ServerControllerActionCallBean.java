@@ -15,13 +15,13 @@
  */
 package com.canoo.dp.impl.server.model;
 
-import com.canoo.platform.remoting.spi.converter.ValueConverterException;
+import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.dp.impl.remoting.AbstractControllerActionCallBean;
 import com.canoo.dp.impl.remoting.Converters;
 import com.canoo.dp.impl.remoting.MappingException;
-import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.dp.impl.remoting.legacy.core.Attribute;
 import com.canoo.dp.impl.remoting.legacy.core.PresentationModel;
+import com.canoo.platform.remoting.spi.converter.ValueConverterException;
 
 public class ServerControllerActionCallBean extends AbstractControllerActionCallBean {
 

@@ -16,7 +16,7 @@
 package com.canoo.dp.impl.remoting.codec.encoders;
 
 import com.google.gson.JsonObject;
-import com.canoo.dp.impl.remoting.legacy.communication.Command;
+import com.canoo.dp.impl.remoting.legacy.commands.Command;
 
 public interface CommandTranscoder<C extends Command> {
 

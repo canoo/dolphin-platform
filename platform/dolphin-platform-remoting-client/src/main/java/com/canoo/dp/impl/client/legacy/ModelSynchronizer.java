@@ -15,15 +15,51 @@
  */
 package com.canoo.dp.impl.client.legacy;
 
+import com.canoo.dp.impl.client.legacy.communication.AbstractClientConnector;
+import com.canoo.dp.impl.platform.core.Assert;
+import com.canoo.dp.impl.remoting.legacy.commands.ChangeAttributeMetadataCommand;
+import com.canoo.dp.impl.remoting.legacy.commands.Command;
+import com.canoo.dp.impl.remoting.legacy.commands.CreatePresentationModelCommand;
+import com.canoo.dp.impl.remoting.legacy.commands.ValueChangedCommand;
+import com.canoo.dp.impl.remoting.legacy.core.Attribute;
+import com.canoo.platform.core.functional.Provider;
+
 import java.beans.PropertyChangeEvent;
 
-public interface ModelSynchronizer {
+public class ModelSynchronizer {
 
-    void onAdded(ClientPresentationModel model);
+    private final Provider<AbstractClientConnector> connectionProvider;
 
-    void onDeleted(ClientPresentationModel model);
+    public ModelSynchronizer(final Provider<AbstractClientConnector> connectionProvider) {
+        this.connectionProvider = Assert.requireNonNull(connectionProvider, "connectionProvider");
+    }
 
-    void onPropertyChanged(PropertyChangeEvent evt);
+    public void onAdded(final ClientPresentationModel model) {
+        final Command command = CreatePresentationModelCommand.makeFrom(model);
+        send(command);
+    }
 
-    void onMetadataChanged(PropertyChangeEvent evt);
+    @Deprecated
+    public void onDeleted(final ClientPresentationModel model) {
+    }
+
+    public void onPropertyChanged(final PropertyChangeEvent evt) {
+        Assert.requireNonNull(evt, "evt");
+        final Command command = new ValueChangedCommand(((Attribute) evt.getSource()).getId(),evt.getNewValue());
+        send(command);
+    }
+
+    public void onMetadataChanged(final PropertyChangeEvent evt) {
+        Assert.requireNonNull(evt, "evt");
+        final Command command = new ChangeAttributeMetadataCommand(((Attribute) evt.getSource()).getId(), evt.getPropertyName(), evt.getNewValue());
+        send(command);
+    }
+
+    private void send(final Command command) {
+        AbstractClientConnector clientConnector = connectionProvider.get();
+        if(clientConnector == null) {
+            throw new IllegalStateException("No connection defined!");
+        }
+        clientConnector.send(command);
+    }
 }

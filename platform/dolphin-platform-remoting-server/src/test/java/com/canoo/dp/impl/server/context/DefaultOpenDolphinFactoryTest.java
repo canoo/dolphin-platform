@@ -15,11 +15,9 @@
  */
 package com.canoo.dp.impl.server.context;
 
-import com.canoo.dp.impl.remoting.codec.OptimizedJsonCodec;
-import com.canoo.dp.impl.remoting.legacy.communication.ChangeAttributeMetadataCommand;
-import com.canoo.dp.impl.remoting.legacy.communication.CreatePresentationModelCommand;
-import com.canoo.dp.impl.remoting.legacy.communication.PresentationModelDeletedCommand;
-import com.canoo.dp.impl.remoting.legacy.communication.ValueChangedCommand;
+import com.canoo.dp.impl.remoting.legacy.commands.ChangeAttributeMetadataCommand;
+import com.canoo.dp.impl.remoting.legacy.commands.CreatePresentationModelCommand;
+import com.canoo.dp.impl.remoting.legacy.commands.ValueChangedCommand;
 import com.canoo.dp.impl.server.legacy.DefaultServerDolphin;
 import org.testng.annotations.Test;
 
@@ -37,14 +35,11 @@ public class DefaultOpenDolphinFactoryTest {
         assertNotNull(serverDolphin.getModelStore());
         assertNotNull(serverDolphin.getServerConnector());
         assertNotNull(serverDolphin.getModelStore());
-        assertNotNull(serverDolphin.getServerConnector().getCodec());
-        assertEquals(OptimizedJsonCodec.class, serverDolphin.getServerConnector().getCodec().getClass());
 
-        assertEquals(serverDolphin.getServerConnector().getRegistry().getActions().size(), 4);
+        assertEquals(serverDolphin.getServerConnector().getRegistry().getActions().size(), 3);
         assertTrue(serverDolphin.getServerConnector().getRegistry().getActions().containsKey(ValueChangedCommand.class));
         assertTrue(serverDolphin.getServerConnector().getRegistry().getActions().containsKey(CreatePresentationModelCommand.class));
         assertTrue(serverDolphin.getServerConnector().getRegistry().getActions().containsKey(ChangeAttributeMetadataCommand.class));
-        assertTrue(serverDolphin.getServerConnector().getRegistry().getActions().containsKey(PresentationModelDeletedCommand.class));
 
         assertEquals(serverDolphin.getModelStore().listPresentationModelIds().size(), 0);
     }

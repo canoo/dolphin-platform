@@ -16,11 +16,10 @@
 package com.canoo.dp.impl.client.legacy.communication;
 
 import java.util.Collections;
-import java.util.List;
 
-public class CommandBatcher implements ICommandBatcher {
+public class CommandBatcher {
 
-    private final DataflowQueue<List<CommandAndHandler>> waitingBatches;
+    private final CommandBatcherQueue waitingBatches;
 
     public CommandBatcher() {
         this.waitingBatches = new CommandBatcherQueue();
@@ -34,7 +33,7 @@ public class CommandBatcher implements ICommandBatcher {
         return waitingBatches.length() == 0;
     }
 
-    public DataflowQueue<List<CommandAndHandler>> getWaitingBatches() {
+    public CommandBatcherQueue getWaitingBatches() {
         return waitingBatches;
     }
 

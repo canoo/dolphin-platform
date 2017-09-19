@@ -24,12 +24,12 @@ import com.google.gson.JsonParseException;
 
 import java.util.Map;
 
-import static com.canoo.dp.impl.remoting.legacy.communication.CommandConstants.CALL_ACTION_COMMAND_ID;
-import static com.canoo.dp.impl.remoting.legacy.communication.CommandConstants.CONTROLLER_ID;
-import static com.canoo.dp.impl.remoting.legacy.communication.CommandConstants.ID;
-import static com.canoo.dp.impl.remoting.legacy.communication.CommandConstants.NAME;
-import static com.canoo.dp.impl.remoting.legacy.communication.CommandConstants.PARAMS;
-import static com.canoo.dp.impl.remoting.legacy.communication.CommandConstants.VALUE;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.CALL_ACTION_COMMAND_ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.CONTROLLER_ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.NAME;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.PARAMS;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.VALUE;
 
 public class CallActionCommandEncoder extends AbstractCommandTranscoder<CallActionCommand> {
 

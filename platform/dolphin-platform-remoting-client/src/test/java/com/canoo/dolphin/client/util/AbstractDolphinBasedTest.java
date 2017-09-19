@@ -20,7 +20,6 @@ import com.canoo.dp.impl.client.ClientEventDispatcher;
 import com.canoo.dp.impl.client.ClientPresentationModelBuilderFactory;
 import com.canoo.dp.impl.client.legacy.ClientDolphin;
 import com.canoo.dp.impl.client.legacy.ClientModelStore;
-import com.canoo.dp.impl.client.legacy.DefaultModelSynchronizer;
 import com.canoo.dp.impl.client.legacy.ModelSynchronizer;
 import com.canoo.dp.impl.client.legacy.communication.AbstractClientConnector;
 import com.canoo.dp.impl.remoting.BeanBuilder;
@@ -34,11 +33,11 @@ import com.canoo.dp.impl.remoting.EventDispatcher;
 import com.canoo.dp.impl.remoting.ListMapper;
 import com.canoo.dp.impl.remoting.PresentationModelBuilderFactory;
 import com.canoo.dp.impl.remoting.collections.ListMapperImpl;
-import com.canoo.dp.impl.remoting.legacy.communication.Command;
+import com.canoo.dp.impl.remoting.legacy.commands.Command;
 import com.canoo.dp.impl.remoting.legacy.util.DirectExecutor;
-import com.canoo.dp.impl.remoting.legacy.util.Provider;
 import com.canoo.dp.impl.server.legacy.ServerDolphin;
 import com.canoo.dp.impl.server.legacy.ServerModelStore;
+import com.canoo.platform.core.functional.Provider;
 import com.canoo.platform.remoting.BeanManager;
 
 import java.util.ArrayList;
@@ -67,7 +66,7 @@ public abstract class AbstractDolphinBasedTest {
 
     protected ClientDolphin createClientDolphin(final AbstractClientConnector connector) {
         final ClientDolphin dolphin = new ClientDolphin();
-        ModelSynchronizer defaultModelSynchronizer = new DefaultModelSynchronizer(new Provider<AbstractClientConnector>() {
+        ModelSynchronizer defaultModelSynchronizer = new ModelSynchronizer(new Provider<AbstractClientConnector>() {
             @Override
             public AbstractClientConnector get() {
                 return connector;

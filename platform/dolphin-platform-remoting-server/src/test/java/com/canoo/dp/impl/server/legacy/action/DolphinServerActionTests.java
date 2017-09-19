@@ -15,9 +15,8 @@
  */
 package com.canoo.dp.impl.server.legacy.action;
 
-import com.canoo.dp.impl.remoting.legacy.communication.CreatePresentationModelCommand;
-import com.canoo.dp.impl.remoting.legacy.communication.ValueChangedCommand;
-import com.canoo.dp.impl.server.legacy.DTO;
+import com.canoo.dp.impl.remoting.legacy.commands.CreatePresentationModelCommand;
+import com.canoo.dp.impl.remoting.legacy.commands.ValueChangedCommand;
 import com.canoo.dp.impl.server.legacy.ServerAttribute;
 import com.canoo.dp.impl.server.legacy.communication.ActionRegistry;
 import org.testng.Assert;
@@ -25,6 +24,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class DolphinServerActionTests  {
 
@@ -42,7 +42,7 @@ public class DolphinServerActionTests  {
 
     @Test
     public void testCreatePresentationModel() {
-        action.presentationModel("p1", "person", new DTO());
+        action.presentationModel("p1", "person", Collections.<ServerAttribute>emptyList());
         Assert.assertEquals(1, action.getDolphinResponse().size());
         Assert.assertEquals(CreatePresentationModelCommand.class, action.getDolphinResponse().get(0).getClass());
         Assert.assertEquals("p1", ((CreatePresentationModelCommand) action.getDolphinResponse().get(0)).getPmId());

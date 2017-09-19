@@ -15,12 +15,12 @@
  */
 package com.canoo.dp.impl.remoting;
 
-import com.canoo.platform.remoting.spi.converter.ValueConverterException;
-import com.canoo.platform.remoting.ValueChangeListener;
-import com.canoo.dp.impl.remoting.info.PropertyInfo;
-import com.canoo.platform.remoting.Property;
 import com.canoo.dp.impl.platform.core.Assert;
+import com.canoo.dp.impl.remoting.info.PropertyInfo;
 import com.canoo.dp.impl.remoting.legacy.core.Attribute;
+import com.canoo.platform.remoting.Property;
+import com.canoo.platform.remoting.ValueChangeListener;
+import com.canoo.platform.remoting.spi.converter.ValueConverterException;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;

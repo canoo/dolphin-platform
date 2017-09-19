@@ -23,7 +23,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import static com.canoo.dolphin.todo.TodoAppConstants.*;
+import static com.canoo.dolphin.todo.TodoAppConstants.ADD_ACTION;
+import static com.canoo.dolphin.todo.TodoAppConstants.CHANGE_ACTION;
+import static com.canoo.dolphin.todo.TodoAppConstants.ITEM_PARAM;
+import static com.canoo.dolphin.todo.TodoAppConstants.REMOVE_ACTION;
+import static com.canoo.dolphin.todo.TodoAppConstants.TODO_CONTROLLER_NAME;
 
 @SpringBootTest(classes = ToDoServerConfiguration.class)
 public class ToDoControllerTests extends SpringTestNGControllerTest {

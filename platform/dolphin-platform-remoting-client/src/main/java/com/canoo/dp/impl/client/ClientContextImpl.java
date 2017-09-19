@@ -15,31 +15,30 @@
  */
 package com.canoo.dp.impl.client;
 
+import com.canoo.dp.impl.client.legacy.ClientModelStore;
+import com.canoo.dp.impl.client.legacy.ModelSynchronizer;
+import com.canoo.dp.impl.client.legacy.communication.AbstractClientConnector;
+import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.dp.impl.remoting.BeanManagerImpl;
+import com.canoo.dp.impl.remoting.BeanRepository;
 import com.canoo.dp.impl.remoting.BeanRepositoryImpl;
+import com.canoo.dp.impl.remoting.ClassRepository;
 import com.canoo.dp.impl.remoting.ClassRepositoryImpl;
 import com.canoo.dp.impl.remoting.Converters;
+import com.canoo.dp.impl.remoting.EventDispatcher;
 import com.canoo.dp.impl.remoting.PresentationModelBuilderFactory;
-import com.canoo.platform.remoting.BeanManager;
 import com.canoo.dp.impl.remoting.collections.ListMapperImpl;
 import com.canoo.dp.impl.remoting.commands.CreateContextCommand;
 import com.canoo.dp.impl.remoting.commands.DestroyContextCommand;
-import com.canoo.dp.impl.remoting.BeanRepository;
-import com.canoo.dp.impl.remoting.ClassRepository;
-import com.canoo.dp.impl.remoting.EventDispatcher;
-import com.canoo.dp.impl.platform.core.Assert;
+import com.canoo.platform.core.functional.Function;
+import com.canoo.platform.core.functional.Provider;
+import com.canoo.platform.remoting.BeanManager;
+import com.canoo.platform.remoting.DolphinRemotingException;
 import com.canoo.platform.remoting.client.ClientConfiguration;
 import com.canoo.platform.remoting.client.ClientContext;
 import com.canoo.platform.remoting.client.ClientInitializationException;
 import com.canoo.platform.remoting.client.ControllerInitalizationException;
 import com.canoo.platform.remoting.client.ControllerProxy;
-import com.canoo.dp.impl.client.legacy.ClientModelStore;
-import com.canoo.dp.impl.client.legacy.DefaultModelSynchronizer;
-import com.canoo.dp.impl.client.legacy.ModelSynchronizer;
-import com.canoo.dp.impl.client.legacy.communication.AbstractClientConnector;
-import com.canoo.platform.remoting.DolphinRemotingException;
-import com.canoo.dp.impl.remoting.legacy.util.Function;
-import com.canoo.dp.impl.remoting.legacy.util.Provider;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiFunction;
@@ -116,7 +115,7 @@ public class ClientContextImpl implements ClientContext {
 
     @Override
     public CompletableFuture<Void> connect() {
-        final ModelSynchronizer defaultModelSynchronizer = new DefaultModelSynchronizer(new Provider<AbstractClientConnector>() {
+        final ModelSynchronizer defaultModelSynchronizer = new ModelSynchronizer(new Provider<AbstractClientConnector>() {
             @Override
             public AbstractClientConnector get() {
                 return clientConnector;

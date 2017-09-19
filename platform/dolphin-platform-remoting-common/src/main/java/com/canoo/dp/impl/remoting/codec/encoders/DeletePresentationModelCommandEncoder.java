@@ -1,12 +1,12 @@
 package com.canoo.dp.impl.remoting.codec.encoders;
 
 import com.canoo.dp.impl.platform.core.Assert;
-import com.canoo.dp.impl.remoting.legacy.communication.DeletePresentationModelCommand;
+import com.canoo.dp.impl.remoting.legacy.commands.DeletePresentationModelCommand;
 import com.google.gson.JsonObject;
 
-import static com.canoo.dp.impl.remoting.legacy.communication.CommandConstants.DELETE_PRESENTATION_MODEL_COMMAND_ID;
-import static com.canoo.dp.impl.remoting.legacy.communication.CommandConstants.ID;
-import static com.canoo.dp.impl.remoting.legacy.communication.CommandConstants.PM_ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.DELETE_PRESENTATION_MODEL_COMMAND_ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.PM_ID;
 
 public class DeletePresentationModelCommandEncoder extends AbstractCommandTranscoder<DeletePresentationModelCommand> {
 

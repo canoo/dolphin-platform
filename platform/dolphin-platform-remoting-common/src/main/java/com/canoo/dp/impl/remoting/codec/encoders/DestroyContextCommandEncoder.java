@@ -4,8 +4,8 @@ import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.dp.impl.remoting.commands.DestroyContextCommand;
 import com.google.gson.JsonObject;
 
-import static com.canoo.dp.impl.remoting.legacy.communication.CommandConstants.DESTROY_CONTEXT_COMMAND_ID;
-import static com.canoo.dp.impl.remoting.legacy.communication.CommandConstants.ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.DESTROY_CONTEXT_COMMAND_ID;
+import static com.canoo.dp.impl.remoting.legacy.commands.CommandConstants.ID;
 
 public class DestroyContextCommandEncoder extends AbstractCommandTranscoder<DestroyContextCommand> {
     @Override
