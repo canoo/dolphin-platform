@@ -30,7 +30,7 @@ import com.canoo.dp.impl.server.event.AbstractEventBus;
 import com.canoo.dp.impl.server.servlet.DolphinPlatformServlet;
 import com.canoo.dp.impl.server.servlet.InterruptServlet;
 import com.canoo.platform.remoting.server.event.DolphinEventBus;
-import com.canoo.platform.remoting.server.spi.EventBusProvider;
+import com.canoo.platform.remoting.server.event.spi.EventBusProvider;
 import com.canoo.platform.server.client.ClientSession;
 import com.canoo.platform.server.spi.ClasspathScanner;
 import com.canoo.platform.server.spi.ModuleDefinition;
