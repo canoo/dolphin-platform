@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.canoo.platform.remoting.server.spi;
+package com.canoo.platform.remoting.server.event.spi;
 
 import com.canoo.dp.impl.server.config.RemotingConfiguration;
 import com.canoo.platform.remoting.server.event.DolphinEventBus;
