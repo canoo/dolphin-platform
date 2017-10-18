@@ -16,7 +16,7 @@
 package com.canoo.dolphin.samples.processmonitor;
 
 import com.canoo.platform.remoting.client.ClientContext;
-import com.canoo.platform.remoting.client.javafx.SimpleDolphinPlatformApplication;
+import com.canoo.platform.remoting.client.javafx.DolphinPlatformApplication;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class ProcessMonitorClient extends SimpleDolphinPlatformApplication {
+public class ProcessMonitorClient extends DolphinPlatformApplication {
 
     private static final Logger LOG = LoggerFactory.getLogger(ProcessMonitorClient.class);
 

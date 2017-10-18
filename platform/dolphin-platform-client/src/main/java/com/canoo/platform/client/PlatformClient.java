@@ -4,12 +4,16 @@ import com.canoo.dp.impl.platform.client.DefaultClientConfiguration;
 import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.platform.client.spi.ServiceProvider;
 import com.canoo.platform.core.DolphinRuntimeException;
+import org.apiguardian.api.API;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ServiceLoader;
 
+import static org.apiguardian.api.API.Status.EXPERIMENTAL;
+
+@API(since = "0.19.0", status = EXPERIMENTAL)
 public class PlatformClient {
 
     private static PlatformClient INSTANCE;

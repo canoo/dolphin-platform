@@ -15,73 +15,173 @@
  */
 package com.canoo.dp.impl.validation;
 
+import com.canoo.dp.impl.remoting.MockedProperty;
+import com.canoo.platform.remoting.DolphinBean;
+import com.canoo.platform.remoting.Property;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import javax.validation.Configuration;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import javax.validation.constraints.*;
 import java.util.Set;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class ValidationTest {
 
-    @Test
-    public void testValidators() {
-        TestBean bean = new TestBean();
+    private Validator validator;
 
+    @BeforeClass
+    public void setup() {
         Configuration<?> validationConf = Validation.byDefaultProvider().configure();
-        Validator validator = validationConf.buildValidatorFactory().getValidator();
+        validator = validationConf.buildValidatorFactory().getValidator();
+    }
 
-        Set<ConstraintViolation<TestBean>> violations = validator.validate(bean);
+    @Test
+    public void testPatternValidator() {
+        @DolphinBean
+        class TestedClass {
+            @Pattern(regexp = "^a.*b$",flags = Pattern.Flag.CASE_INSENSITIVE)
+            private Property<CharSequence> value = new MockedProperty<>();
+        }
+
+        TestedClass bean = new TestedClass();
+        Set<ConstraintViolation<TestedClass>> violations;
+        ConstraintViolation<TestedClass> violation;
+
+        bean.value.set(null);
+        violations = validator.validate(bean);
+        assertTrue(violations.isEmpty(), "Null value should not trigger validation error");
+
+        bean.value.set("a_valid_B");
+        violations = validator.validate(bean);
+        assertTrue(violations.isEmpty(), "'a_valid_B' should match pattern '^a.*b$'");
+
+        bean.value.set("a_not_valid_c");
+        violations = validator.validate(bean);
+        assertEquals(violations.size(), 1, "'a_valid_c' should not match pattern '^a.*b$'");
+        violation = violations.iterator().next();
+        assertEquals(violation.getPropertyPath().iterator().next().getName(), "value");
+    }
+
+    @Test
+    public void testNotNullValidator() {
+        @DolphinBean
+        class TestedClass {
+            @NotNull
+            private Property<Object> value = new MockedProperty<>();
+        }
+
+        TestedClass bean = new TestedClass();
+        Set<ConstraintViolation<TestedClass>> violations;
+        ConstraintViolation<TestedClass> violation;
+
+        bean.value.set(null);
+        violations = validator.validate(bean);
         assertEquals(violations.size(), 1);
-        ConstraintViolation<TestBean> violation = violations.iterator().next();
-        assertEquals(violation.getPropertyPath().iterator().next().getName(), "value1");
+        violation = violations.iterator().next();
+        assertEquals(violation.getPropertyPath().iterator().next().getName(), "value");
 
-        bean.value1Property().set("YEAH!");
+        bean.value.set("YEAH!");
+        violations = validator.validate(bean);
+        assertEquals(violations.size(), 0);
+    }
 
+    @Test
+    public void testNullValidator() {
+        @DolphinBean
+        class TestedClass {
+            @Null
+            private Property<Object> value = new MockedProperty<>();
+        }
+
+        TestedClass bean = new TestedClass();
+        Set<ConstraintViolation<TestedClass>> violations;
+        ConstraintViolation<TestedClass> violation;
+
+        bean.value.set(null);
         violations = validator.validate(bean);
         assertEquals(violations.size(), 0);
 
-        bean.value2Property().set("TEST");
-
+        bean.value.set("TEST");
         violations = validator.validate(bean);
         assertEquals(violations.size(), 1);
         violation = violations.iterator().next();
-        assertEquals(violation.getPropertyPath().iterator().next().getName(), "value2");
-
-        bean.value2Property().set(null);
-
-        bean.value3Property().set(false);
-
-        violations = validator.validate(bean);
-        assertEquals(violations.size(), 1);
-        violation = violations.iterator().next();
-        assertEquals(violation.getPropertyPath().iterator().next().getName(), "value3");
-
-        bean.value3Property().set(Boolean.FALSE);
-
-        violations = validator.validate(bean);
-        assertEquals(violations.size(), 1);
-        violation = violations.iterator().next();
-        assertEquals(violation.getPropertyPath().iterator().next().getName(), "value3");
-
-        bean.value3Property().set(true);
-
-        bean.value4Property().set(true);
-
-        violations = validator.validate(bean);
-        assertEquals(violations.size(), 1);
-        violation = violations.iterator().next();
-        assertEquals(violation.getPropertyPath().iterator().next().getName(), "value4");
-
-        bean.value4Property().set(Boolean.TRUE);
-
-        violations = validator.validate(bean);
-        assertEquals(violations.size(), 1);
-        violation = violations.iterator().next();
-        assertEquals(violation.getPropertyPath().iterator().next().getName(), "value4");
+        assertEquals(violation.getPropertyPath().iterator().next().getName(), "value");
     }
 
+    @Test
+    public void testAssertTrueValidator() {
+        @DolphinBean
+        class TestedClass {
+            @AssertTrue
+            private Property<Boolean> value = new MockedProperty<>();
+        }
+
+        TestedClass bean = new TestedClass();
+        Set<ConstraintViolation<TestedClass>> violations;
+        ConstraintViolation<TestedClass> violation;
+
+        bean.value.set(false);
+        violations = validator.validate(bean);
+        assertEquals(violations.size(), 1);
+        violation = violations.iterator().next();
+        assertEquals(violation.getPropertyPath().iterator().next().getName(), "value");
+
+        bean.value.set(true);
+        violations = validator.validate(bean);
+        assertEquals(violations.size(), 0);
+    }
+
+    @Test
+    public void testAssertFalseValidator() {
+        @DolphinBean
+        class TestedClass {
+            @AssertFalse
+            private Property<Boolean> value = new MockedProperty<>();
+        }
+
+        TestedClass bean = new TestedClass();
+        Set<ConstraintViolation<TestedClass>> violations;
+        ConstraintViolation<TestedClass> violation;
+
+        bean.value.set(true);
+        violations = validator.validate(bean);
+        assertEquals(violations.size(), 1);
+        violation = violations.iterator().next();
+        assertEquals(violation.getPropertyPath().iterator().next().getName(), "value");
+
+        bean.value.set(false);
+        violations = validator.validate(bean);
+        assertEquals(violations.size(), 0);
+    }
+    
+    @Test
+    public void testDigitsValidator() {
+        @DolphinBean
+        class TestedClass {
+            @Digits(integer=4,fraction=2)
+            private Property<CharSequence> value = new MockedProperty<>();
+        }
+
+        TestedClass bean = new TestedClass();
+        Set<ConstraintViolation<TestedClass>> violations;
+        ConstraintViolation<TestedClass> violation;
+
+		// test valid state
+        bean.value.set("1234.34");
+        violations = validator.validate(bean);
+        assertEquals(violations.size(), 0);
+        
+        // test invalid numeric format
+        bean.value.set("1234.343");
+        violations = validator.validate(bean);
+        assertEquals(violations.size(), 1);
+        violation = violations.iterator().next();
+        assertEquals(violation.getPropertyPath().iterator().next().getName(), "value");
+    }
 }

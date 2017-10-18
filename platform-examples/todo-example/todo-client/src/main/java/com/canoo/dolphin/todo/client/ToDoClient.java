@@ -16,7 +16,7 @@
 package com.canoo.dolphin.todo.client;
 
 import com.canoo.platform.remoting.client.ClientContext;
-import com.canoo.platform.remoting.client.javafx.SimpleDolphinPlatformApplication;
+import com.canoo.platform.remoting.client.javafx.DolphinPlatformApplication;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -25,7 +25,7 @@ import javafx.stage.Stage;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class ToDoClient extends SimpleDolphinPlatformApplication {
+public class ToDoClient extends DolphinPlatformApplication {
 
     @Override
     protected URL getServerEndpoint() throws MalformedURLException {

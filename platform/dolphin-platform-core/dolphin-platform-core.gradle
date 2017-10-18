@@ -17,4 +17,5 @@
 dependencies {
     compile "org.slf4j:slf4j-api:$slf4jVersion"
     compile "com.google.guava:guava:$guavaVersion"
+    compile "org.apiguardian:apiguardian-api:$apiguardianVersion"
 }

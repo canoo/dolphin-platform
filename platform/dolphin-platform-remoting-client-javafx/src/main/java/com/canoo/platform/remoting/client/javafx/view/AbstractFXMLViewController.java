@@ -15,8 +15,9 @@
  */
 package com.canoo.platform.remoting.client.javafx.view;
 
-import com.canoo.platform.remoting.client.ClientContext;
 import com.canoo.dp.impl.platform.core.Assert;
+import com.canoo.platform.core.DolphinRuntimeException;
+import com.canoo.platform.remoting.client.ClientContext;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 
@@ -52,7 +53,7 @@ public abstract class AbstractFXMLViewController<M> extends AbstractViewControll
             loader.setController(this);
             rootNode = loader.load();
         } catch (Exception e) {
-            throw new FxmlLoadException("Can not create view based on FXML location " + fxmlLocation, e);
+            throw new DolphinRuntimeException("Can not create view based on FXML location " + fxmlLocation, e);
         }
     }
 

@@ -140,15 +140,24 @@ public class DolphinContextTaskQueue {
                         break;
                     }
                 } catch (InterruptedException e) {
-                    LOG.error("Concurrency error in task executor for Dolphin Platform session {}", dolphinSessionId);
-                    throw new IllegalStateException("Concurrency error in task executor for Dolphin Platform session " + dolphinSessionId);
+                    String exceptionMessage =
+                        String.format(
+                            "Concurrency error in task executor for Dolphin Platform session %s",
+                            dolphinSessionId);
+                    LOG.error(exceptionMessage, e);
+                    throw new IllegalStateException(exceptionMessage, e);
                 }
             } else {
                 try {
                     task.run();
                     LOG.trace("Task executor executed task in Dolphin Platform session {}", dolphinSessionId);
                 } catch (Exception e) {
-                    throw new DolphinTaskException("Error in running task in Dolphin Platform session " + dolphinSessionId, e);
+                    String exceptionMessage =
+                        String.format(
+                            "Error in running task in Dolphin Platform session %s",
+                            dolphinSessionId);
+                    LOG.error(exceptionMessage, e);
+                    throw new DolphinTaskException(exceptionMessage, e);
                 }
             }
         }

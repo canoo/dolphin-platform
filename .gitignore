@@ -12,5 +12,19 @@ local.properties
 **/.nb-gradle
 **/integration-tests.war
 
+Thumbs.db
+.DS_Store
+.gradle
+build
+bin
+.classpath
+.project
+.settings
+exploration
+*.iml
+*.ipr
+*.iws
+.idea
+
 platform-examples/web-deployment-example/web-deployment-client/fxclient/fxclient.jar
 integration-tests/log.txt

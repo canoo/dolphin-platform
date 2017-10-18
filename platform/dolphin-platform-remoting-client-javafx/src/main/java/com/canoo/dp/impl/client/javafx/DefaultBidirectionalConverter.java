@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.canoo.platform.remoting.client.javafx.binding;
+package com.canoo.dp.impl.client.javafx;
 
 import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.platform.remoting.client.javafx.BidirectionalConverter;
