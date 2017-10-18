@@ -1,0 +1,187 @@
+
+= The AngularJS client integration
+
+Based on the generic JavaScript client API the Dolphin Platform provides a client API for AngularJS 1.x (TODO: Link to Angular).
+By using this API it's quite easy to create Dolphin Platform based MVC groups based on AngularJS controllers.
+
+== Adding the Dolphin Platform client API to an AngularJS project
+
+As all JavaScript based modules of the Dolphin Platform the AngularJS integration module is published by bower
+(TODO: LINK BOWER). Based on this the easiest way to add the module to a JavaScript project can be reached by using
+bower for the dependency management of the project. For such a project the module can easily be added as a dependency by
+executing the following command:
+
+[source,shell]
+----
+$ bower install --save dolphin-platform-angularjs
+----
+
+This command will automatically add the `dolphin-platform-angularjs` module and all its dependecies to the project.
+
+TIP: The Dolphin Platform Jumpstart creates next to several other client implementations an AngularJS based client
+for the project that is created by the jumpstart. This can easily be used as a template for a custom Dolphin Platform
+client that is based on AngularJS
+
+
+Since the JavaScript modules of the Dolphin Platform always provide a compiled JavaScript file that contains the module
+and all needed dependencies you only need to add one JavaScript file (`dolphin-platform-angular`.js) to your project.
+Based on this the sourcecode of a minimal html page that will use AngularJS and the DolphinPlatform might look like this:
+
+[source,html]
+----
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Angular  -->
+    <script src="bower_components/angular/angular.min.js"></script>
+
+    <!-- Dolphin-Platform  -->
+    <script src="bower_components/dolphin-platform-angularjs/dist/dolphin-platform-angular.min.js"></script>
+
+</head>
+
+<body>
+    READY!
+</body>
+----
+
+== Configuration of the Dolphin Platform with Angular
+
+To use the Dolphin Platform API in AngularJS controllers the `DolphinPlatform` module must be added to the AngularJS application.
+In addition a Dolphin Platform client configuration must be provided. The Dolphin Platform integration for AngularJS
+provides a `$dolphinConfigProvider` that can be injected in a `config(...)` method for an AngularJS application. This
+method is used to configure the connection to the server that will be used and automatically injected by AngularJS.
+
+The following code snippet shows an example how such a configuration can be provided:
+
+[source,html]
+----
+<script>
+    var app = angular.module("MyApp", ["DolphinPlatform"]).config(function ($dolphinConfigProvider) {
+        $dolphinConfigProvider.configure({
+            DOLPHIN_URL: "http://localhost:8080/dolphin"
+        });
+    });
+</script>
+
+----
+
+Based on this the minimal html source code for an page that creates an AngularJS application with Dolphin Platform support
+and configuration might look like this:
+
+[source,html]
+----
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Angular  -->
+    <script src="bower_components/angular/angular.min.js"></script>
+
+    <!-- Dolphin-Platform  -->
+    <script src="bower_components/dolphin-platform-angularjs/dist/dolphin-platform-angular.min.js"></script>
+
+</head>
+
+<body>
+
+    <!-- Definition of AngularJS application and Dolphin Platform configuration -->
+    <script>
+        var app = angular.module("MyApp", ["DolphinPlatform"]).config(function ($dolphinConfigProvider) {
+            $dolphinConfigProvider.configure({
+                DOLPHIN_URL: "http://localhost:8080/dolphin"
+            });
+        });
+    </script>
+
+    READY!
+</body>
+
+----
+
+== Using the Dolphin Platform with Angular
+
+The best practice to use the Dolphin Platform in an AngularJS based application is the useage of Dolphin Platform controller
+proxies directly in AngularJS controllers. By doing so each AngularJS controller instance will be connected to a
+Dolphin Platform controller instance on the server. To create a Dolphin Platform controller proxy in an AngularJS controller
+the client context of Dolphin Platform can be injected in any AngularJS controller.
+
+The following code snippet shows an AngularJS controller that creates a Dolphin Platform controller proxy:
+
+[source,javascript]
+----
+app.controller("myAngularComponentName", function ($scope, clientContext) {
+        clientContext.createController($scope, 'myDolphinPlatformControllerName');
+});
+----
+
+The call of the `createController(...)` method returns a Promise that should be used to define the internal logic of
+the AngularJS controller and the interoperation with the Dolphin Platform controller.
+
+A developer do not need to take care of the destruction of the Dolphin Platform controller on the server. The AngularJS
+controller will automatically start the destruction once the view component is removed from the HTML DOM.
+
+=== Calling actions on the Dolphin Platform controller
+
+The controller proxy instance that is created can easily be used to invoke Dolphin Platform actions (that are defined by
+@DolphinAction as descripted in the chapter about the controller API). To do so the controller proxy provides an
+`invoke(...)` method.
+
+Let's say we have an AngularJS view that is defined by the following html code:
+
+[source,html]
+----
+<div ng-controller="MyController">
+    <button type="button" ng-click="save()">save</button>
+    <button type="button" ng-click="delete()">delete</button>
+</div>
+----
+
+This view snippet will be bound to an AngularJS controller with the defined name `MyController`. In addition 2 methods
+(`save()` and `delete()`) can be called by the view. This 2 methods must be provided by the AngularJS scope of the
+controller. The following implementation of the AngularJS controller assumes that the Dolphin Platform controller has
+2 Dolphin Platform actions defined. This actions will be invoked by the `save()` and `delete()` methods.
+
+[source,javascript]
+----
+app.controller("MyController", function ($scope, clientContext) {
+        clientContext.createController($scope, 'MyServerController').then(function (controllerProxy) {
+
+            $scope.save = function () {
+                controllerProxy.invoke('save');
+            };
+
+            $scope.delete = function () {
+                controllerProxy.invoke('delete');
+            };
+        }
+});
+----
+
+As all the other Dolphin Platform client APIs the AngularJS related one provides the functionality to pass parameters to
+the server side action. In all JavaScript based client APIs the parameters can be specified as a JSON object. The
+following snippet shows how a Dolphin Platform action can be called with parameters:
+
+[source,javascript]
+----
+app.controller("MyController", function ($scope, clientContext) {
+        clientContext.createController($scope, 'MyServerController').then(function (controllerProxy) {
+
+            $scope.sayHello = function () {
+                controllerProxy.invoke('sayHello', {'message': 'Hello from the AngularJS client'});
+            };
+        }
+});
+----
+
+
+The description about the support of custom parameters in a server side Dolphin Platform action can be found in the
+chapter about the controller API.
+
+=== Make use of the Dolphin Platform model
+
+TODO
+
+
+

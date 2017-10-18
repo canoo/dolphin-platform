@@ -1,0 +1,13 @@
+
+= The remoting layer
+
+Currently the Dolphin Platform use HTTP long polling internally to provide an asynchronous communication between client
+and server. This communication layer defines the base for live views of data or collaborative features in the client.
+To support a short reaction time the Dolphin Platform uses 2 HTTP request threads for each client. One of this threads
+is only used to interrupt an eventual running long poll request.
+
+.Long polling in the Dolphin Platform
+image::long_poll.png[]
+
+In a future release of the Dolphin Platform we plan to offer a websocket based remoting layer with fallback to long
+polling. By doing so the asynchronous communication between client and server will become faster.

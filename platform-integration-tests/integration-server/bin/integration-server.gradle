@@ -1,0 +1,7 @@
+dependencies {
+    compile project(':dolphin-platform-remoting-server')
+    compile project(':integration-common')
+    compile 'javax.inject:javax.inject:1'
+
+    testCompile project(':dolphin-platform-spring-controller-tester')
+}

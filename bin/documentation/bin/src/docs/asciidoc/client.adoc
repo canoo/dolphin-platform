@@ -1,0 +1,57 @@
+
+= Client API
+
+The Dolphin Platform offers APIs for several clients like the JavaFX client API or the Polymer client API. All this
+APIs provide the same feature set and implement the client part of the remote presentation model pattern. Since this
+chapter will give a general overview of the client API all examples will be shown in Java code. For clients in other programming languages the code might look different but all the concepts that are
+described in this chapter are the same. By having a look at the general examples and the client specific API it will
+be easy to reuse the concepts in any programming language.
+
+== The client context
+
+The connection between client and server is defined by a client context. Normally the client context is the most central
+object in a client and it's used as starting point to create application based on the Dolphin Platform. A client context
+will be created with a configuration. This configuration defines the server endpoint, general properties and  UI
+toolkit specific properties. The following code snippet shows how a client context can be created for a Java based
+client:
+
+[source,java]
+----
+ClientContext context = ClientContextFactory.connect(myClientConfiguration).get();
+----
+
+Once this line of code is executed the client is connected with the server and the client context can be used to
+initialize new views (with a controller on the server and a shared model). The `ClientContextFactory` is a static class
+that implements the factory pattern to create a new client context instance. It's important to know, that the
+`connect(...)` method do not return a client context directly but return a `CompletableFuture` instance that can be used
+to receive the client context. In this example this is done by calling the `get()` method of the `CompletableFuture`
+instance.
+
+CAUTION: Mostly all methods in the client API are defined as async / non-blocking calls. Since this will be usual for a
+JavaScript developer this concept might be new for a Java developer. TODO
+
+_TODO: destroy client context_
+
+== Creating a new controller
+
+Once a client context instance has been created a new controller instance can be requested. To do so the client context
+provides the functionallity to create a new controller. The following code snippet shows how a controller can be created
+in Java:
+
+[source,java]
+----
+ControllerProxy<MyModel> context = context.createController("MyController").get();
+----
+
+As defined by the remote presentation model pattern the controller instance will be created on the server. Therefore
+the client API provides a controller proxy that can be used to interact with the controller instance on the server.
+
+_TODO: controller proxy provides model_
+
+_TODO: controller proxy provides actions_
+
+_TODO: controller proxy destroy_
+
+== Creating a first view
+
+TODO

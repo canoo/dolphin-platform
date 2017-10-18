@@ -1,0 +1,56 @@
+rootProject.name = 'dolphin-platform'
+
+include 'platform/dolphin-platform-core'
+include 'platform/dolphin-platform-client'
+include 'platform/dolphin-platform-server'
+include 'platform/dolphin-platform-server-javaee'
+include 'platform/dolphin-platform-server-spring'
+
+include 'platform/dolphin-platform-remoting-common'
+include 'platform/dolphin-platform-remoting-client'
+include 'platform/dolphin-platform-remoting-client-javafx'
+include 'platform/dolphin-platform-remoting-server'
+include 'platform/dolphin-platform-remoting-server-javaee'
+include 'platform/dolphin-platform-remoting-server-spring'
+include 'platform/dolphin-platform-spring-controller-tester'
+include 'platform/dolphin-platform-date-time-converter'
+include 'platform/dolphin-platform-distributed-eventbus'
+
+include 'platform-extras/dolphin-platform-bean-validation'
+include 'platform-extras/dolphin-platform-reactive'
+
+include 'documentation'
+include 'platform-integration-tests/integration-common'
+include 'platform-integration-tests/integration-server'
+include 'platform-integration-tests/integration-tests-jee'
+include 'platform-integration-tests/integration-tests'
+
+include 'platform-examples/todo-example/todo-common'
+include 'platform-examples/todo-example/todo-server'
+include 'platform-examples/todo-example/todo-server-spring'
+include 'platform-examples/todo-example/todo-server-javaee'
+include 'platform-examples/todo-example/todo-client'
+include 'platform-examples/process-monitor-sample/process-monitor-common'
+include 'platform-examples/process-monitor-sample/process-monitor-server'
+include 'platform-examples/process-monitor-sample/process-monitor-server-spring'
+include 'platform-examples/process-monitor-sample/process-monitor-server-javaee'
+include 'platform-examples/process-monitor-sample/process-monitor-client-javafx'
+include 'platform-examples/web-deployment-example/web-deployment-common'
+include 'platform-examples/web-deployment-example/web-deployment-server'
+include 'platform-examples/web-deployment-example/web-deployment-client'
+include 'platform-examples/simple-rest/simple-rest-common'
+include 'platform-examples/simple-rest/simple-rest-client'
+include 'platform-examples/simple-rest/simple-rest-client-javafx'
+include 'platform-examples/simple-rest/simple-rest-server-javaee'
+include 'platform-examples/simple-rest/simple-rest-server-spring'
+
+rootProject.children.each { project ->
+    int slash = project.name.lastIndexOf('/')
+    String fileBaseName = project.name[(slash + 1)..-1]
+    String projectDirName = project.name
+    project.name = fileBaseName
+    project.projectDir = new File(settingsDir, projectDirName)
+    project.buildFileName = "${fileBaseName}.gradle"
+    assert project.projectDir.isDirectory()
+    assert project.buildFile.isFile()
+}

@@ -1,0 +1,11 @@
+apply plugin: 'war'
+
+dependencies {
+    compile project(':integration-server')
+    compile project(':dolphin-platform-remoting-server-javaee')
+    compileOnly 'javax:javaee-api:6.0'
+}
+
+war {
+    archiveName = 'integration-tests.war'
+}

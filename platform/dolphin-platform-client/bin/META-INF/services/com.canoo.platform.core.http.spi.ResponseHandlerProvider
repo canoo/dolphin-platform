@@ -1,0 +1,2 @@
+com.canoo.dp.impl.platform.client.http.cookie.CookieResponseHandlerProvider
+com.canoo.dp.impl.platform.client.session.ClientSessionResponseHandlerProvider

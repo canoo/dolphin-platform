@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="import" href="bower_components/paper-material/paper-material.html">
+    <link rel="import" href="bower_components/paper-item/paper-item.html">
+    <link rel="import" href="bower_components/paper-item/paper-item-body.html">
+</head>
+<dom-module id="process-view">
+    <style>
+        .line-parent {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+        }
+
+        .bottom-border {
+            border-bottom-style: solid;
+            border-bottom-color: lightgrey;
+            border-bottom-width: 1px;
+        }
+        .bold {
+            font-weight: bold;
+        }
+        .right-text {
+            text-align:right;
+        }
+    </style>
+    <template>
+        <div class="layout center-justified">
+            <paper-material elevation="4">
+            <template is="dom-repeat" items="{{model.items}}">
+                <paper-item>
+                    <paper-item-body two-line class="bottom-border">
+                        <div class="line-parent"><div class="bold">[[item.name]]</div><div>[[item.processID]]</div></div>
+                        <div class="line-parent" secondary><div>CPU in %: [[item.cpuPercentage]]</div><div>Memory in %: [[item.memoryPercentage]]</div></div>
+                    </paper-item-body>
+                </paper-item>
+            </template>
+            </paper-material>
+        </div>
+    </template>
+</dom-module>
+
+<script>
+    Polymer({
+        is: "process-view",
+        behaviors: [clientContext.createBehavior('ProcessMonitorController')],
+        properties: {
+            clientContext: Object
+        }
+    });
+</script>

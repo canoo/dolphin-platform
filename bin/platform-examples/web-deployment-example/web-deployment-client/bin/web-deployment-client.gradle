@@ -1,0 +1,45 @@
+apply plugin: 'application'
+
+mainClassName = 'com.canoo.dolphin.webdeployment.client.ClientApplication'
+
+compileJava {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+}
+
+dependencies {
+    compile project(':web-deployment-common')
+    compile project(':dolphin-platform-remoting-client-javafx')
+}
+
+jar {
+    archiveName = 'fxclient.jar'
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+jar.doLast {
+    def libFiles = files { file('build/libs').listFiles() }
+    libFiles.each {
+
+        ant.jar(destfile: it, update: true) {
+            delegate.manifest {
+                attribute(name: 'permissions', value: 'all-permissions')
+                attribute(name: 'codebase', value: '*')
+            }
+        }
+        
+        ant.signjar(
+                alias: "test",
+                jar: it,
+                keystore: "keystore/test.keystore",
+                storepass: "123456",
+                keypass: "123456",
+                destDir: 'fxclient',
+                preservelastmodified: 'true'
+        )
+    }
+}
+
+build.dependsOn jar

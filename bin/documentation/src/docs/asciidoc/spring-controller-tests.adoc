@@ -1,0 +1,209 @@
+
+= Spring controller tests
+
+The Dolphin Platform provides a test framework to write unit tests for Dolphin Platform controllers. For
+Spring the Dolphin Platform offer some abstract test classes that can be extended to write custom tests
+for controllers. Tests can be written by using TestNG or JUnit.
+
+
+== Testing a controller
+
+When writing a unit tests for a controller Spring automatically manages the controller and provides a
+facade to interact with the controller and test its behavior. To do so the Dolphin Platform contains
+the interface `ControllerUnderTest` that provides access to the controller. By using this interface you
+can call actions on the controller, access the model and destroy the controller. This interface is independent
+of the container and test framework and therefore it's used in all controller tests.
+The concrete test implementation defines hoe instances of the `ControllerUnderTest` interface will be created
+but once you have created your instance writing a test is quite easy:
+
+[source,java]
+----
+@Test
+public void test1 {
+    ControllerUnderTest<MyModel> controllerProxy = ... // We will see later how to create it
+    MyModel model = controllerProxy.getModel();
+    model.setTitle("Any title");
+    controllerProxy.invoke(RESET_VALUES);
+    Assert.assertEquals(model.getTitle(), "");
+    controllerProxy.destroy();
+}
+----
+
+As you can see in this small example you can write controller tests like you write the view of a controller.
+The biggest difference is, that you use a test framework like JUnit or TestNG to define some assertions for
+the controller or its model.
+
+
+== Destroying a controller
+
+At the end of each test you should destroy the controller that was tested. The `ControllerUnderTest` interface provides
+a `destroy()` method that must be called to destroy the controller. Like in the real application the controller and
+its lifecycle is managed by Spring. This means that methods that are annotated with `@PostConstruct` or `@PreDestroy` will
+be called automatically. When calling the `destroy()` method Spring will destroy the controller and automatically call
+methods that are annotated with `@PreDestroy`. In the given example the `destroy()` method is already called at the end
+of the test. Test frameworks like JUnit or TestNG provide features to automatically call such a method after each test.
+
+
+== Proving a testable controller
+
+The Dolphin Platform provides the `ControllerTest` interface that should be implemented by each test class. This
+interface provides a method to create new `ControllerUnderTest` instances. For Spring the Dolphin Platform already
+contains an implementation of the interface that can easily be used to write tests for your controllers. By using the
+`ControllerTest` interface a test method will look like this:
+
+[source,java]
+----
+@Test
+public void test1 {
+    ControllerUnderTest<MyModel> controllerProxy = createController(MY_CONTROLLER);
+    MyModel model = controllerProxy.getModel();
+    model.setTitle("Any title");
+    controllerProxy.invoke(RESET_VALUES);
+    Assert.assertEquals(model.getTitle(), "");
+    controllerProxy.destroy();
+}
+----
+
+
+== Testing a controller in Spring
+
+If you write your server application based on Spring you want to use Spring as a container to run your tests, too.
+Normally you have defined some services or components that are injected in your controllers since the Dolphin Platform
+provides full support of the DI features of Spring. When writing a test you want all the services to be automatically
+injected. Spring provides some specific test classes for this purpose and based on the Spring classes the Dolphin
+Platform offers some more specific test classes that contains everything you need to write tests for controllers:
+
+* If you want to use JUnit to write your controller tests your test classes should extend `SpringJUnitControllerTest`
+* If you want to use TestNG to write your controller tests your test classes should extend `SpringTestNGControllerTest`
+
+
+=== JUnit controller test in Spring
+
+As already said a test class should extend the `SpringJUnitControllerTest` class. By doing so a first simple test class
+will look like this:
+
+[source,java]
+----
+public class MyControllerTest extends SpringJUnitControllerTest {
+
+    @Test
+    public void test1 {
+        ControllerUnderTest<MyModel> controllerProxy = createController(MY_CONTROLLER);
+        MyModel model = controllerProxy.getModel();
+        model.setTitle("Any title");
+        controllerProxy.invoke(RESET_VALUES);
+        Assert.assertEquals(model.getTitle(), "");
+        controllerProxy.destroy();
+    }
+
+}
+----
+
+Normally you will write one test class for each controller type. In addition this class will contain more than 1
+method to test the controller. By doing so you can use some of the annotations that are provided by JUnit to write
+a readable and maintainable test class:
+
+----
+public class MyControllerTest extends SpringJUnitControllerTest {
+
+    private ControllerUnderTest<MyModel> controllerProxy;
+
+    private MyModel model;
+
+    @Before
+    public void init() {
+        controllerProxy = createController(MY_CONTROLLER);
+        model = controllerProxy.getModel();
+    }
+
+    @After
+    public void destroy() {
+        controllerProxy.destroy();
+    }
+
+
+    @Test
+    public void test1 {
+        model.setTitle("Any title");
+        controllerProxy.invoke(RESET_VALUES);
+        Assert.assertEquals(model.getTitle(), "");
+    }
+
+    @Test
+    public void test2 {
+        model.setTitle("Any title");
+        controllerProxy.invoke(SHOW_DEFAULTS);
+        Assert.assertEquals(model.getTitle(), "Default");
+    }
+
+}
+----
+
+In this case a new `ControllerUnderTest` instance is created for each test and will be destroyed directly after the
+test. By doing so a developer don't need to handle this in each test.
+
+
+=== TestNG controller test in Spring
+
+As already said a test class should extend the `SpringTestNGControllerTest` class. By doing so a first simple test class
+will look like this:
+
+[source,java]
+----
+public class MyControllerTest extends SpringTestNGControllerTest {
+
+    @Test
+    public void test1 {
+        ControllerUnderTest<MyModel> controllerProxy = createController(MY_CONTROLLER);
+        MyModel model = controllerProxy.getModel();
+        model.setTitle("Any title");
+        controllerProxy.invoke(RESET_VALUES);
+        Assert.assertEquals(model.getTitle(), "");
+        controllerProxy.destroy();
+    }
+
+}
+----
+
+Normally you will write one test class for each controller type. In addition this class will contain more than 1
+method to test the controller. By doing so you can use some of the annotations that are provided by TestNG to write
+a readable and maintainable test class:
+
+----
+public class MyControllerTest extends SpringJUnitControllerTest {
+
+    private ControllerUnderTest<MyModel> controllerProxy;
+
+    private MyModel model;
+
+    @BeforeMethod
+    public void init() {
+        controllerProxy = createController(MY_CONTROLLER);
+        model = controllerProxy.getModel();
+    }
+
+    @AfterMethod
+    public void destroy() {
+        controllerProxy.destroy();
+    }
+
+
+    @Test
+    public void test1 {
+        model.setTitle("Any title");
+        controllerProxy.invoke(RESET_VALUES);
+        Assert.assertEquals(model.getTitle(), "");
+    }
+
+    @Test
+    public void test2 {
+        model.setTitle("Any title");
+        controllerProxy.invoke(SHOW_DEFAULTS);
+        Assert.assertEquals(model.getTitle(), "Default");
+    }
+
+}
+----
+
+In this case a new `ControllerUnderTest` instance is created for each test and will be destroyed directly after the
+test. By doing so a developer don't need to handle this in each test.

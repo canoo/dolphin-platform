@@ -1,0 +1,151 @@
+
+= Dolphin Platform Jumpstart
+
+To get started with Dolphin Platform and create your first client-server-project several Maven archetypes are provided
+by Dolphin Platform. Based on this archetypes it's quite easy to create a full functional client-server-application as a
+perfect base for your own project or to learn the different APIs of Dolphin Platform by simply experimenting with the
+generated project.
+
+== Creating a project with Maven
+
+To create a new project only Maven must be installed on your system. Once Maven is installed you can create a complete
+project with only one shell command:
+
+[source,shell]
+----
+$ mvn archetype:generate -Dfilter=com.canoo.dolphin-platform:
+----
+
+CAUTION: The archetypes are deployed to (http://search.maven.org[Maven Central]) and
+(https://bintray.com/bintray/jcenter[JCenter]). If you have configured your Maven installation to use a different
+repository that do not mirror Maven Central or JCenter your Maven installation might not find the archetypes to generate
+a jumpstart.
+
+The command will start a Maven process that creates the new project. To do so you can choose between different options
+in a shell wizard:
+
+.The shell wizard
+image::jumpstart.png[]
+
+As a first step you need to choose on what archetype your project should depend. Dolphin Platform provides several
+archetypes to create for example projects that use Spring Boot or JavaEE on the server. After you have defined the
+archetype you need to select a version of the archetype. This version is related to the Dolphin Platform version the
+archetype depends on. Here it's best practice to simply select the last version. As a last step you need to specify
+`groupId`, `artifactId` and the `version` of your new project. Once this is done the generation might tackle some time
+on the first call since all needed dependencies and plugins are downloaded to your computer. You can simply import the
+generated project in any IDE of your choice that supports Maven projects. The generated project contains a readme.md
+file that describes how the client and server parts of the project can be started.
+
+== Creating a project with Lazybones
+
+Next to the Maven archetype we provide a https://github.com/pledbrook/lazybones[Lazybones] template for application that
+are based on the Dolphin Platform. The project and a getting-started
+documentation https://github.com/canoo/dolphin-platform-lazybones-templates[can be found at github].
+
+
+== Creating a project by hand
+
+Maybe some developers don't want to use the Maven archetype to create a new Dolphin Platform based application or want to
+integrate the Dolphin Platform in an existing application. Even if the Maven archetype is the fastest way to set up a
+startable project it's quite easy to create such an application from scratch.
+
+The API and implementation of the Dolphin Platform is split in several modules. Depending on the application
+infrastructure a developer needs to add different modules to the application dependencies. The following diagram
+gives an overview of all Dolphin Platform modules:
+
+.Dolphin Platform modules
+image::modules.png[]
+
+=== Dolphin Platform on the server
+
+On the server side you can choose between a JavaEE or a Spring integration. Each of this
+modules depends on the basic server module of the Dolphin Platform that contains the public
+API for the server part. Based on this you only need to add one dependency to your server
+application. All modules on the server are full compatible to Java 7 and above.
+
+You can simply integrate Dolphin Platform in a Spring based application. To do so you only need to add the Spring
+module. All Java modules of the Dolphin Platform are available at Maven Central and JCenter. The following snippet shows
+module dependency as maven and gradle.
+
+Spring module as a Maven dependency:
+
+[source,xml]
+----
+<dependency>
+    <groupId>com.canoo.dolphin-platform</groupId>
+    <artifactId>dolphin-platform-server-spring</artifactId>
+    <version>0.8.9</version>
+</dependency>
+----
+
+Spring module as a Gradle dependency:
+
+[source,xml]
+----
+dependencies{
+    compile 'com.canoo.dolphin-platform:dolphin-platform-server-spring:0.8.9'
+}
+----
+
+
+Next to this the Dolphin Platform provides support for JavaEE. The following snippet shows the JavaEE module of the
+Dolphin Platform as a Maven dependency:
+
+[source,xml]
+----
+<dependency>
+    <groupId>com.canoo.dolphin-platform</groupId>
+    <artifactId>dolphin-platform-server-javaee</artifactId>
+    <version>0.8.9</version>
+</dependency>
+----
+
+JavaEE module as a Gradle dependency:
+
+[source,xml]
+----
+dependencies{
+    compile 'com.canoo.dolphin-platform:dolphin-platform-server-javaee:0.8.9'
+}
+----
+
+NOTE: Additional information can be found in the JavaEE and Spring chapter of this documentation.
+
+=== Dolphin Platform on the client
+
+Since all Dolphin Platform modules on the server a written in Java the client modules are written in multiple programming
+languages to support as many platforms as possible. Currently you can choose between a Java implementation for Desktop
+and mobile clients (JavaFX and Android) and a JavaScript implementation with special API for several JavaScript frameworks
+(currently Polymer and AngularJS).
+
+==== Java based clients
+
+For a desktop or Android client a developer only need to add the specific Java modules
+of the Dolphin Platform as dependencies to the client project.
+
+The following snippet shows the dependency for a JavaFX based client as a Maven dependency:
+
+[source,xml]
+----
+<dependency>
+    <groupId>com.canoo.dolphin-platform</groupId>
+    <artifactId>dolphin-platform-client-javafx</artifactId>
+    <version>0.8.9</version>
+</dependency>
+----
+
+If you want to create a Android application you need to add the following dependency to your
+application:
+
+[source,xml]
+----
+<dependency>
+    <groupId>com.canoo.dolphin-platform</groupId>
+    <artifactId>dolphin-platform-client-android</artifactId>
+    <version>0.8.9</version>
+</dependency>
+----
+
+==== JavaScript based clients
+
+TODO

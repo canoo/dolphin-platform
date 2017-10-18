@@ -1,0 +1,24 @@
+apply plugin: 'war'
+
+compileJava {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+}
+
+dependencies {
+    compile project(':web-deployment-common')
+    compile project(':dolphin-platform-remoting-server-spring')
+}
+
+war {
+    archiveName = 'WebDeployment.war'
+    into 'polymer', {
+        from '../polymer-client'
+    }
+
+    into 'fxclient', {
+        from '../web-deployment-client/fxclient'
+    }
+}
+
+build.dependsOn war

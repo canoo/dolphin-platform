@@ -1,0 +1,385 @@
+
+= The Model API
+
+One of the core features and maybe the most important concept of Dolphin Platform is the model synchronization between
+client and server. For each view in the client a controller instance "lives" in the server that defines all the logic of
+the view. A model is automatically shared and synchronized between the client view and the controller on the server.
+
+.Synchronization of the model
+image::model-sync.png[]
+
+Such a model can be a bean or a hierarchy of several beans. Dolphin Platform provides an API to create full observable
+beans for the model layer.
+
+TIP: The public API of the module layer is defined in the `dolphin-platform-core module`. The JavaDoc of the module can
+be found link:javadoc/core/[here]
+
+== Creating a bean
+
+A model for the Dolphin Platform can simply be defined as a Java bean but instead of using primitive date types for all
+the attributes of the bean Dolphin Platform provides the `Property<V>` interface that should be used to define
+attributes. Based on this a definition for a bean with only one String attribute will look like this:
+
+[source,java]
+----
+@DolphinBean
+public class MyModel {
+
+    private Property<String> value;
+    
+    public Property<String> valueProperty() {
+        return value;
+    }
+    
+    public String getValue() {
+        return value.get();
+    }
+   
+    public void setValue(String value) {
+           this.value.set(value);
+    }
+
+}
+----
+
+NOTE: Maybe you ask yourself why the `@DolphinBean` annotation is needed. Internally the Dolphin Platform checks if a bean
+class is annotated with `@DolphinBean` and will trow a `BeanDefinitionException` if the annotation is not present. By
+doing so it will be easy to check if you use the right model classes. We plan to add some additional features based on
+the annotation in the future. One example can be an annotation processor that checks if all classes that are defined as
+the Dolphin Platform beans (by adding the `@DolphinBean` annotation) are valid Dolphin Platform beans.
+
+NOTE: As you can see the class defines not only a basic getter and setter method for the property.
+Like for JavaFX properties we think that it's best practice to provide a method to access the property
+and getter / setter methods for the internal value of the property. Since writing all this methods might
+take some time we provide a plugin for IntelliJ that generates that methods for you. You can read more about
+this plugin in the "Dolphin Platform IntelliJ Plugin" chapter.
+
+
+[[supported-types]]
+== Supported types
+
+Currently Dolphin Platform properties and collections support the following types as content:
+
+* `Integer`
+* `Long`
+* `Float`
+* `Double`
+* `Byte`
+* `Short`
+* `Boolean`
+* `String`
+* `java.util.Date` _(since version 0.8.4)_
+* `java.util.Calendar` _(since version 0.8.4)_
+* `Enums` _(since version 0.8.4)_
+* Dolphin Platform Bean <<bean-hierarchies, (see description)>>
+
+CAUTION: As some browsers have issues with Timezone, one has to use UTC. If the provided Calendar is not set to UTC, it
+will be converted.
+
+Since version 0.8.8 the Dolphin Platform contains the optional module `dolphin-platform-date-time-converter` that provides
+the support for addition types for properties and collections. All the types are part of the Java 8 date and time API:
+
+* `java.time.Duration`
+* `java.time.LocalDateTime`
+* `java.time.Period`
+* `java.time.ZonedDateTime`
+
+
+CAUTION: Currently the additional data types are only supported in Java. The support for the JavaScript will be added
+in a future version
+
+=== Custom data types
+
+Since version 0.8.8 the Dolphin Platform provides a SPI to add custom data types for properties and collections. To add
+support for a new data type a custom converter must be provided. To do so the `com.canoo.dolphin.converter.ConverterFactory`
+interface must be implemented and provided for
+https://docs.oracle.com/javase/tutorial/ext/basics/spi.html[Java Service Provider Interface (SPI)]. Examples for custom
+data types can be found in the sources of the optional `dolphin-platform-date-time-converter` module.
+
+== Using collections
+
+The first example of a Dolphin Platform bean contained only a String property but most of the time you need more complex
+beans. That's why we added collection support to the Dolphin Platform model API. Next to the properties a bean can contain
+lists that are define by the `ObservableList<V>` interface. The interface extends the default Java `List` interface by adding
+support for observers. A Dolphin Platform bean that contains a list might look like this:
+
+[source,java]
+----
+@DolphinBean
+public class MyModel {
+
+    private ObservableList<String> values;
+
+    public ObservableList<String> getValues() {
+        return values;
+    }
+
+}
+----
+
+A `ObservableList<V>` supports <<supported-types, all the same generic types as a property.>>
+
+[[bean-hierarchies]]
+== Defining hierarchies
+
+A `Property<V>` or `ObservableList<V>` instance can not only hold primitive types. As defined in the supported types a property
+or list can contain other beans, too. By doing so a model can define a hierarchy of several beans. The following class
+shows how a model class that contains a list of other beans might look:
+
+[source,java]
+----
+@DolphinBean
+public class MainModel {
+
+    private ObservableList<MyModel> values;
+
+    public ObservableList<MyModel> getValues() {
+        return values;
+    }
+
+}
+----
+
+In this example instances of the `MyModel` that was shown as an example earlier can be stored in the list of this model
+class.
+
+CAUTION: It's important to now that a developer should never create new model instances "by hand". If a model will be
+created by simply calling it's constructor it won't become part of the synchronized models. To create new model
+instances the Dolphin Platform bean manager must be used. The API of the bean manager and how it can be used to create
+new instances of models and beans <<bean-manager, will be shown later.>>
+
+== Add observer
+
+Both the `Property<V>` and `ObservableList<V>` interface implement the observer pattern. By doing so changes in the
+model layer can easily be handled in the view and the controller. The interfaces provide methods to add observer that
+will be called whenever the internal content will change. The following snippet shows how an observer can be added to
+a property:
+
+[source,java]
+----
+myModel.valueProperty().onChanged(e -> System.out.print("Property changed"));
+----
+
+Once the value of the value property will be changed the given observer will be triggered. For properties the observer
+is defined by the `ValueChangeListener` class.
+In the given example a lambda expression is used as the observer. So whenever the value will be changed a "Property changed" message will be printed
+to the console.
+
+TIP: The Dolphin Platform modules are compiled against Java 7 but provide a very good support for Java 8 lambda 
+expressions. Wherever it makes sense interfaces are defined as functional interface. By doing so instances of the 
+interface can be defined as a lambda expression when using Java 8. In the given example the lambda implements the
+`ValueChangeListener` interface of the Dolphin Platform.
+
+Whenever a `ValueChangeListener` is called an event object is provided. This object can be used to access the old and
+the new value of a change:
+
+[source,java]
+----
+myModel.valueProperty().onChanged(e -> print("Property changed from " + e.getOldValue() + " to " + e.getNewValue()));
+----
+
+_TODO: Subscription_
+
+[source,java]
+----
+Subscription subscription = myModel.valueProperty().onChanged(e -> print("Property changed"));
+----
+
+== Defining the model of a MVC group
+
+As you can see in the following image each MVC group in the Dolphin Platform contains a model. A MVC group is based on the
+MVC pattern and contains a controller, a view and a model. In the Dolphin Platform approach the controller lives on the server
+and the view is defined on the client. The model is shared between the client and the server.
+
+.A MVC group
+image::model-sync.png[]
+
+As we have seen until now a model is defined by properties and collections. Since `Property<V>` and `ObservableList<V>` are
+defined as interfaces and no model provides a specific constructor it's still not clear how a new instance of a model should
+created. Thanks to the Dolphin Platform architecture a developer don't need to think about the model instanciation or the
+lifecycle of a model. Whenever a new MVC group is created by the platform the model instance will be created automatically.
+To do so the model must be defined in the controller. The Dolphin Platform provides the `@DolphinModel` annotation that is
+used to inject the created model instance in the controller instance. The following sample code shows a minimal controller
+that defines its model type:
+
+----
+@DolphinController
+public class MyController {
+
+    @DolphinModel
+    private MyModel model;
+
+}
+----
+
+The model instance will be automatically synchronized with the client. Since the model is completelly observable you can
+ simply bind the properties and lists that are defined in the model to your UI components in the client.
+
+[[bean-manager]]
+== Working with the BeanManager
+
+TODO
+
+=== Creating new model instances
+
+Since all beans of the Dolphin Platform model layer will be synchronized between client and server a new model instance
+can not be created "by hand" (`MyBean bean = new MyBean`). So instead of creating a new bean instance by calling its
+constructor the BeanManager interface must be used to create a new bean instance. By doing so the bean instance will
+automatically be added to the bean manager and synchronized between client and server. Here is an example how a bean
+instance can be created:
+
+----
+MyBean bean = beanManager.create(MyBean.class);
+----
+
+=== Removing a bean
+
+The BeanManager interface provides several deprecated methods to remove beans:
+
+* `void remove(Object bean)`
+* `void removeAll(Class<?> beanClass)`
+* `void removeAll(Object... beans)`
+* `void removeAll(Collection<?> beans)`
+
+All these methods do not work transitively. This means that in a hierarchy of beans all beans must be detached from the
+bean manager seperately.
+
+In addition the BeanManager interface provides a method to check if a bean is still synchronized between client and
+server or if it's already removed from the bean manager:
+
+* `boolean isManaged(Object bean)`
+
+CAUTION: Currently all mentioned methods are deprecated. Since the Dolphin Platform provides its own Garbage
+Collector beans can be automatically removed by the bean manager once they are not referenced in the model layer anymore.
+The deprecated methods will be removed in a future release.
+
+== The Dolphin Platform garbage collection
+
+The Dolphin Platform contains a garbage collection on the server that will automatically remove all bean instances from
+the remoting layer that aren't referenced anymore by other beans. Internally the garbage collection is working by
+reference counting.
+
+
+== How to work with the Model API
+
+To get a better overview of the API that helps you to define presentation models in Dolphin Platform we added a small
+example.
+Let's say we have the following view that can be part of a photo library app:
+
+.Example Application
+image::model-example-1.png[]
+
+In this view, we have several elements that need a data model. If the data of this app is stored on a server the data
+model must be shared between the client and the server. When having a look at the screen we can see 3 different elements
+that need data from the data model to visualize itself or provide user interaction:
+
+* The title of the screen needs a String as its content. We can display the title of a photo album or an internationalized
+string.
+* The slider that defines a value. Let's imagine that the interaction with the slider changes the size of the pictures in
+the main area. Maybe the last value of the slider should be stored on the server to automatically save user preferences
+* All pictures in the main area. As you can see each card in this area contains an image and maybe a badge in the top
+right corner. A badge element in the top right corner visualizes if the photo is flagged.
+
+Based on this definition we would create a presentation model that might look like this one:
+
+.The presentation model
+image::model-example-2.png[]
+
+When defining such a model in JavaFX, you can use the cool property API and the observable collections that are part of
+JavaFX. Modern JavaScript frameworks like AngularJS or Polymer provide a similar behavior and therefore we decided to
+offer the same benefits when defining models with the Dolphin Platform. In Dolphin Platform you work with properties and
+observable collections, too. Therefore it's really easy to define a hierarchical model for your view. A model for the
+shown view might look like this:
+
+[source,java]
+----
+@DolphinBean
+public class PhotoOverviewModel {
+
+  private Property<String> title;
+
+  private Property<Double> sliderValue;
+
+  private ObservableList<PhotoModel> photos;
+
+  //getter & setter
+
+}
+
+@DolphinBean
+public class PhotoModel {
+
+  private Property<String> imageUrl;
+
+  private Property<Boolean> flagged;
+
+  //getter & setter
+
+}
+----
+
+All properties and collections in the Dolphin Platform are observable and therefore it's quite easy to observe them on
+the client and the server:
+
+[source,java]
+----
+myModel.getTitleProperty().onChange(e -> System.out.println("New title: " + e.getNewValue()));
+----
+
+For all client APIs we support first class support for the Dolphin Platform properties. When working with JavaFX for
+example it's quite easy and intuitive to bind a synchronized Dolphin Platform property to a JavaFX property:
+
+[source,java]
+----
+FXBinder.bind(booleanJavaFXProperty).bidirectionalTo(booleanDolphinProperty);
+----
+
+On JavaScript clients the handling is even more elegant as you can bind the Dolphin Platform model directly in HTML.
+
+The main benefit of this concept is that you can use the same model classes on the server and the client. Because the
+model will automatically be synchronized between the view and the server controller it feels like you work with the same
+instance. By doing so you can simply bind a string property to a textfield in the view and observe it's value on the
+server. The change events will automatically be fired on the server when you start typing in the textfield.
+
+== Property Binding
+
+The Dolphin Platform provides an easy way to create a bidirectional binding between 2 properties of the same generic type.
+Currently the binding API only supports properties that are defined in the same client session. If you want to sync
+properties on several clients the event bus is currently the best way to do this.
+To create a binding between 2 properties in the same client session you need the `PropertyBinder` class. An instance of
+this class can simply be injected in any controller:
+
+[source,java]
+----
+@DolphinController
+public class MyController {
+
+    @Inject
+    private PropertyBinder binder;
+
+}
+----
+
+All bindings are defined by qualifiers that are represented by the `Qualifier` class. For a new binding you need to
+define a `Qualifier` instance that defines the generic type of the properties that should be bound. Since you can reuse
+the `Qualifier` instance for all bindings of that type it's best practice to create a static instance:
+
+[source,java]
+----
+public interface MyConstants {
+
+    public final static Qualifier<String> userNameQualifier = Qualifier<String>.create();
+
+}
+----
+
+Once you have the `PropertyBinder` instance and the `Qualifier` you can start defining bindings. To do so you define the same
+qualifier for all properties that should be bound:
+
+[source,java]
+----
+propertyBinder.bind(model.userNameProperty(), MyConstants.userNameQualifier);
+----
+
+By using the same qualifier in several controller classes you can simply bind properties in a client scope without doing
+manual updates.

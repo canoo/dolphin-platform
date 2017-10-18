@@ -1,0 +1,48 @@
+{
+  "name": "dolphin-platform-angularjs",
+  "version": "0.18.0",
+  "main": "./dist/dolphin-platform-angular.js",
+  "homepage": "https://github.com/canoo/dolphin-platform",
+  "authors": [
+    "Michael Heinrichs <michael.heinrichs@canoo.com>",
+    "Hendrik Ebbers <hendrik.ebbers@canoo.com>",
+    "Kunal Singh <kunal.singh@canoo.com>",
+    "Timo Brandstätter <timo.brandstaetter@canoo.com>"
+  ],
+  "description": "The AngularJS client of the Dolphin Platform.",
+  "keywords": [
+    "Dolphin Platform"
+  ],
+  "licenses": [
+    {
+      "type": "Apache-2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0"
+    }
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "demo",
+    "src",
+    "gulpfile.js",
+    "package.json",
+    "sonar-project.properties"
+  ],
+  "dependencies": {
+    "angular": "^1.6.0",
+    "dolphin-platform-js": "^0.18.0",
+    "core.js": "^2.4.1"
+  },
+  "_release": "0.18.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.18.0",
+    "commit": "610ad2d3c9c97969b683d8d44b546319799b6a77"
+  },
+  "_source": "https://github.com/canoo/dolphin-platform-angularjs.git",
+  "_target": "0.18.0",
+  "_originalSource": "dolphin-platform-angularjs"
+}

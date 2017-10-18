@@ -1,0 +1,5 @@
+com.canoo.dolphin.converters.DurationConverterFactory
+com.canoo.dolphin.converters.LocalDateTimeConverterFactory
+com.canoo.dolphin.converters.PeriodConverterFactory
+com.canoo.dolphin.converters.ZonedDateTimeConverterFactory
+com.canoo.dolphin.converters.LocalDateConverterFactory

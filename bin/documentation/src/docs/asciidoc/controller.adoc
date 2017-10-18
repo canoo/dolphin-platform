@@ -1,0 +1,371 @@
+
+= Controller API
+
+When using Dolphin Platform the frontend of an application is split into several views. For each view instance in the
+client a controller instance is managed in the server.
+
+.Views and Controllers
+image::mvc1.png[]
+
+TIP: The public API of the server layer is defined in the `dolphin-platform-server module`. The JavaDoc of the module can
+be found link:javadoc/server/[here]
+
+== Defining a controller
+
+A controller type is defined as a Java class on the server. This is done with the `@DolphinController` annotation. Each
+controller class on the server must be annotated by using this annotation to define the class as a Dolphin Platform controller:
+
+[source,java]
+----
+@DolphinController
+public class MyViewController {
+
+    //...
+
+}
+----
+
+Each controller type / class is marked by an unique identifier. If developers don't specify an identifier on their own
+the full name of the controller class is used. In the given example the controller would have the identifier
+`com.company.app.controller.MyViewController` (if it's part of the `com.company.app.controller` package). In general
+it's a better to specify an identifier for the controller class since refactoring (like moving the controller class in
+a different package) can change its identifier. A custom identifier for a controller can simply be defined by using the
+`@DolphinController` annotation:
+
+[source,java]
+----
+@DolphinController("ViewController1")
+public class MyViewController {
+
+    //...
+
+}
+----
+
+In this example the controller has the unique identifier `ViewController1`. When defining custom names for the
+controllers it's important to always specify a controller name that is unique in the whole application. Since the
+identifier is used on the client to access a specific controller type it's best practice to define the controller names
+as constants in a module that is shared between client and server (both depend on the module).
+
+.Dependencies of a common module
+image::common.png[]
+
+All the constants can easily be specified in an interface, for example:
+
+[source,java]
+----
+public interface ControllerConstants {
+
+    public static final String CONTROLLER1_NAME = "MyViewController";
+    
+    public static final String CONTROLLER2_NAME = "ViewController2";
+
+}
+----
+
+By doing so the constants can easily be used to specify the identifier of a controller:
+
+[source,java]
+----
+@DolphinController(ControllerConstants.CONTROLLER1_NAME)
+public class MyViewController {
+
+    //...
+
+}
+----
+
+== Defining the model
+
+Since the view and the controller share a model it's important that the controller knows about the model. To do so the
+model type must be specified in the controller class. Whenever a controller will be created the model will automatically
+be injected in the controller. To define the model in the controller Dolphin Platform provides the `@DolphinModel`
+annotation. By using this annotation the related model type can be specified in a controller and simply injected at runtime:
+
+[source,java]
+----
+@DolphinController(ControllerConstants.CONTROLLER1_NAME)
+public class MyViewController {
+
+    @DolphinModel
+    private MyModel model;
+
+}
+----
+
+How a model can be specified and how it can be used on the client and the server can be found in the documentation of
+the model API.
+
+IMPORTANT: A Dolphin Platform controller must have exactly 1 model. Using the `@DolphinModel` annotation more than 1
+time in a controller will cause an exception at runtime. If you do not define a model (by using `@DolphinModel`) an
+exception will be thrown as well.
+
+== Controller actions
+
+Actions are endpoints of the controller that can be triggered by the view. For example this can happen when a user
+clicks a button in the client. This button action will then trigger an action in the server controller instance that
+maybe stores some date in the database or refreshes the model.
+
+.Calling an action
+image::action.png[]
+
+A controller action is defined as a method in the controller that is annotated by `@DolphinAction`:
+
+[source,java]
+----
+@DolphinController(ControllerConstants.CONTROLLER1_NAME)
+public class MyViewController {
+ 
+    @DolphinModel
+    private MyModel model;
+    
+    @DolphinAction
+    public void onAction() {
+        System.out.println("Action was triggered!");
+    }
+
+}
+----
+
+Because the action will be triggered by the client it must be specified by an identifier. This identifier must be unique
+in the given controller type. By default the name of the method will be used but as described for the `@DolphinController`
+annotation it's best practice to specify a custom constant name to avoid refactoring issues:
+
+[source,java]
+----
+@DolphinController(ControllerConstants.CONTROLLER1_NAME)
+public class MyViewController {
+ 
+    @DolphinModel
+    private MyModel model;
+    
+    @DolphinAction(ControllerConstants.ACTION1_NAME)
+    public void onAction() {
+        System.out.println("Action was triggered!");
+    }
+
+}
+----
+
+Sometimes it's necessary to submit parameters to the server action. Like controllers and actions parameters must be
+specified by an identifier. To define the identifier for a parameter of the action Dolphin Platform provides the
+`@Param` annotation that must be added to each parameter of the action method:
+
+[source,java]
+----
+@DolphinController(ControllerConstants.CONTROLLER1_NAME)
+public class MyViewController {
+ 
+    @DolphinModel
+    private MyModel model;
+    
+    @DolphinAction(ControllerConstants.ACTION1_NAME)
+    public void onAction(@Param("id") String id) {
+        System.out.println("Action was triggered for id " + id);
+    }
+
+}
+----
+
+Even if in this example only one parameter is defined the Dolphin Platform actions support any count of parameters. Here
+it's only important that each parameter has a unique identifier in the context of the action and that the parameters are
+of a supported type. Currently Dolphin Platform supports the following types for parameters: `Integer`, `Long`, `Double`,
+`Float`, `Boolean`, `String`. It's best practice to not use primitives here since null values are always supported and
+can end in an Exception since Java autoboxing can't convert null to a primitive number or boolean. Some additional
+common types like `Date` will be added in future releases.
+
+== Benefits of managed controllers
+
+Since a controller is always created and managed by the underlying platform (like Spring or JavaEE) a developer doesn't
+need to care about controller and model creation. The last sample already defines a full useable controller that will
+automatically be created (and a new model instance will be injected) whenever the related view is created on the client.
+Next to this the controller offers all the benefit that a managed beans offers based on the underlying platform. Based
+on this it's no problem to use CDI if Dolphin Platform is used in a JavaEE environment. In addition default annotations
+like `@PostConstruct` and `@PreDestroy` are supported. The following example shows how such a controller could look like:
+
+[source,java]
+----
+@DolphinController(ControllerConstants.CONTROLLER1_NAME)
+public class MyViewController {
+ 
+    @DolphinModel
+    private MyModel model;
+    
+    @Inject
+    private MyService service;
+    
+    @PostContruct
+    public void init() {
+        System.out.println("Hello");
+    }
+
+    @PreDestroy
+    public void shutdown() {
+        System.out.println("Bye, bye");
+    }
+
+}
+----
+
+It's important to know that even if a controller instance is a managed object it can not be injected in any other
+managed bean. This belongs on some restrictions in the Dolphin Platform Architecture: Even if the lifecycle of a
+controller is well defined it's possible to have several instances of the same controller. Let's say your front-end
+contains a tabbed pane and you have 2 instances of the same view in this pane. By doing so it's not possible to specify
+what controller instance should be injected in bean. For a future release of Dolphin Platform it's planned to define
+parent-child-relations between controller instances. Currently the Dolphin Platform event bus should be used for
+communication between controllers and / or additional services.
+
+== Definition of the client scope
+
+Dolphin Platform provides an additional custom Scope called `ClientScope`. This scope is currently implemented for
+JavaEE and Spring and it's defined as a scope that is "lower than the session scope". This scope is important if you
+want to create web applications, for example. Since all the tabs of a browser share the same session it's hard to define
+data that is only related to one tab in the browser. In that case the lifecycle of a client scope is bound to a tab in
+the browser and ends when the tab will be closed.
+
+.Definition of the client scope
+image::clientscope.png[]
+
+For both JavaEE and Spring a `@ClientScoped` annotation is defined that can be used to give any bean the specific scope:
+
+[source,java]
+----
+@ClientScoped
+public class MyLocalStoreService {
+ 
+    private List<String> values = new ArrayList();
+    
+    public void add(String val) {
+        values.add(val);
+    }
+
+}
+----
+
+The given service can now simply be injected in any controller:
+
+[source,java]
+----
+@DolphinController(ControllerConstants.CONTROLLER1_NAME)
+public class MyViewController {
+ 
+    @DolphinModel
+    private MyModel model;
+    
+    @Inject
+    private MyLocalStoreService service;
+    
+}
+----
+
+Internally the client scope is defined by an unique identifier that is shared between client and server with each
+request. Based on this the scope only "lives" inside a Dolphin Platform request roundtrip. At the moment this means
+that beans that are defined for the client scope can only be injected in Dolphin Platform controller classes or classes
+that are (transitive) injected in controllers. For a future release we plan to support general HTTP endpoints that can
+be called from a client and "live" in the client scope. This will be useful to provide specific content like images or
+files to the client.
+
+== Injection of Dolphin Platform specific services
+
+The Dolphin Platform provide several services that can be injected in any managed bean. Since the Dolphin Platform
+controllers are managed beans and support dependency injection the Dolphin Platform specific services can be injected in
+any controller.
+
+=== The bean manager
+
+The Dolphin Platform bean manager provides methods to manage the model layer. More information about the model layer
+and how to use the bean manager can be found in the *Model API* chapter. The bean manager is defined by the
+`com.canoo.platform.remoting.BeanManager` interface. Instances are managed objects in the client session scope.
+
+Example:
+
+[source,java]
+----
+@DolphinController
+public class MyViewController {
+
+    @Inject
+    private BeanManager beanManager;
+
+     //...
+
+}
+----
+
+=== The event bus
+The Dolphin Platform provides its own event bus that can be used to provide interaction between several sessions or to
+access the Dolphin Platform from a background thread or endpoint. The event bus is defined by the
+ `com.canoo.platform.remoting.server.event.DolphinEventBus` interface. Instances are managed objects in the application scope.
+
+Example:
+
+[source,java]
+----
+@DolphinController
+public class MyViewController {
+
+    @Inject
+    private DolphinEventBus eventBus;
+
+     //...
+
+}
+----
+
+=== The Dolphin Platform session
+
+The Dolphin Platform offers a service to interact with the client session. To do so the
+`com.canoo.platform.server.client.ClientSession` can be injected. The interface provides similar functionallity as the
+`javax.servlet.http.HttpSession` interface does for the http session. Instances are managed objects in the client session
+scope.
+
+Example:
+
+[source,java]
+----
+@DolphinController
+public class MyViewController {
+
+    @Inject
+    private DolphinSession session;
+
+     //...
+
+}
+----
+
+=== The property binder
+The Dolphin Platform provides a way to create binding between properties in the model layer. This bindings can be
+created by injecting the com.canoo.platform.remoting.server.binding.PropertyBinder interface. A more detailed description of
+bindings can be found in the *Model API* chapter. Instances are managed objects in the client session scope.
+
+Example:
+
+[source,java]
+----
+@DolphinController
+public class MyViewController {
+
+    @Inject
+    private PropertyBinder binder;
+
+     //...
+
+}
+----
+
+== React on events on the server
+
+The Dolphin Platform provides 2 server side APIs that can be used to react on events on the server. When talking
+about events this can mean several different scenarios: A server side controller instance maybe needs to publish some
+data to other controller instances or a REST endpoint on the server needs to call the functionallity of controller
+instance for one or many clients. Another common scenario is the usageage of background threads and tasks on the server
+that are triggered by a Dolphin Platform controller instance and will notify the controller about a calculated behavior
+in any future.
+
+One approach to handle this use cases is by using the Dolphin Platform event bus that implements the publish / subscribe
+pattern and is automatically provided as a managed bean in Spring and JavaEE. More about the functionallity and the API
+of the event bus can be found in the chapter about the Dolphin Platform event bus.
+
+
+TODO way 2: session.runLater...

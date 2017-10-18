@@ -1,0 +1,13 @@
+{
+  "name": "process-monitor-client-angular",
+  "authors": [
+    "Hendrik Ebbers <hendrik.ebbers@web.de>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "dependencies": {
+    "dolphin-platform-angularjs": "0.18.0",
+    "bootstrap": "^3.3.7"
+  }
+}

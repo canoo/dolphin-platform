@@ -1,0 +1,15 @@
+com.canoo.dp.impl.remoting.converters.BooleanConverterFactory
+com.canoo.dp.impl.remoting.converters.ByteConverterFactory
+com.canoo.dp.impl.remoting.converters.CalendarConverterFactory
+com.canoo.dp.impl.remoting.converters.DateConverterFactory
+com.canoo.dp.impl.remoting.converters.DolphinBeanConverterFactory
+com.canoo.dp.impl.remoting.converters.DoubleConverterFactory
+com.canoo.dp.impl.remoting.converters.EnumConverterFactory
+com.canoo.dp.impl.remoting.converters.FloatConverterFactory
+com.canoo.dp.impl.remoting.converters.IntegerConverterFactory
+com.canoo.dp.impl.remoting.converters.LongConverterFactory
+com.canoo.dp.impl.remoting.converters.ShortConverterFactory
+com.canoo.dp.impl.remoting.converters.StringConverterFactory
+com.canoo.dp.impl.remoting.converters.BigDecimalConverterFactory
+com.canoo.dp.impl.remoting.converters.BigIntegerConverterFactory
+com.canoo.dp.impl.remoting.converters.UuidConverterFactory

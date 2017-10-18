@@ -1,0 +1,52 @@
+sudo: required
+language: java
+jdk: oraclejdk8
+
+services:
+  - docker
+
+script:
+  - if [ "$TRAVIS_BRANCH" == "master" ];
+    then ./gradlew clean javadoc sonarqube jacocoTestReport jacocoRootMergeReport -S -Dsonar.login=${SONAR_TOKEN};
+    else ./gradlew clean build jacocoTestReport jacocoRootMergeReport -S;
+    fi
+
+
+after_success:
+  - ./gradlew coveralls
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    echo 'Building documentation with asciidoctor';
+    ./gradlew :documentation:asciidoctor;
+    cd documentation/build/asciidoc/html5/;
+    echo 'Copy JavaDoc';
+    mkdir javadoc;
+    mkdir javadoc/core;
+    cp -a ../../../../platform/dolphin-platform-core/build/docs/javadoc/. javadoc/core;
+    mkdir javadoc/client;
+    cp -a ../../../../platform/dolphin-platform-client/build/docs/javadoc/. javadoc/client;
+    mkdir javadoc/server;
+    cp -a ../../../../platform/dolphin-platform-server/build/docs/javadoc/. javadoc/server;
+    mkdir javadoc/rpm-common;
+    cp -a ../../../../platform/dolphin-platform-rpm-common/build/docs/javadoc/. javadoc/rpm-common;
+    mkdir javadoc/rpm-client;
+    cp -a ../../../../platform/dolphin-platform-rpm-client/build/docs/javadoc/. javadoc/rpm-client;
+    mkdir javadoc/rpm-client-javafx;
+    cp -a ../../../../platform/dolphin-platform-rpm-client-javafx/build/docs/javadoc/. javadoc/rpm-client-javafx;
+    mkdir javadoc/rpm-server;
+    cp -a ../../../../platform/dolphin-platform-rpm-server/build/docs/javadoc/. javadoc/rpm-server;
+    mkdir javadoc/server-jee;
+    cp -a ../../../../platform/dolphin-platform-server-javaee/build/docs/javadoc/. javadoc/server-jee;
+    mkdir javadoc/server-spring;
+    cp -a ../../../../platform/dolphin-platform-server-javaee/build/docs/javadoc/. javadoc/server-spring;
+    echo 'Create local git repo';
+    git init;
+    git config user.name "${GH_USER_NAME}";
+    git config user.email "{GH_USER_EMAIL}";
+    echo 'Add files to git repo';
+    git add .;
+    echo 'Commit files to git repo';
+    git commit --quiet -m "Deploy to GitHub Pages";
+    echo 'Push to Github Pages repo';
+    git push --force "https://${GH_TOKEN}@${GH_REF}" master:gh-pages;
+    echo 'Done';
+    fi
