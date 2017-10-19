@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Angular  -->
+    <script src="bower_components/angular/angular.min.js"></script>
+
+    <!-- Dolphin-Platform  -->
+    <script src="bower_components/dolphin-platform-angularjs/dist/dolphin-platform-angular.min.js"></script>
+
+</head>
+
+
+<body>
+<script>
+    var app = angular.module("ProcessMonitorApplication", ["DolphinPlatform"]).config(function ($dolphinConfigProvider) {
+        $dolphinConfigProvider.configure({
+            DOLPHIN_URL: "http://localhost:8080/process-monitor/dolphin"
+        });
+    });
+</script>
+
+
+<div ng-app="ProcessMonitorApplication" ng-controller="ProcessMonitorController">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th class="text-right">CPU in %</th>
+            <th class="text-right">Memory in %</th>
+        </tr>
+        </thead>
+        <tbody ng-repeat="item in model.items">
+            <tr>
+                <th scope="row">{{item.processID}}</th>
+                <td>{{item.name}}</td>
+                <td class="text-right">{{item.cpuPercentage}}</td>
+                <td class="text-right">{{item.memoryPercentage}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    app.controller("ProcessMonitorController", function ($scope, clientContext) {
+        clientContext.connect();
+        clientContext.createController($scope, 'ProcessMonitorController');
+    });
+</script>
+
+</body>
+</html>
+

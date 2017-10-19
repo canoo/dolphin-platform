@@ -1,0 +1,80 @@
+
+= How to build the Dolphin Platform
+:gradle-version: 2.12
+
+The Dolphin Platform build requires link:http://gradle.org/[Gradle] to build itself. The following
+sections describe everything you need to know to get started and build a working version of the
+software.
+
+== Prerequisites
+
+You must meet the following requirements:
+
+ * JDK8u40 as a minimum
+ * Gradle {gradle-version}
+
+You may used the included gradle wrapper script if you don't have `gradle` installed.
+
+== Installing Gradle
+
+.Manual
+
+ . Download Gradle from http://gradle.org/downloads
+ . Unzip the file into a directory without spaces (recommended).
+ . Create a GRADLE_HOME environment variable that points to this directory.
+ . Adjust your PATH environment variable to include $GRADLE_HOME/bin (%GRADLE_HOME%\bin on Windows).
+ . Test your setup by invoking `gradle --version`.
+
+.SDKMAN
+
+ . Follow the instructions found at http://sdkman.io/ to install SDKMAN.
+ . You need a POSIX environment if running Windows. We recommend using Babun Shell (http://babun.github.io/)
+ . Once SDKMAN is installed invoke `sdk install gradle {gradle-version}`.
+ . Test your setup by invoking `gradle --version`.
+
+.Gdub
+
+GDub is a wrapper script that facilitates invoking gradle tasks anywhere within a Gradle project. It's smart enough
+to use the gradle wrapper if available or your global gradle command. This is an optional download.
+
+ . Follow the instructions found at https://github.com/dougborg/gdub to install gdub.
+
+== Building
+
+The following list summarizes the common tasks that can be used with this build
+
+[horizontal]
+build:: Invoke a full build.
+clean:: Clean the build.
+test:: Run all tests.
+jar:: Package all classes and resources.
+javadoc:: Generate API documentation.
+bintrayUpload:: Publish artifacts to link:https://bintray.org
+asciidoctor:: Generate Asciidoc documentation.
+license:: Check if license headers are up to date.
+licenseFormat:: Update all license headers.
+check:: Execute quality control and tests.
+publishToMavenLocal:: install artifacts in local maven repo
+
+
+You can obtain a list of all available tasks by invoking `tasks --all`.
+
+Note that you may invoke these tasks on any project, however invoking any of them at the root level will invoke the task
+on all subprojects.
+
+Additional tasks may be available on subprojects, such as those that have the `application` and/or `war` plugins.
+
+[horizontal]
+run:: Execute the project's main class.
+war:: Package the project as a WAR file.
+
+== Build for JavaScript projects
+
+TODO
+
+To Run Web Component Test Locally on Safari
+
+* install the latest SafariDriver extension from here
+http://selenium-release.storage.googleapis.com/2.48/SafariDriver.safariextz[SafariDriver.safariextz]
+* Open Safari -> preferences -> Advanced, Check the box ‘Show Develop menu bar’
+* Click menu option ‘Develop’ and click ‘Allow Remote Automation’

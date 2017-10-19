@@ -1,0 +1,46 @@
+buildscript {
+  repositories {
+    jcenter()
+  }
+
+  dependencies {
+    classpath "com.avast.gradle:docker-compose-gradle-plugin:0.3.13"
+  }
+}
+
+apply plugin: 'docker-compose'
+
+dependencies {
+  testCompile project(':dolphin-platform-remoting-client')
+  testCompile "org.testng:testng:$testngVersion"
+  testCompile 'org.hamcrest:java-hamcrest:2.0.0.0'
+  testCompile "org.jmockit:jmockit:$jmockitVersion"
+  testCompile "org.slf4j:slf4j-simple:$slf4jVersion"
+  testCompile project(':integration-common')
+}
+
+task copyWar(dependsOn: [':integration-tests-jee:war']) {
+  doLast{
+    copy {
+      into file("docker-base/payara-integration")
+      from(file("../integration-tests-jee/build/libs/integration-tests.war"))
+    }
+    copy {
+      into file("docker-base/tomee-integration")
+      from(file("../integration-tests-jee/build/libs/integration-tests.war"))
+    }
+    copy {
+      into file("docker-base/wildfly-integration")
+      from(file("../integration-tests-jee/build/libs/integration-tests.war"))
+    }
+  }
+}
+
+dockerCompose {
+  useComposeFiles = ['docker-compose.yml']
+  captureContainersOutput = true
+}
+
+dockerCompose.isRequiredBy(test)
+test.dependsOn copyWar
+composeUp.dependsOn copyWar

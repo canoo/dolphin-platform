@@ -1,0 +1,16 @@
+.idea
+*.iml
+*.ipr
+*.iws
+build/
+.gradle/
+out/
+target/
+dist/
+node_modules/
+local.properties
+**/.nb-gradle
+**/integration-tests.war
+
+platform-examples/web-deployment-example/web-deployment-client/fxclient/fxclient.jar
+integration-tests/log.txt

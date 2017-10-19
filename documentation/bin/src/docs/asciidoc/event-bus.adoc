@@ -1,0 +1,257 @@
+
+= The Event Bus
+
+Dolphin Platform provides an event bus that can be used to send events to client sessions on the server. By doing so
+it's quite easy to create dynamic application with the Dolphin Platform that automatically propagate information to
+several clients. A good example for such an application is a messaging app in that all messages that are typed by a user
+will be directly visible in the client instances of several other users.
+
+== General overview of the event bus
+
+The event bus of Dolphin Platform can only be used on the server. It's part of the basic server module
+(dolphin-platform-server`) and therefore no special dependencies need to be added to a Dolphin Platform application to
+use the event bus. The event bus implements the publish-subscribe-pattern and can be used to send events to all
+subscribers of a specific topic.
+
+.Overview of the event bus
+image::event-bus1.png[]
+
+To do so a Dolphin Platform controller (or other beans that live in the Dolphin Platform client scope) can be registered
+as subscriber for a specific topic. Any managed bean of an application can send custom events to a defined topic. By
+doing so all subscribers will be notified and receive the event. The event can contain custom data which allows a
+developer to send informations to several controller instances.
+
+.Overview of the event bus
+image::event-bus2.png[]
+
+== Defining a topic
+
+As already mentioned the Dolphin Platform event bus is topic based. This means that all event must be published to a
+specified topic and all receivers are always subscribed to a topic. In Dolphin Platform the topic is not simply
+defined by a String but by the `Topic<E>` class. By doing so the topic can already define what types of data can be send
+to this topic based on the generic identifier. Since topics are used at the publisher and the receiver site it's best
+practice to define them as constants. Here is an example how topics can be specified:
+
+[source,java]
+----
+public interface EventTopics {
+
+    public static final Topic<String> DESCRIPTION_ADDED_TOPIC = new Topic();
+    
+    public static final Topic<MyCustomBean> DATA_CHANGED_TOPIC = new Topic();
+
+}
+----
+
+In this example only items of type `MyCustomBean` can be send to the `DATA_CHANGED_TOPIC` topic. Internally the topic
+uses an unique identifier for specification. A developer can define it's own identifier by simply passing a `String` to
+the constructor of the `Topic`. This is useful for debugging since you can see a readable name of the topic but in that
+case a developer must check that all topics have unique identifiers:
+
+[source,java]
+----
+public interface EventTopics {
+
+    public static final Topic<String> DESCRIPTION_ADDED_TOPIC = new Topic("descriptionAddedTopic");
+    
+    public static final Topic<MyCustomBean> DATA_CHANGED_TOPIC = new Topic("dataChangedTopic");
+
+}
+----
+
+== Sending an event
+
+The Dolphin Platform provides an injectable `DolphinEventBus` bean that must be used to send an event to a topic. By
+doing so each bean that is managed by the underlying container (like Spring or JavaEE) can publish events. To publish an
+event you always need to define the topic to that the event should be published. In addition data can be sent as part of
+the event message. Publishing an event is a non-blocking operation. Here is an example how a event can be sent to a
+specific topic:
+
+[source,java]
+----
+@ApplicationScoped
+public class MyLocalStoreService {
+ 
+    @Inject
+    private DolphinEventBus eventBus;
+    
+    public void addDescription(String desc) {
+        eventBus.publish(EventTopics.DESCRIPTION_ADDED_TOPIC, desc);
+    }
+
+    public void updateData(MyCustomBean data) {
+        eventBus.publish(EventTopics.DATA_CHANGED_TOPIC, data);
+    }
+
+}
+----
+
+In this example the previously created topics are used. As you can see data of the type that is defined in the generic
+identifier of the `Topic<E>` instances is sent to the topic. Sending another type of data (an instance of a different
+class) will end in a compiler exception.
+
+== Receiving events
+
+To receive events of a specific topic the receiver must subscribe itself to the topic. This is done by adding a message
+listener to the topic. This listener will be called whenever a new event was published for the given topic. Since the
+event handling is always done in a Dolphin Platform communication roundtrip an event receiver must be a Dolphin Platform
+controller or a managed bean that is defined by the client scope. The following controller class shows how a subscription
+can be done:
+
+[source,java]
+----
+@DolphinController(ControllerConstants.CONTROLLER_NAME)
+public class MyViewController {
+ 
+    @DolphinModel
+    private MyModel model;
+    
+    @Inject
+    private DolphinEventBus eventBus;
+    
+    @PostContruct
+    public void init() {
+        eventBus.subscribe(EventTopics.DATA_CHANGED_TOPIC, e -> {
+                System.out.println("Data changed: " e.getData().getName();
+        });
+        
+        eventBus.subscribe(EventTopics.DESCRIPTION_ADDED_TOPIC, e -> {
+                model.getDescriptions().add(e.getData());
+        });
+    }
+}
+----
+
+As you can see the listener can simply access the data that was sent to the topic by using `event.getData()`. Thanks to
+the typesafety of the event bus the data doesn' t need to be casted to the needed type. In the example you can see one big
+benefit of the event bus: Since all Dolphin Platform model instances will automatically be shared and synchronized between
+client and server the changes of the model that are done in the subscription of the `DESCRIPTION_ADDED_TOPIC` topic will
+automatically be snychronized with the client and can trigger an update of the UI. By doing so it's quite easy to update
+several clients dynamically based on events.
+
+The `DolphinEventBus` doesn't provide a method to unregister subscriptions. Instead of this the `subscribe(...)` methods
+return an object of type `Subscription`. This object can easily be used to unsubscribe from a topic. By doing so the
+following code defines a controller that can be dynamically subscribed and unsubscribed from a topic:
+
+[source,java]
+----
+@DolphinController(ControllerConstants.CONTROLLER_NAME)
+public class MyViewController {
+ 
+    @DolphinModel
+    private MyModel model;
+    
+    @Inject
+    private DolphinEventBus eventBus;
+    
+    private Subscription subscription;
+    
+    @DolphinAction
+    public void activateLiveUpdates() {
+        if(subscription != null) {
+            subscription = eventBus.subscribe(EventTopics.DESCRIPTION_ADDED_TOPIC, e -> {
+                    model.getDescriptions().add(e.getData());
+            });
+        }
+    }
+    
+    @DolphinAction
+    public void deactivateLiveUpdates() {
+        if(subscription != null) {
+            subscription.unsubscribe();
+            subscription = null;
+        }
+    }
+}
+----
+
+== Session filtering for events
+
+When publishing an event to the event bus a filter can be defined. By doing so the filter will decide to what client
+sessions the event should be published. By doing so it's quite easy to send an event only to the current client session
+or to all client sessions in the current HTTP session (this will infect all tabs in a browser, for example).
+
+To do so an implementation of the `EventSessionFilter` interface must be defined. This filter will check all client
+session that are subscriped to the given topic and can avoid that the event will be published tonthe given client session.
+
+A basic implementation of the `EventSessionFilter` interface that will allow only one client session to receive events
+might look like this:
+[source,java]
+----
+public class OneClientSessionFilter implements EventSessionFilter {
+
+    private final String clientSessionId;
+
+    public OneClientSessionFilter(final String clientSessionId) {
+        this.clientSessionId = clientSessionId;
+    }
+
+    public boolean shouldHandleEvent(String sessionId) {
+        return clientSessionId.equals(sessionId);
+    }
+}
+----
+
+Such an event filter can no be used when an event will be published. To do so the Dolphin Platform event bus provides
+a method to publish an event to a specific topic by using such a filter:
+
+[source,java]
+----
+eventBus.publish(myTopic, myData, myFilter);
+----
+
+
+== Use-cases for the event bus
+
+There are several use cases and scenarios that can simply be developed by using the Open Dolphin event bus.
+TODO
+
+== Using a distributed event bus
+
+Since the Dolphin Platform can be installed in a cluster by using sticky sessions the default implementation of the
+event bus will not work in such a scenario. In that case a distributed event bus is needed. The Dolphin Platform provides
+the optional module `dolphin-platform-distributed-eventbus` that adds such an alternative event bus that is based on
+Hazelcast (TODO: Link). Once this module is added to a server application the Dolphin Platform can be configured to use
+the distributed event bus instead of the default implementation. A developer do not need to change any source code in
+that case since the interface of the Dolphin Platform event bus will be still the same. Only the injected implementation
+is a different one. To activate the distributed event bus the following configuration property must be set in the
+`dolphin.properties` file (or by using Spring configuration):
+----
+eventbusType=distributed
+----
+Once this configuration is set Hazelcast will be used internally to provide a distributed event bus. Since each event bus
+instance (1 by server runtime) is defined as a Hazelcast client a remote Hazelcast server must be running. The Dolphin
+Platform event bus will automatically connect the internal Hazelcast client to the Hazelcast server and use it to distribute
+events to several server runtimes.
+
+=== Hazelcast configuration
+
+If the distributed event bus is used a Hazelcast server is needed. All application instances that use the distributed
+event bus will automatically create a connection to that server. Such a connection must be configured. To do so a developer
+can define the following parameters in the `dolphin.properties` file:
+
+.Table title
+|===
+|Name |Description |Supported values |Default value
+
+|hazelcast.server.name
+|Defines the host name of the Hazelcast server.
+|any string that defines the host name of the hazelcast server
+|localhost
+
+|hazelcast.server.port
+|Defines the port of the Hazelcast server.
+|a valid port number
+|5701
+
+|hazelcast.group.name
+|Defines the name of the Hazelcast group that should be used
+|a String
+|micro-landscape
+|===
+
+NOTE: Currently this values can only be specified in the `dolphin.properties` file. The Dolphin Platform provides an
+integration in Spring configuration to configure the common properties of the Dolphin Platform. This is currently not
+possible for the Hazelcast integration (see https://github.com/canoo/dolphin-platform/issues/377[this issue]). In
+addtion a already defined Hazelcast client that is provided by Spring or JavaEE as a managed bean can not be used
+(see https://github.com/canoo/dolphin-platform/issues/378[this issue]).

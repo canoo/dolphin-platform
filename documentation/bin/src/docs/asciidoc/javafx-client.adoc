@@ -1,0 +1,82 @@
+
+= JavaFX client API
+
+When creating a JavaFX client you will normally use FXML to create your view. Next to the FXML file you will have a view
+controller to bind all the properties of the view and attach action handlers.
+
+.Usage of FXML
+image::javafx-1.png[]
+
+When talking about the Dolphin Platform, this view controller is the perfect point to bind the view to the synchronized
+model and the server side controller. Therefore we call this class the "Binder". There are several ways how you can
+define such a binding but the most easy one is to extend the `AbstractViewBinder` class that is part of the Dolphin Platform
+JavaFX library. This class already implements the complete lifecycle of the view and you can simply bind the
+synchronized presentation model to your view properties. Here is a small example for a view that contains only one
+textfield and a button:
+
+[source,java]
+----
+public class MyBinder extends AbstractViewBinder<MyModel> {
+
+  @FXML
+  private Button button;
+
+  @FXML
+  private TextField textfield;
+
+  public MyBinder(ClientContext clientContext) {
+    super(clientContext, ControllerConstants.NAME);
+  }
+
+  @Override
+  public void init() {
+    FXBinder.bind(textfield.textProperty()).bidirectionalTo(getModel().nameProperty());
+    button.setOnAction(e -> invoke(ControllerConstants.SAVE));
+  }
+
+  @Override
+  public Node getRootNode() {
+    return null;
+  }
+
+}
+----
+
+Once the view binder is instantiated, the server controller and the model will automatically be created on the server.
+Since the model will be synchronized all the time between client and server you don't need to create it on the client.
+After this initialization is done the init() method of the binder will be called. With this we bind the name property
+that is part of the synchronized model to the text property of the textfield. In addition, we define an action handler
+for the button. When the button is pressed an action in the server side controller should be called. To do so the
+abstract binder provides the invoke(String name) method that triggers actions on the server controller. In this specific
+case the server controller might look like this:
+
+[source,java]
+----
+@DolphinController(ControllerConstants.NAME)
+public class Controller {
+
+  @Inject
+  private PersistenceService persistence;
+
+  @DolphinModel
+  private MyModel model;
+
+  @DolphinAction(ControllerConstants.SAVE)
+  public void save() {
+    persistence.insert(model.getName());
+  }
+
+}
+----
+
+As you can see we never send any data to the server. Since the model will be automatically synchronized, we can directly
+store the name string in the model to the database. The Dolphin Platform guarantees that the model will be the same as
+it's on the client when pressing the button.
+
+.MVC and Sync
+image::javafx-2.png[]
+
+Another nice benefit that you might notice is that even if we have communication between the server and the client we
+don't need to handle several threads. The Dolphin Platform handles all the concurrency and handles all actions in the
+right thread. Therefore, the binding between JavaFX properties and Dolphin properties will automatically be handled on
+the JavaFX application thread.

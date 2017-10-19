@@ -1,0 +1,23 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+    <TITLE>Dolphin Platform Server API Overview</TITLE>
+</HEAD>
+<BODY>
+<p>This is the documentation of the public server API of <strong>Dolphin Platform</strong>.</p>
+<p>The <strong>Dolphin Platform</strong> is a framework that implements the presentation model pattern and provides a modern way to create enterprise applications.
+The Platform provides several client implementations that all can be used in combination with a general sever API. By doing so you can create enterprise application with a single server and several desktop, web and mobile client implementations. Here the Dolphin Platforms define a mechanism to automatically snchronize models between the server and the client.</p>
+<center><img src="doc-files/server-client-sync.png" alt="one server several clients"></center>
+
+<p>This module contains the public and general API of the Dolphin Platform server API. To use the Dolphin Plaftorm in your server you need a container specific implementation. Currently the Dolphin Platform provides implementations for Spring and JavaEE. Since you need to add this specific modules to your classpath you will never need to code against them. All the classes and interfaces that are needed to create a server application or module that is based on the Dolphin Platform can be found in the public API that is documented in here.
+<br>
+<center><img src="doc-files/platform-impl.png" alt="platform architecture"></center>
+</p>
+
+<p>The perfect start of this API documentation is the <code><a href="com/canoo/dolphin/server/DolphinController.html">DolphinController</a></code> annotation that is used to define server side controllers.</p>
+
+<p>You can find the documentation of the different modules <a href="http://www.dolphin-platform.io/javadoc/index.html">here</a>.</p>
+<p>Additional information can be found on the <a href="http://www.dolphin-platform.io">Dolphin Platform website</a>.</p>
+
+</BODY>
+</HTML>

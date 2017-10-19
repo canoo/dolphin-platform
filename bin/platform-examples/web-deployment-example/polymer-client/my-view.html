@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="import" href="bower_components/paper-input/paper-input.html">
+    <link rel="import" href="bower_components/paper-button/paper-button.html">
+    <link rel="import" href="bower_components/paper-material/paper-material.html">
+</head>
+<dom-module id="my-view">
+    <template>
+        <style is="custom-style">
+            paper-material {
+                background: white;
+                margin: 12px;
+                padding: 12px;
+                border-radius: 2px;
+            }
+        </style>
+            <paper-material>
+                <paper-input label="Value" value="{{model.value}}"></paper-input>
+                <paper-button raised on-click="reset">reset</paper-button>
+            </paper-material>
+    </template>
+</dom-module>
+
+<script>
+    Polymer({
+        is: "my-view",
+        behaviors: [clientContext.createBehavior('MyController')],
+        reset: function() {
+            this.invoke('reset');
+        }
+    });
+</script>

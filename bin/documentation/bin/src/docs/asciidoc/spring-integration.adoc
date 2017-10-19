@@ -1,0 +1,167 @@
+
+= Spring Integration
+
+Even if mostly all of the public server APIs of the Dolphin Platform don't depend on the underlying container
+implementation a special dependency must be added to a project that is created as a Spring (Boot) application.
+
+.Dependencies for a Spring based server
+image::spring-dependency.png[]
+
+The `dolphin-platform-server-spring` dependency adds the Dolphin Platform server API and Spring as transitive
+dependencies. For a maven based project a minimum  `pom.xml` looks like this:
+
+[source,xml]
+[subs="verbatim,attributes"]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.canoo.sample</groupId>
+    <artifactId>server</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.canoo.dolphin-platform</groupId>
+            <artifactId>dolphin-platform-server-spring</artifactId>
+            <version>{dolphin-platform-version}</version>
+        </dependency>
+    </dependencies>
+
+</project>
+----
+
+In most cases you will define the model classes in a separate module that is shared between client and server and server
+must be added as a second dependency to your application.
+
+== Defining the main class of the application
+
+To start your Spring Boot based server a class with a main method need be be defined. In the main method Spring must be
+started. In addition the Dolphin Platform bootstrap must be configured and initalialized. To do so Dolphin Platform
+provides the `@DolphinPlatformApplication` annotation that must be added to the main class to automatically load all
+needed configurations and trigger the Dolphin Platform Bootstrap. Based on the annotation a main class will always looks
+like this:
+
+[source,java]
+----
+@DolphinPlatformApplication
+public class ServerMain {
+
+    public static void main(String... args) {
+        SpringApplication.run(ServerMain.class, args);
+    }
+
+}
+----
+
+== Configuration of the application
+
+The server application can be configured by using all the possibilities that Spring offers for configuration. In
+addition a `dolphin.properties` file can be used to define a configuration for the Dolphin Platform part of the server.
+This file is not Spring specific and therefore it's described in the general server part.
+
+== Provide configuration of the Dolphin Platform by Spring Boot
+
+The default `application.properties` file for Spring Boot configuration
+(or any other valid Spring Boot configuration file or provider) can be used
+to configure the Dolphin Platform. In this case a developer do not need to
+create a `dolphin.properties` file. All configurations can easily be defined
+in the `application.properties`. In that case the `dolphinPlatform.` prefix
+is needed for all configuration properties of the Dolphin Platform.
+
+To following table gives an overview of all Dolphin Platform related properties
+that can be configured by using Spring configuration (like `application.properties` file):
+
+|===
+|Name |Description |Supported values |Default value
+
+|dolphinPlatform.useCrossSiteOriginFilter
+|Boolean property that defines if the HTTP filter for the cross site origin policy should be used. By default the filter
+will be used.
+|true, false
+|true
+
+|dolphinPlatform.useSessionInvalidationServlet
+|Boolean property that defines if the servlet for session validation should be used. By default the servlet will not be used. We plan to remove the servlet completelly in a future release and this property is just for a fallback if not using the servelt will end in issues.
+|true, false
+|false
+
+|dolphinPlatform.dolphinPlatformServletMapping
+|A string based property that defines the server URL endpoint for the Dolphin Platform.
+|any String that defines an URL mapping
+|/dolphin
+
+|dolphinPlatform.sessionTimeout
+|A int that defines the http session timeout in seconds
+|any integer value
+|900
+
+|dolphinPlatform.idFilterUrlMappings
+|A list that contains all endpoint that will be filtered by the id filter. This means that all requests for this
+endpoints must provide a client id in its header (Header name = dolphin_platform_intern_dolphinClientId).
+|a comma seperated list
+|/dolphin
+
+|dolphinPlatform.maxClientsPerSession
+|Defines how many clients can exist in a http session. By using the client scope you can have several clients that share
+a session but don't use the same data (by using the client scope / dolphin session). By doing so several tabs in a
+browser can handle its own clients
+|any positive integer value
+|10
+
+|dolphinPlatform.rootPackageForClasspathScan
+|Defines the root package that should be used to scan the classpath for Dolphin Platform controllers. By default all
+classes in the classpath will be scanned but this might take some time in big projects. By defining a root package all
+classes that are located in this package or any subpackage of the root package will be scanned.
+|a String that matches the java package structure like "com.canoo" or a empty string if the complete classpath should be
+scanned.
+|NULL (scan complete classpath)
+
+|dolphinPlatform.mBeanRegistration
+|Defines if the Dolphin Platform will register custom MBeans to provide information about the platform and the sessions
+|true, false
+|true
+
+|dolphinPlatform.useGc
+|By activating the garbage collection the Dolphin Platform checks internally if Dolphin beans are referenced (for example
+in a Dolphin Bean hierarchy). If not this beans will automatically be removed on the server and the client. This is an
+unstable feature at the moment and should only be activated for tests.
+|true, false
+|true
+
+|dolphinPlatform.maxPollTime
+|Defines the timeout of the Dolphin Platform polling mechanism that is used for the event bus and for the session.runLater
+call.
+|any long
+|5000
+
+|active
+|Defines if the Dolphin Platform should be bootstraped at the start of the server
+|true, false
+|true
+|===
+
+
+
+== Next steps
+
+When developing a Dolphin Platform application with Spring you can use all the benefits of both worlds. This means that
+you can simply define Spring components and service and inject them in Dolphin Platform controllers. A general overview
+of the Dolphin Platform server API can be found here.
+
+== Using the jumpstart
+
+Dolphin Platform provides several Maven archetypes to quickly create a full client server application. By doing so you
+only need an installed Maven on your system and can run the following command on a shell:
+
+[source,shell]
+----
+mvn archetype:generate -Dfilter=com.canoo.dolphin-platform:
+----
+
+This will start a Maven build that creates a full client-server Maven project for you. A full documentation of the
+jumpstart can be found here.
+

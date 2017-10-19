@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+
+<!-- Angular  -->
+<script src="bower_components/angular/angular.min.js"></script>
+
+
+<!-- Dolphin-Platform  -->
+<script src="bower_components/dolphin-platform-angularjs/dist/dolphin-platform-angular.min.js"></script>
+
+<body>
+<script>
+    var app = angular.module('MyApplication', ['DolphinPlatform']).config(function ($dolphinConfigProvider) {
+        $dolphinConfigProvider.configure({
+            DOLPHIN_URL: 'http://localhost:8080/todo-app/dolphin'
+        });
+    });
+</script>
+
+<style>
+
+    .container {
+        margin: 32px;
+    }
+
+    .flex-layout {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+    }
+
+    .stretch {
+        flex-grow: 1;
+    }
+
+    .centered-item {
+        align-self: center;
+    }
+
+    .no-margin {
+        margin: 0px;
+    }
+
+    .todo-form .btn {
+        margin-left: 6px;
+    }
+
+</style>
+
+<div ng-app="MyApplication" ng-controller="MyController">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-1 col-md-1"></div>
+            <div class="col-xs-10 col-md-10">
+                <div class="form-group form-group-lg todo-form flex-layout">
+                    <input class="form-control" type="text" ng-model="model.newItemText">
+                    <button type="button" class="btn btn-primary btn-lg" ng-click="add()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                </div>
+                <div class="list-group">
+                    <div class="list-group-item" ng-repeat="item in model.items" ng-class="rowClass(item.completed)" >
+                        <div class="flex-layout">
+                            <p class="lead stretch centered-item no-margin">{{item.text}}</p>
+                            <div class="btn-group" role="group" aria-label="...">
+                                <button type="button" class="btn btn-info" ng-click="stateChanged(item.text)"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+                                <button type="button" class="btn btn-danger" ng-click="remove(item.text)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-1 col-md-1"></div>
+    </div>
+</div>
+</div>
+
+<script>
+    app.controller('MyController', function ($scope, clientContext) {
+        clientContext.connect();
+        clientContext.createController($scope, 'ToDoController').then(function (controllerProxy) {
+
+            $scope.$apply(function () {
+                $scope.model.newItemText = 'angular';
+            });
+
+            $scope.add = function () {
+                controllerProxy.invoke('add');
+            };
+
+            $scope.remove = function (name) {
+                controllerProxy.invoke('remove', {'item': name});
+            };
+
+            $scope.stateChanged = function (name) {
+                controllerProxy.invoke('change', {'item': name});
+            };
+
+            $scope.rowClass = function (completed) {
+               if(completed) {
+                   return 'list-group-item-success';
+               }
+               return '';
+            };
+
+        });
+
+    });
+</script>
+
+</body>
+</html>
+

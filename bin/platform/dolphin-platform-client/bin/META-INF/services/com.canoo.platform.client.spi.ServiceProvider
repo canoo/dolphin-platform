@@ -1,0 +1,4 @@
+com.canoo.dp.impl.platform.client.http.HttpClientProvider
+com.canoo.dp.impl.platform.client.json.JsonProvider
+com.canoo.dp.impl.platform.client.session.ClientSessionStoreProvider
+com.canoo.dp.impl.platform.client.http.cookie.CookieHandlerProvider

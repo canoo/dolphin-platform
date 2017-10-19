@@ -1,0 +1,93 @@
+
+= Security
+
+The Dolphin Platform do not provide its own security concept but can easily be
+combined with any security framework. To do so the client API of the Dolphin
+Platform provides access to the http connection. Based on this it's quite easy
+to enrich the http requests of the Dolphin Platform with additional information
+like a JWT token.
+
+== Provide Security in a Java based client
+
+When using a Java client API of the Dolphin Platform (like JavaFX or Android)
+the configuration provides the functionality to define a custom http connection
+factory and a http response handler. Based on this a developer can implement any
+custom security mechanism for the Dolphin Platform.
+
+All http connections that will be used by the Dolphin Platform are created by
+the `HttpURLConnectionFactory` instance that is provided by the client configuration.
+A developer can easily provide a custom implementation of the `HttpURLConnectionFactory`
+interface and add this to the client configuration:
+
+[source,java]
+----
+HttpURLConnectionFactory myFactory = url -> {
+    HttpURLConnection connection = (HttpURLConnection) url.connect();
+    connection.setRequestProperty("Security-Header", "My secret token");
+    return connection;
+}
+
+ClientConfiguration configuration = new JavaFXConfiguration(serverEndpoint);
+configuration.setConnectionFactory(myFactory);
+----
+
+Next to this a response handler can be implemented to extract needed information of
+the server response. A custom response handler will be called after the Dolphin
+Platform client API has handled the response. To provide such a handler a
+developer need to provide a custom implementation of the
+`HttpURLConnectionResponseHandler` interface:
+
+[source,java]
+----
+HttpURLConnectionResponseHandler myhandler = response -> {
+    String mySecurityToken = response.getHeaderField("Security-Header");
+    MySecurityManager.setToken(mySecurityToken);
+}
+
+ClientConfiguration configuration = new JavaFXConfiguration(serverEndpoint);
+configuration.setResponseHandler(myhandler);
+----
+
+Next to this the Dolphin Platform internally uses a cookie store to handle the
+session cookie of the current client session. If a developer needs a specific
+cookie store or wants to add some custom cookies to the http requests of the
+Dolphin Platform the cookie store that will be used by the Dolphin Platform
+client can be defined by the client configuration:
+
+----
+CookieStore mySpecialCookieStore = MySecurityManager.getCookieStore();
+
+ClientConfiguration configuration = new JavaFXConfiguration(serverEndpoint);
+configuration.setCookieStore(mySpecialCookieStore);
+----
+
+TIP: The Dolphin Platform offers its own implementations of the interfaces
+and configurations that are described in this chapter. The `ClientConfiguration` class
+already provides them as a default configuration. For more information a developer can
+have a look at `DefaultHttpURLConnectionFactory` and `DefaultHttpURLConnectionResponseHandler`.
+
+== Provide Security in a JavaScript based client
+
+The JavaScript client API of the Dolphin Platform provides a simply way to add custom headers to all HTTP(s) requests
+that will be called the client. As in the Java API this behavior will be defined in the configuration. A cient
+configuration can contain a list of custom headers as string based JSON members in the JSON configuration. This list must
+be defined in the `headersInfo` JSON array as part of the JSON object for configuration.
+
+The following JavaScript snippet shows how 2 custom headers (‘X-Custom-Header’ and ‘Cookie’) and connection
+parameter ('maxRetry' and 'timeout') are defined. By creating the Dolphin Platform connection that way all requests of the
+client will contain that headers and connection parameters.
+
+----
+config:{
+    headersInfo:{
+      ‘X-Custom-Header’ : ‘security-token’,
+      ‘Cookie’ : ‘session=xxxxxxxxxxxxxx;’
+    },
+    connection:{
+      'maxRetry': 3,
+      'timeout' : 5000
+    }
+}
+ dolphin.connect(url, config);
+----
+

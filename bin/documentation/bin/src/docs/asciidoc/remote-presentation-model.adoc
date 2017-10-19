@@ -1,0 +1,28 @@
+
+= The Remote Presentation Model
+
+Remote Presentation Model (RPM) is a software design pattern for implementing user interfaces. Like Model View
+Controller (MVC) it divides a module into three parts:
+
+* Model
+* View
+* Controller
+
+The main difference to MVC is that the Controller part of the RPM pattern is speretated from the view. In a client server
+architecture the controller part is mostly defined on the server. By doing so several benefits of server site programming
+can be directly used in the controller. In addition the view part is mostly extreme lightweight and can easily be
+replaced. Both controller and view know the model and can interact with the model. Since the components RPM pattern can
+be seperated on client and server the model must be synchronized between client and server.
+
+.Remote Presentation Model
+image::rpm1.png[]
+
+Since view and controller can interact with the model it's a best practice to support the observer pattern for the model.
+By doing so the view can simply bind its components to properties of the model and the server can react on changes by
+simply adding a lister to an observable property.
+
+.Basic RPM workflow
+image::workflow.png[]
+
+The Dolphin Platform provides an implementation of the Remote Presentation Model pattern. This documentation provides
+descriptions and samples of the public model, controller and view APIs of the Dolphin Platform.

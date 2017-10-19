@@ -1,0 +1,17 @@
+
+= JavaDoc
+
+The Dolphin Platform is based on some modules. The following diagram shows the modules
+of the Dolphin Platform and the dependecies between the modules:
+
+.Module dependencies of the Dolphin Platform
+image::deps.png[]
+
+The JavaDoc for the modules can be found here:
+
+* link:javadoc/core/[Core API]
+* link:javadoc/client/[Client API]
+* link:javadoc/client-jfx/[JavaFX API]
+* link:javadoc/server/[Server API]
+* link:javadoc/server-spring/[Spring API]
+* link:javadoc/server-jee/[JavaEE API]

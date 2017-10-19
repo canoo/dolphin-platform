@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" total="2" passed="2">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Default suite" duration-ms="60652" started-at="2017-10-18T07:33:10Z" finished-at="2017-10-18T07:34:11Z">
+    <groups>
+    </groups>
+    <test name="Default test" duration-ms="60652" started-at="2017-10-18T07:33:10Z" finished-at="2017-10-18T07:34:11Z">
+      <class name="com.canoo.impl.platform.core.SimpleDolphinPlatformthreadFactoryTest">
+        <test-method status="PASS" signature="testPlatformThread()[pri:0, instance:com.canoo.impl.platform.core.SimpleDolphinPlatformthreadFactoryTest@619713e5]" name="testPlatformThread" duration-ms="22568" started-at="2017-10-18T13:03:10Z" finished-at="2017-10-18T13:03:33Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testPlatformThread -->
+        <test-method status="PASS" signature="testPlatformThread2()[pri:0, instance:com.canoo.impl.platform.core.SimpleDolphinPlatformthreadFactoryTest@619713e5]" name="testPlatformThread2" duration-ms="34474" started-at="2017-10-18T13:03:36Z" finished-at="2017-10-18T13:04:11Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testPlatformThread2 -->
+      </class> <!-- com.canoo.impl.platform.core.SimpleDolphinPlatformthreadFactoryTest -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>

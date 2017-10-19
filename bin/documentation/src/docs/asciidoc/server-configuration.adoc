@@ -1,0 +1,109 @@
+[[server-configuration]]
+= Server configuration
+
+The Dolphin Platform can simply be configured by a property file. To configure the server part of the Dolphin Platform
+a `dolphin.properties`-file must be created in the `META-INF` folder. In a Maven based project the file would be defined
+as `project/src/main/resources/META-INF/dolphin.properties`. This file must be defined as a regular Java property file.
+Here is an example how such a file might look:
+[source,txt]
+----
+useCrossSiteOriginFilter=true
+----
+
+== Supported properties
+
+Currently the following properties are supported by the Dolphin Platform:
+
+.Table title
+|===
+|Name |Description |Supported values |Default value
+
+|useCrossSiteOriginFilter
+|Boolean property that defines if the HTTP filter for the cross site origin policy should be used. By default the filter
+will be used.
+|true, false
+|true
+
+|accessControlAllowHeaders
+|List of String headers which needs to be allowed with Access-Control-Allow-Headers for the cross site origin policy.
+ See here - https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
+|Content-Type, x-requested-with, origin, authorization, accept, client-security-token
+|Content-Type, x-requested-with, origin, authorization, accept, client-security-token
+
+|accessControlAllowMethods
+|List of Methods which needs to be allowed with Access-Control-Allow-Methods for the cross site origin policy.
+ See here - https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
+|*
+|*
+
+|accessControlAllowCredentials
+|Boolean property that allow Access-Control-Allow-Credentials for the cross site origin policy.
+ are allowed. See here - https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
+|true, false
+|true
+
+|accessControlMaxAge
+|Long property that defines Access-Control-Max-Age for the cross site origin policy.
+ are allowed. See here - https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
+|timestamp Long value
+|86400
+
+|useSessionInvalidationServlet
+|Boolean property that defines if the servlet for session validation should be used. By default the servlet will not be used. We plan to remove the servlet completelly in a future release and this property is just for a fallback if not using the servelt will end in issues.
+|true, false
+|false
+
+|servletMapping
+|A string based property that defines the server URL endpoint for the Dolphin Platform.
+|any String that defines an URL mapping
+|/dolphin
+
+|sessionTimeout
+|A int that defines the http session timeout in seconds
+|any integer value
+|900
+
+|idFilterUrlMappings
+|A list that contains all endpoint that will be filtered by the id filter. This means that all requests for this
+endpoints must provide a client id in its header (Header name = dolphin_platform_intern_dolphinClientId).
+|a comma seperated list
+|/dolphin
+
+|maxClientsPerSession
+|Defines how many clients can exist in a http session. By using the client scope you can have several clients that share
+a session but don't use the same data (by using the client scope / dolphin session). By doing so several tabs in a
+browser can handle its own clients
+|any positive integer value
+|10
+
+|rootPackageForClasspathScan
+|Defines the root package that should be used to scan the classpath for Dolphin Platform controllers. By default all
+classes in the classpath will be scanned but this might take some time in big projects. By defining a root package all
+classes that are located in this package or any subpackage of the root package will be scanned.
+|a String that matches the java package structure like "com.canoo" or a empty string if the complete classpath should be
+scanned.
+|NULL (scan complete classpath)
+
+|mBeanRegistration
+|Defines if the Dolphin Platform will register custom MBeans to provide information about the platform and the sessions
+|true, false
+|true
+
+|garbageCollectionActive
+|By activating the garbage collection the Dolphin Platform checks internally if Dolphin beans are referenced (for example
+in a Dolphin Bean hierarchy). If not this beans will automatically be removed on the server and the client. This is an
+unstable feature at the moment and should only be activated for tests.
+|true, false
+|true
+
+|maxPollTime
+|Defines the timeout of the Dolphin Platform polling mechanism that is used for the event bus and for the session.runLater
+call.
+|any long
+|5000
+
+|active
+|Defines if the Dolphin Platform should be bootstraped at the start of the server
+|true, false
+|true
+|===

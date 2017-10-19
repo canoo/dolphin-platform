@@ -1,0 +1,56 @@
+{
+  "name": "core.js",
+  "main": "client/core.js",
+  "version": "2.5.0",
+  "description": "Standard Library",
+  "keywords": [
+    "ES3",
+    "ECMAScript 3",
+    "ES5",
+    "ECMAScript 5",
+    "ES6",
+    "ES2015",
+    "ECMAScript 6",
+    "ECMAScript 2015",
+    "ES7",
+    "ES2016",
+    "ECMAScript 7",
+    "ECMAScript 2016",
+    "Harmony",
+    "Strawman",
+    "Map",
+    "Set",
+    "WeakMap",
+    "WeakSet",
+    "Promise",
+    "Symbol",
+    "TypedArray",
+    "setImmediate",
+    "Dict",
+    "polyfill",
+    "shim"
+  ],
+  "authors": [
+    "Denis Pushkarev <zloirock@zloirock.ru> (http://zloirock.ru/)"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/zloirock/core-js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zloirock/core-js.git"
+  },
+  "ignore": [
+    "build",
+    "node_modules",
+    "tests"
+  ],
+  "_release": "2.5.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v2.5.0",
+    "commit": "63ae52d7625b5ba9bf5cb27558e7d0ae705e39e0"
+  },
+  "_source": "https://github.com/zloirock/core-js.git",
+  "_target": "^2.4.1",
+  "_originalSource": "core.js"
+}

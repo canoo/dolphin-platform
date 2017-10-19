@@ -1,0 +1,196 @@
+
+= The Dolphin Platform Lifecycle
+
+The Dolphin Platform provides lifecycles that defines the communication between client and server and the internal
+lifecycle of a MVC group.
+
+== The Lifecycle for one client
+
+Each clients that is connected to the Dolphin Platform server has its own lifecycle. This lifecycle starts with the
+inital connection and will end when the client disconnects from the server. The Dolphin Platform provides several classes in its public
+API that wrap the lifecycle and make it quite easy to create an application that is based on the Dolphin
+Platform.
+
+== Creating a JavaFX clients that supports the Dolphin Platform Lifecycle
+
+The `dolphin-platform-client-javafx` module provides the abstract `DolphinPlatformApplication` class that can easily be used
+to create a JavaFX based client for the Dolphin Platform. Internally the class already defines the Dolphin Platform
+lifecycle and by extending the class for a custom client a developer only needs to define some general information.
+ The following code shows how a basic implementation might look like:
+
+[source,java]
+----
+public class MyCustomClient extends DolphinPlatformApplication { // <1>
+
+    @Override
+    protected URL getServerEndpoint() {
+        try {
+            return new URL("http://localhost:8080/dolphin"); // <2>
+        } catch (MalformedURLException e) {
+             throw new RuntimeException("Can not create URL!", e);
+        }
+    }
+
+     @Override
+     protected void start(Stage s, ClientContext c) throws Exception { // <3>
+         s.setScene(new Scene(new Label("Hello Dolphin")));
+         s.show();
+     }
+
+}
+----
+<1> Our custom client extends the abstract `DolphinPlatformApplication` class
+<2> We need to implement the abstract method by providing the server endpoint of the Dolphin Platform. This is `/dolphin`
+by default but can be configured on the server
+<3> Like the void `start(Stage primaryStage)` method of the JavaFX `Application` class this method will automatically be
+called once JavaFX is ready. In additon this method provides the Dolphin Platform `ClientContext` as an parameter. By
+doing so you already have a connection to the Dolphin Platform server once this method is called. The method is called on
+the JavaFX Platform thread.
+
+The given example already creates a connection to the Dolphin Platform server and shows an UI once the connection is
+established and JavaFX is ready. In addition this client already provides a disconnect once the UI will be closed by a
+user and some raw error handling. All this is defined in the `DolphinPlatformApplication` class but can simply be overwritten.
+If you want more control of the error handling you can simply provide a custom implementation for the methods
+`void onInitializationError(Stage primaryStage, ClientInitializationException initializationException)` and
+`void onShutdownError(ClientShutdownException shutdownException)`. A client that defines
+specific functionallity for all this states of the lifecycle might look like this:
+
+[source,java]
+----
+public class MyCustomClient extends DolphinPlatformApplication {
+
+    private Logger LOG = LoggerFactory.getLogger(MyCustomClient.class);
+
+    protected URL getServerEndpoint() {
+        try {
+            return new URL("http://localhost:8080/dolphin");
+        } catch (MalformedURLException e) {
+             throw new RuntimeException("Can not create URL!", e);
+        }
+    }
+
+    @Override
+    protected void start(Stage s, ClientContext c) throws Exception {
+        LOG.info("Dolphin Platform Lifecycle init successful");
+        s.setScene(new Scene(new Label("Hello Dolphin")));
+        s.show();
+    }
+
+    @Override
+    protected void onInitializationError(Stage s, ClientInitializationException e) {
+        LOG.error("Dolphin Platform Lifecycle error on init", e);
+        super.onInitializationError(s, e);
+    }
+
+    @Override
+    protected void onShutdownError(ClientShutdownException e) {
+        LOG.error("Dolphin Platform Lifecycle error on shutdown", e);
+        super.onShutdownError(e);
+    }
+
+
+     @Override
+     protected void onShutdown() {
+         LOG.info("Dolphin Platform Lifecycle shutdown successful"); // <5>
+         super.onShutdown();
+     }
+}
+----
+<1> In this custom implementation a logger should be used to log information of the lifecycle
+<2> Once the start method is called the Dolphin Platform initialization has been done and the client is connected to the server
+<3> If an exception occurs on the initialization this method will be called. You should call the super method in a custom
+implementation since a clear shutdown is already defined in the `DolphinPlatformApplication` class.
+<4> If an exception occurs on the shutdown this method will be called. You should call the super method in a custom
+implementation since a clear shutdown is already defined in the `DolphinPlatformApplication` class.
+<5> Once the start method is called the Dolphin Platform shutdown has been done and the client can be destroyed. You
+should call the super method in a custom implementation since a clear shutdown is already defined in the
+`DolphinPlatformApplication` class.
+Note: `onShutdown()` is not supported anymore in 0.8.8.
+
+To be true these are not the only moments in that the Dolphin Platform can throw an exception. Maybe the server shuts
+down when a client is still connected to the server. In this case the `DolphinPlatformApplication` class
+provides an additional method that can be overridden to handle this kind of remoting exception:
+
+[source,java]
+----
+public class MyCustomClient extends DolphinPlatformApplication {
+
+    private Log LOG = LoggerFactory.getLogger(MyCustomClient.class);
+
+    protected URL getServerEndpoint() {
+        try {
+            return new URL("http://localhost:8080/dolphin");
+        } catch (MalformedURLException e) {
+             throw new RuntimeException("Can not create URL!", e);
+        }
+    }
+
+     @Override
+     protected void start(Stage s, ClientContext c) throws Exception {
+         LOG.info("Dolphin Platform Lifecycle init successful");
+         s.setScene(new Scene(new Label("Hello Dolphin")));
+         s.show();
+     }
+
+     @Override
+     protected void onInitializationError(Stage primaryStage, ClientInitializationException initializationException) {
+         LOG.error("Dolphin Platform initialization error", initializationException); // <1>
+         super.onInitializationError(primaryStage, initializationException);
+     }
+
+     @Override
+     protected void onRuntimeError(final Stage primaryStage, final DolphinRuntimeException runtimeException) {
+         LOG.error("Dolphin Platform runtime error in thread " + runtimeException.getThread().getName(), runtimeException); // <2>
+         super.onRuntimeError(primaryStage, runtimeException);
+     }
+
+     @Override
+     protected void onShutdownError(ClientShutdownException shutdownException) {
+         LOG.error("Dolphin Platform shutdown error", shutdownException); // <3>
+         super.onShutdownError(shutdownException);
+     }
+}
+----
+<1> This method is called if the connection to the Dolphin Platform server can't be created.
+<2> This method is called if the connection to the Dolphin Platform server throws an exception at runtime.
+<3> This method is called if the connection to the Dolphin Platform server can't be closed.
+
+You should call the super methods in a custom implementation of the error handlers since a clear shutdown is already defined in the `DolphinPlatformApplication` class.
+
+== The Dolphin Platform Lifecycle on the server
+
+A Dolphin Platform based server provides a http endpoint that is used for the communication between client and server.
+Whenever a new client is created and connects to the server a session is created on the server. The Dolphin Platform
+provides its own session type that is called DolphinSession. This session type is "lower than the http session".
+The DolphinSession is important if you want to create web application, for example. Since all the tabs of a browser share
+the same http session it's hard to define data that is only related to one tab in the browser. In that case the lifecycle
+of a DolphinSession is bound to a tab in the browser and ends when the tab will be closed.
+
+Once a client disconnect its connection to the server the DolphinSession for this client will automatically be removed. If
+a client can not disconnect because of an exception or maybe the Java process on the client is killed by an user the
+DolphinSession will automatically be removed with the http session on the server.
+
+To react on the lifecycle of a client on the server a developer can provide implementations of the `DolphinSessionListener`
+interface that is part of the public server API of the Dolphin Platform. Each implementation of the `DolphinSessionListener`
+interface that is annotated with `@DolphinListener` will be instantiated at runtime and used as a listener for created and
+destroyed session. A basic implementation of such a class might look like this:
+
+[source,java]
+----
+@DolphinListener
+public class MyCustomListener implements DolphinSessionListener {
+
+    private Logger LOG = LoggerFactory.getLogger(MyCustomListener.class);
+
+    public void sessionCreated(DolphinSession s) {
+        LOG.info("Session with id {0} created!", s.getId());    // <1>
+    }
+
+    public void sessionDestroyed(DolphinSession s) {
+        LOG.info("Session with id {0} destroyed!", s.getId());  // <2>
+    }
+
+}
+----
+<1> This method is called for each new DolphinSession that is created on the server
+<2> This method is called for each destroyed DolphinSession on the server

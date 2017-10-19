@@ -1,0 +1,46 @@
+
+= Dolphin Platform IntelliJ Plugin
+
+We provide a plugin for IntelliJ that creates getter & setter methods for the bean model of
+Dolphin Platform. Like the JavaFX properties you need more than a simple getter and setter to
+get the full power out of the Dolphin Platform properties and collections. To simplify the access
+we created a plugin for IntelliJ that creates all needed methods for you.
+
+== Installing the Plugin
+
+To install the Plugin you need to open the "Preferences" dialog in IntelliJ. In that dialog go
+to the "Plugin" section as shown in the following picture:
+
+.IntelliJ Preferences
+image::intellij-pref.png[]
+
+In this dialog you must click the "Browse repositories..." Button in the bottom. By doing so you
+can search in the IntelliJ repository for plugins that are not added to your IntelliJ installation.
+The dialog provides a search field. Once you start typing "Dolphin" in the search field the Dolphin
+Platform plugin will be found:
+
+.IntelliJ Plugin
+image::intellij-plug.png[]
+
+You only need to click the green install button in the plugin description to install the Dolphin
+Platform plugin to your IDE.
+
+== Use the Plugin
+
+To be true there is nothing special that you need to know :) By adding the plugin IntelliJ will
+automatically detect Dolphin Platform properties and collections and create all methods for you
+by using the default functionality to create getter & setter.
+
+The following screen shows a class that defines 2 Dolphin Platform properties.
+
+.IntelliJ sample
+image::intellij-generate.png[]
+
+
+By opening the "Generate" popup you can now trigger the "Getter and Setter" action as always.
+The following dialog shows the 2 properties that part of the class. By selecting both IntelliJ
+will create all getter / setter methods for you:
+
+.Generated code
+image::intellij-generated.png[]
+

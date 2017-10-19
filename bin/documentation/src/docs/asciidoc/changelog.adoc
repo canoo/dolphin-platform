@@ -1,0 +1,297 @@
+
+= Changelog
+
+The following overview contains all changes of the Dolphin Platform since version 0.8.0.
+
+CAUTION: Until version 1.0.0 we will not mark breaking changes in the public API seperately since the API might still change. To
+be true most of the public API of the Dolphin Platform is stable since 0.8.5 and the most changes are related to changing
+package structure or adding additional methods to public interfaces. In addition it will be best practice to not use any
+method of the API is annotated by `@Deprecated` since we plan to remove all this methods and classes for the final 1.0.0 release.
+
+== Version 0.18.0
+_Release date: Aug 25, 2017_
+
+* Legacy code merged in remoting modules (https://github.com/canoo/dolphin-platform/issues/586[issue])
+* Tests for all param types added to ActionTestController (https://github.com/canoo/dolphin-platform/issues/563[issue])
+* New BlindCommandBatcher in JS (https://github.com/canoo/dolphin-platform/issues/594[issue])
+* Some default scope annotations for Spring (https://github.com/canoo/dolphin-platform/issues/597[issue])
+* Coding standards for JS (https://github.com/canoo/dolphin-platform/issues/593[issue])
+* Automatic upload of documentation (https://github.com/canoo/dolphin-platform/issues/527[issue])
+* Smaller commands in remoting layer (https://github.com/canoo/dolphin-platform/issues/585[issue])
+
+== Version 0.17.0
+_Release date: Aug 10, 2017_
+
+* EventBus can be injected before bootstrap is done (https://github.com/canoo/dolphin-platform/issues/577[issue])
+* RemotingContext can not be injected in controller tests (https://github.com/canoo/dolphin-platform/issues/572[issue])
+* Split of public and private API (https://github.com/canoo/dolphin-platform/pull/581[issue])
+* More session filters for event bus (https://github.com/canoo/dolphin-platform/pull/539[issue])
+* General support of the client session for Java clients (https://github.com/canoo/dolphin-platform/pull/579[issue])
+* Encoding problem in remoting layer for JavaEE (https://github.com/canoo/dolphin-platform/issues/559[issue])
+* provide RemotingContext.getClientSession() method (https://github.com/canoo/dolphin-platform/issues/552[issue])
+
+
+== Version 0.16.0
+_Release date: Jul 10, 2017_
+
+* SPI name refactored for hazelcast config plugin (https://github.com/canoo/dolphin-platform/issues/553[issue])
+* EventBus Proxy (https://github.com/canoo/dolphin-platform/issues/554[issue])
+* Fix for bean params
+* Convert TypeScript code to ES6 (https://github.com/canoo/dolphin-platform/issues/520[issue])
+* ClientContext provide isConnected() (https://github.com/canoo/dolphin-platform/issues/511[issue])
+* Sending the old value with the ValueChangeEvent is now optional (https://github.com/canoo/dolphin-platform/issues/529[issue])
+* Fix Error when calling an DolphinAction with null param value (https://github.com/canoo/dolphin-platform/issues/542[issue])
+* Fix Error for sending UTF-8 chars as values (https://github.com/canoo/dolphin-platform/issues/540[issue])
+* Fix NPE while publishing on Dolphin-EventBus without having a session  (https://github.com/canoo/dolphin-platform/issues/534[issue])
+
+
+== Version 0.15.0
+_Release date: Jun 21, 2017_
+
+* Bugfix for eventbus session filtering (https://github.com/canoo/dolphin-platform/issues/523[issue])
+* Remoting error handler for JS clients (https://github.com/canoo/dolphin-platform/issues/509[issue])
+* Definition of public API (https://github.com/canoo/dolphin-platform/issues/508[issue])
+* Support for multiple remoting error handlers (https://github.com/canoo/dolphin-platform/issues/510[issue])
+* Parent-Child-Relationship (https://github.com/canoo/dolphin-platform/issues/382[issue])
+* All old JS code is converted to ES6 (https://github.com/canoo/dolphin-platform/issues/496[issue])
+* Better logging levels for remoting layer (https://github.com/canoo/dolphin-platform/issues/499[issue])
+* Dolphin Platform core modules (https://github.com/canoo/dolphin-platform/issues/497[issue])
+* Refactoring of connect and disconnect in JS (https://github.com/canoo/dolphin-platform/issues/443[issue])
+
+== Version 0.14.0
+_Release date: Jun 06, 2017_
+
+* Updated to new Spring-Boot version (https://github.com/canoo/dolphin-platform/issues/28[issue])
+* ClientId access on client side (https://github.com/canoo/dolphin-platform/issues/490[issue])
+* Bugfix for platform tries to register mbeans even if mbean registration is set to false (https://github.com/canoo/dolphin-platform/issues/482[issue])
+
+== Version 0.13.1
+_Release date: Jun 21, 2017_
+
+* Bugfix-Release that contains only a release of the Java part.
+* Contains fix for (https://github.com/canoo/dolphin-platform/issues/523[#523])
+
+== Version 0.13.0
+_Release date: May 17, 2017_
+
+* Better EventBus handling (https://github.com/canoo/dolphin-platform/issues/470[issue])
+* Added sample application to demonstrate web deployement (https://github.com/canoo/dolphin-platform/issues/454[issue])
+* BugFix for wrong method called from destroyController (https://github.com/canoo/dolphin-platform/issues/484[issue])
+* BugFix for Controller Validation is wrong if method param has more than one Annotation (https://github.com/canoo/dolphin-platform/issues/463[issue])
+* BugFix for ClientContextFactory should not connect automatically (https://github.com/canoo/dolphin-platform/issues/445[issue])
+
+
+== Version 0.12.0
+_Release date: Apr 18, 2017_
+
+* Removed deprecated methods in BeanManager (https://github.com/canoo/dolphin-platform/issues/453[issue])
+* Changed Logging in remoting modules to SLF4J (https://github.com/canoo/dolphin-platform/issues/441[issue])
+* Bugfix for spring wiring missing for DolphinSessionListener (https://github.com/canoo/dolphin-platform/issues/456[issue])
+* Bugfix for JFX connection (https://github.com/canoo/dolphin-platform/pull/457[issue])
+* Added feature to Better Connect/ Disconnect for JavaFX client API (https://github.com/canoo/dolphin-platform/issues/241[issue])
+* Implementation of a easy reconnect functionality for JavaFX (https://github.com/canoo/dolphin-platform/issues/221[issue])
+
+== Version 0.11.0
+_Release date: Apr 04, 2017_
+
+* Java 8 date&time support for JavaScript (https://github.com/canoo/dolphin-platform/issues/411[issue])
+* Gradle samples in documentation (https://github.com/canoo/dolphin-platform/issues/417[issue])
+* Timezone support in JavaScript (https://github.com/canoo/dolphin-platform/issues/405[issue])
+* IntelliJ Plugin to create getter & setter (https://github.com/canoo/dolphin-platform/issues/375[issue])
+* Bugfix for onChange handling of number properties (https://github.com/canoo/dolphin-platform/pull/418[issue])
+
+
+== Version 0.10.0
+_Release date: Mar 21, 2017_
+
+* Server configuration can be injected as a bean (https://github.com/canoo/dolphin-platform/issues/409[issue])
+* Add config to deactivate DolphinPlatformBootstrap while testing(https://github.com/canoo/dolphin-platform/issues/397[issue])
+* No need to add @DolphinBean etc. to the complete class hierarchy of a bean (https://github.com/canoo/dolphin-platform/issues/395[issue])
+* Android API is compiled against latest DolphinPlatform (https://github.com/canoo/dolphin-platform/issues/376[issue])
+* Bugfix for NPE in DolphinCommandRegistration (https://github.com/canoo/dolphin-platform/issues/52[issue])
+* Bugfix for CME in BeanRepository (https://github.com/canoo/dolphin-platform/issues/54[issue])
+* Config can be provided as managed bean in Spring (https://github.com/canoo/dolphin-platform/pull/410[issue])
+* WAR for Integration Tests is now created by the build (https://github.com/canoo/dolphin-platform/issues/297[issue])
+* Bugfix in Calender converter (https://github.com/canoo/dolphin-platform/issues/400[issue])
+* Added New module that provides a server app to test the DP with Docker (https://github.com/canoo/dolphin-platform/pull/399[issue])
+* Bugfix for ProcessMonitoring sample is not working (https://github.com/canoo/dolphin-platform/issues/396[issue])
+
+== Version 0.9.0
+_Release date: Mar 6, 2017_
+
+* Release workflow supports major & minor releases (https://github.com/canoo/dolphin-platform/issues/372[issue])
+* Documentation of the distributed event bus (https://github.com/canoo/dolphin-platform/issues/364[issue])
+* Add dolphin.properties to jump start project (https://github.com/canoo/dolphin-platform/issues/355[issue])
+* Bugfix for DolphinListener setup in Spring (https://github.com/canoo/dolphin-platform/issues/354[issue])
+* Bugfix for Refactoring of BackgroundRunner (https://github.com/canoo/dolphin-platform/issues/357[issue])
+
+== Version 0.8.14
+_Release date: Feb 24, 2017_
+
+* Polymer client provide an event which is fired when controller is ready (https://github.com/canoo/dolphin-platform/issues/362[issue])
+* Bugfix for missing config should be logged as info (https://github.com/canoo/dolphin-platform/issues/361[issue])
+* Added controller test to the sample project (https://github.com/canoo/dolphin-platform/issues/359[issue])
+* Added cross origin header configuration to server (https://github.com/canoo/dolphin-platform/issues/342[issue])
+* Added documentation how to run tests locally on Safari (https://github.com/canoo/dolphin-platform/issues/341[issue])
+* Added logging about the configurations on server (https://github.com/canoo/dolphin-platform/issues/339[issue])
+* Added AngularJS client to jumpstart (https://github.com/canoo/dolphin-platform/issues/319[issue])
+* Bugfix to generate lcov report for Polymer client (https://github.com/canoo/dolphin-platform/issues/311[issue])
+
+== Version 0.8.13
+_Release date: Feb 22, 2017_
+
+* Bugfix to resolves an issue with invalid headers which appears when the Dolphin server runs behind an Apache(https://github.com/canoo/dolphin-platform/pull/366[issue])
+* Bugfix to resolve a racing condition that appears when many controllers are initialized together
+
+== Version 0.8.12
+_Release date: Feb 08, 2017_
+
+* Bugfix for NPE while running generated project from spring-boot-archetype (https://github.com/canoo/dolphin-platform/issues/351[issue])
+* Bugfix for exception in promise returned by disconnect from ClientContext (https://github.com/canoo/dolphin-platform-js/issues/11[issue])
+* Bugfix for remove beans in list is not reflected to Angular client API (https://github.com/canoo/dolphin-platform/issues/338[issue])
+
+== Version 0.8.11
+_Release date: Feb 03, 2017_
+
+* Support for distributed event bus (https://github.com/canoo/dolphin-platform/issues/240[issue])
+* Support for custom headers in HTTP layer in the JS library (https://github.com/canoo/dolphin-platform/issues/243[issue])
+* All JS repositories are build on Travis, run tests on SauceLabs and provide reports to Sonar (https://github.com/canoo/dolphin-platform/issues/314[issue],
+https://github.com/canoo/dolphin-platform/issues/167[issue], https://github.com/canoo/dolphin-platform/issues/39[issue],
+https://github.com/canoo/dolphin-platform/issues/322[issue], https://github.com/canoo/dolphin-platform/issues/321[issue],
+https://github.com/canoo/dolphin-platform/issues/315[issue])
+* Disconnect functionality in JS provides promise (https://github.com/canoo/dolphin-platform/issues/280[issue])
+* Some better log messages (https://github.com/canoo/dolphin-platform/issues/331[issue], https://github.com/canoo/dolphin-platform/issues/330[issue])
+* Client ID filtering is limited to Dolphin Platform endpoint by default(https://github.com/canoo/dolphin-platform/issues/323[issue])
+* Angular client build include all dependencies (https://github.com/canoo/dolphin-platform/issues/317[issue])
+* Support for new datatype BigDecimal, BigInteger and UUID (https://github.com/canoo/dolphin-platform/pull/334[issue])
+* Dolphin Platform can be configured by Spring Boot configuration (https://github.com/canoo/dolphin-platform/pull/332[issue])
+* Internal map implementation in JS is replaced by core.js implementation(https://github.com/canoo/dolphin-platform/issues/169[issue])
+
+== Version 0.8.10
+_Release date: Jan 12, 2017_
+
+* Provide a first implementation of an Android client API
+* The http connection of the Java client can be accessed and customized to provide custom security or
+authentification mechanisms.
+* Dependency to Apache HttpClient library is removed. Java basic HttpUrlConnection is used now.
+* Removed some unneeded dependencies
+* All classes of the Dolphin Platform are refactored to Java. The Dolphin Platform do not provide any
+Groovy based implementations any more. (https://github.com/canoo/dolphin-platform/issues/237[issue], https://github.com/canoo/dolphin-platform/issues/238[issue])
+* Groovy was removed as dependency (for runtime). Currently only the unit tests of the remoting modules still
+depend on Groovy. (https://github.com/canoo/dolphin-platform/issues/237[issue], https://github.com/canoo/dolphin-platform/issues/238[issue])
+* Several sources of the remoting layer are refactored and unused functionality was removed. (https://github.com/canoo/dolphin-platform/issues/237[issue], https://github.com/canoo/dolphin-platform/issues/238[issue])
+* GSON is used as JSON parser for the remoting layer (https://github.com/canoo/dolphin-platform/issues/175[issue])
+* The Dolphin Platform provides Docker based integration tests. Currently the integration tests will be executed
+against server applications that run in Payara, TomEE and Wildfly. (https://github.com/canoo/dolphin-platform/issues/248[issue])
+* The Dolphin Platform publish reports to sonar. An overview of the current state of the Dolphin Platform can be
+found https://sonarqube.com/dashboard/index?id=com.canoo.dolphin-platform%3Adolphin-platform[here] (https://github.com/canoo/dolphin-platform/issues/38[issue])
+* JavaDocs hosted at GitHub pages. (https://github.com/canoo/dolphin-platform/issues/234[issue])
+* Some issues and code smells that were reported by sonar are refactored. (https://github.com/canoo/dolphin-platform/issues/38[issue])
+* Garbage Collection is activated by default (https://github.com/canoo/dolphin-platform/issues/261[issue])
+* Garbage Collection will be automatically called by every long poll (https://github.com/canoo/dolphin-platform/issues/261[issue])
+* Sonar reports for all projects (https://github.com/canoo/dolphin-platform/issues/313[issue])
+
+
+== Version 0.8.9
+_Release date: Dec 16, 2016_
+
+* Provide functionality to step into the DP lifecycle on the server (https://github.com/canoo/dolphin-platform/issues/267[issue])
+* Dependency to GParse is completely removed (https://github.com/canoo/dolphin-platform/issues/252[issue])
+* Refactoring of the event bus implementation (https://github.com/canoo/dolphin-platform/issues/127[issue])
+* Event bus can be used in controller tests for Spring (https://github.com/canoo/dolphin-platform/issues/196[issue])
+* Unneeded javax.inject dependency has been removed (https://github.com/canoo/dolphin-platform/issues/170[issue])
+* Provide additional information for wrong usage of scopes in Spring (https://github.com/canoo/dolphin-platform/issues/277[issue])
+* Several Groovy classes are refactored to Java (https://github.com/canoo/dolphin-platform/pull/270[issue])
+
+== Version 0.8.8
+_Release date: Nov 14, 2016_
+
+* Optional module that adds support for new Java 8 Data & Time API in the model layer (https://github.com/canoo/dolphin-platform/issues/258[issue])
+* Better lifecylce definition in the client API (https://github.com/canoo/dolphin-platform/pull/255[issue])
+* Bugfix for missing exception handling on the client (https://github.com/canoo/dolphin-platform/issues/229[issue])
+* Groovy sources compiles with right Java version (https://github.com/canoo/dolphin-platform/issues/256[issue])
+* Dependency to GParse removed in client and common API (https://github.com/canoo/dolphin-platform/pull/253[issue])
+* Most parts of the Groovy based client API are refactored to Java (https://github.com/canoo/dolphin-platform/pull/264[issue])
+* Client API use URL to define connection string (https://github.com/canoo/dolphin-platform/issues/18[issue])
+* SPI to support custom data types in the model (https://github.com/canoo/dolphin-platform/pull/263[issue])
+
+== Version 0.8.7
+_Release date: Aug 24, 2016_
+
+* Root package for controller scan can be configured (https://github.com/canoo/dolphin-platform/issues/208[issue])
+* Dolphin beans must be annotated with @DolphinBean (https://github.com/canoo/dolphin-platform/issues/218[issue])
+* Better exception handling for the garbage collection (https://github.com/canoo/dolphin-platform/issues/209[issue])
+* Refactoring of Groovy code to Java (https://github.com/canoo/dolphin-platform/issues/158[issue])
+* Update of all external dependecies to latest version (https://github.com/canoo/dolphin-platform/issues/139[issue])
+* Usage of MBeans can be configured (https://github.com/canoo/dolphin-platform/pull/220[issue])
+* Documenation is published to GitHub pages (https://github.com/canoo/dolphin-platform/issues/226[issue])
+* Binding support for properties (https://github.com/canoo/dolphin-platform/pull/205[issue])
+* Session timeout can be specified in JBoss application server (https://github.com/canoo/dolphin-platform/issues/212[issue])
+
+== Version 0.8.6
+_Release date: Jul 7, 2016_
+
+* ClientScope to support multiple browser tabs (https://github.com/canoo/dolphin-platform/issues/50[issue])
+* Http client can be configured in the client API (https://github.com/canoo/dolphin-platform/pull/199[issue])
+* Initialization in client API is async (https://github.com/canoo/dolphin-platform/issues/47[issue])
+* Support for controller tests in Spring (https://github.com/canoo/dolphin-platform/pull/178[issue])
+* Support for session timeout (https://github.com/canoo/dolphin-platform/issues/163[issue])
+* Introduction of an optional module that provides reactive approaches for the model layer (https://github.com/canoo/dolphin-platform/pull/176issue])
+* Bugfix for model garbage collection (https://github.com/canoo/dolphin-platform/issues/183[issue])
+
+== Version 0.8.5
+_Release date: May 20, 2016_
+
+* Build switched to Gradle (https://github.com/canoo/dolphin-platform/pull/140[issue])
+* Integration of the remoting layer (open dolphin) as direct part of the Dolphin Platform project / repo (https://github.com/canoo/dolphin-platform/pull/154[issue])
+* Build documentation added (https://github.com/canoo/dolphin-platform/issues/152[issue])
+* Introduction of the model garbage collection as experimental feature (https://github.com/canoo/dolphin-platform/pull/63[issue])
+
+== Version 0.8.4
+_Release date: May 9, 2016_
+
+* Support for several new data types (like enum & date) in the model layer (https://github.com/canoo/dolphin-platform/issues/55[issue])
+* Bugfix for the client-server connection (https://github.com/canoo/dolphin-platform/issues/148[issue])
+* Listener support for the lifecylce of the dolphin session on the server (https://github.com/canoo/dolphin-platform/issues/93[issue])
+* Memory leak on server removed (https://github.com/canoo/dolphin-platform/issues/130[issue])
+* Public Interfaces for all functionality of the API that is needed by application developers (https://github.com/canoo/dolphin-platform/issues/42[issue])
+* Configuration support for the server (https://github.com/canoo/dolphin-platform/issues/95[issue])
+* Asiidoc based documentation started (https://github.com/canoo/dolphin-platform/issues/133[issue])
+
+== Version 0.8.3
+_Release date: Mar 18, 2016_
+
+* Introduction of the DolphinSession (https://github.com/canoo/dolphin-platform/pull/121[issue])
+* Licence header for all sources (https://github.com/canoo/dolphin-platform/pull/125[issue])
+* Definition of JavaFX basic view class to easily bind the model to the view (https://github.com/canoo/dolphin-platform/issues/117[issue])
+
+== Version 0.8.2
+_Release date: Mar 7, 2016_
+
+* Refactoring of the internal server API (https://github.com/canoo/dolphin-platform/pull/99[issue])
+* Refactoring of the internal client API (https://github.com/canoo/dolphin-platform/pull/106[issue])
+* Factory interfaces for the client API (https://github.com/canoo/dolphin-platform/issues/96[issue])
+
+== Version 0.8.1
+_Release date: Feb 19, 2016_
+
+* Support for JBoss application server (https://github.com/canoo/dolphin-platform/issues/78[issue])
+* Command names in the protocol are shorted (https://github.com/canoo/dolphin-platform/issues/74[issue])
+* Fix for a bug in the list change event (https://github.com/canoo/dolphin-platform/pull/100[issue])
+* Example isn't deployed to Maven central anymore (https://github.com/canoo/dolphin-platform/pull/89[issue])
+
+== Version 0.8.0
+_Release date: Feb 4, 2016_
+
+* This was the first public release of the Dolphin Platform
+* Optional module for JSR 303 (Bean Validation) support added (https://github.com/canoo/dolphin-platform/pull/10[issue])
+* The event bus provides type safe topics (https://github.com/canoo/dolphin-platform/pull/9[issue])
+* Memory leak for session data after session was destroyed has been fixed (https://github.com/canoo/dolphin-platform/issues/67[issue])
+* Support for list binding in JavaFX (https://github.com/canoo/dolphin-platform/pull/11[issue])
+
+
+
+
+
+
+

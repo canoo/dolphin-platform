@@ -1,0 +1,38 @@
+{
+  "name": "dolphin-platform-js",
+  "version": "0.18.0",
+  "main": "./dist/dolphin-platform.js",
+  "homepage": "http://www.dolphin-platform.io",
+  "authors": [
+    "Michael Heinrichs <michael.heinrichs@canoo.com>",
+    "Hendrik Ebbers <hendrik.ebbers@canoo.com>",
+    "Kunal Singh <kunal.singh@canoo.com>",
+    "Timo Brandstätter <timo.brandstaetter@canoo.com>"
+  ],
+  "description": "The Dolphin Platform framework implements the presentation model pattern and provides a modern way to create enterprise applications.",
+  "keywords": [
+    "Dolphin Platform"
+  ],
+  "licenses": [
+    {
+      "type": "Apache-2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0"
+    }
+  ],
+  "ignore": [
+    "**/.*",
+    "lib",
+    "src",
+    "test",
+    "opendolphin",
+    "gulpfile.js",
+    "karma.conf.js",
+    "package.json",
+    "sauce.launchers.js",
+    "sauce-template.json",
+    "sonar-project.properties"
+  ],
+  "devDependencies": {
+    "core.js": "2.4.x"
+  }
+}

@@ -1,0 +1,16 @@
+= Documentation
+
+This folder contains all documentation related artifacts. The documents are
+written using link:http://asciidoctor.org[Asciidoc] and are integrated into
+the build thanks to link:https://github.com/asciidoctor/asciidoctor-gradle-plugin[].
+
+== Building
+
+Simply invoke the `asciidoctor` task; generated documentation will be available
+inside `build/asciidoc`.
+
+== Syntax
+
+Review the official link:http://asciidoctor.org/docs/user-manual/[Asciidoctor Manual]
+for finding out more about the syntax and different options that may be available.
+
