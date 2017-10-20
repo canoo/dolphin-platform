@@ -27,7 +27,6 @@ import com.canoo.dp.impl.remoting.codec.encoders.CreatePresentationModelCommandE
 import com.canoo.dp.impl.remoting.codec.encoders.DeletePresentationModelCommandEncoder;
 import com.canoo.dp.impl.remoting.codec.encoders.DestroyContextCommandEncoder;
 import com.canoo.dp.impl.remoting.codec.encoders.DestroyControllerCommandEncoder;
-import com.canoo.dp.impl.remoting.codec.encoders.EmptyCommandEncoder;
 import com.canoo.dp.impl.remoting.codec.encoders.InterruptLongPollCommandEncoder;
 import com.canoo.dp.impl.remoting.codec.encoders.PresentationModelDeletedCommandEncoder;
 import com.canoo.dp.impl.remoting.codec.encoders.StartLongPollCommandEncoder;
@@ -76,7 +75,6 @@ public final class OptimizedJsonCodec implements Codec {
         addTranscoder(new ValueChangedCommandEncoder(), VALUE_CHANGED_COMMAND_ID);
         addTranscoder(new ChangeAttributeMetadataCommandEncoder(), CHANGE_ATTRIBUTE_METADATA_COMMAND_ID);
         addTranscoder(new AttributeMetadataChangedCommandEncoder(), ATTRIBUTE_METADATA_CHANGED_COMMAND_ID);
-        addTranscoder(new EmptyCommandEncoder(), EMPTY_COMMAND_ID);
         addTranscoder(new CreateContextCommandEncoder(), CREATE_CONTEXT_COMMAND_ID);
         addTranscoder(new DestroyContextCommandEncoder(), DESTROY_CONTEXT_COMMAND_ID);
         addTranscoder(new CreateControllerCommandEncoder(), CREATE_CONTROLLER_COMMAND_ID);

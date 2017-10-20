@@ -32,7 +32,7 @@ import com.canoo.dp.impl.remoting.legacy.communication.ChangeAttributeMetadataCo
 import com.canoo.dp.impl.remoting.legacy.communication.Command;
 import com.canoo.dp.impl.remoting.legacy.communication.CreatePresentationModelCommand;
 import com.canoo.dp.impl.remoting.legacy.communication.DeletePresentationModelCommand;
-import com.canoo.dp.impl.remoting.legacy.communication.EmptyCommand;
+import com.canoo.dp.impl.remoting.legacy.communication.ValueChangedCommand;
 import com.canoo.dp.impl.remoting.legacy.communication.PresentationModelDeletedCommand;
 import com.canoo.dp.impl.remoting.legacy.communication.ValueChangedCommand;
 import com.canoo.dp.impl.remoting.legacy.core.Attribute;
@@ -85,7 +85,7 @@ public class ClientConnectorTests {
 
     private void syncAndWaitUntilDone() {
 
-        clientConnector.send(new EmptyCommand(), new OnFinishedHandler() {
+        clientConnector.send(new ValueChangedCommand(), new OnFinishedHandler() {
             public void onFinished() {
                 syncDone.countDown();
             }
@@ -101,12 +101,12 @@ public class ClientConnectorTests {
         assertCommandsTransmitted(1);
         // 1 command was sent because of the sent sync (resulting in a EMPTY command):
         Assert.assertFalse(clientConnector.getTransmittedCommands().isEmpty());
-        Assert.assertEquals(EmptyCommand.class, clientConnector.getTransmittedCommands().get(0).getClass());
+        Assert.assertEquals(ValueChangedCommand.class, clientConnector.getTransmittedCommands().get(0).getClass());
     }
 
     @Test
     public void testSevereLogWhenCommandNotFound() {
-        clientConnector.dispatchHandle(new EmptyCommand());
+        clientConnector.dispatchHandle(new ValueChangedCommand());
         syncAndWaitUntilDone();
         assertOnlySyncCommandWasTransmitted();
     }

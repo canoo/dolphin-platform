@@ -16,8 +16,8 @@
 package com.canoo.dp.impl.client.legacy;
 
 import com.canoo.dp.impl.client.legacy.communication.AbstractClientConnector;
+import com.canoo.dp.impl.remoting.legacy.communication.ValueChangedCommand;
 import com.canoo.dp.impl.client.legacy.communication.OnFinishedHandler;
-import com.canoo.dp.impl.remoting.legacy.communication.EmptyCommand;
 import com.canoo.dp.impl.remoting.legacy.core.Dolphin;
 import org.apiguardian.api.API;
 
@@ -52,7 +52,7 @@ public class ClientDolphin implements Dolphin<ClientAttribute, ClientPresentatio
      */
     @Deprecated
     public void sync(final Runnable runnable) {
-        clientConnector.send(new EmptyCommand(), new OnFinishedHandler() {
+        clientConnector.send(new ValueChangedCommand(), new OnFinishedHandler() {
             public void onFinished() {
                 runnable.run();
             }
