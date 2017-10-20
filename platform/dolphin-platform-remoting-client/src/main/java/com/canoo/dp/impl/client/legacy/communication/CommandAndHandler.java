@@ -42,7 +42,7 @@ public class CommandAndHandler {
 
     public CommandAndHandler(final Command command, final OnFinishedHandler handler, final HandlerType handlerType) {
 
-        //TODO: null in several groovy tests. Tests need to be reacftored....
+        //TODO: null in several groovy tests. Tests need to be refactored....
         //this.command = Objects.requireNonNull(command, "Command should bot be null");
 
         //if(handler != null && handlerExecutor == null) {
