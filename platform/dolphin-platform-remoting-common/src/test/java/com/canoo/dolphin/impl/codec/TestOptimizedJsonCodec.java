@@ -21,7 +21,6 @@ import org.hamcrest.Matchers;
 import com.canoo.dp.impl.remoting.legacy.core.Attribute;
 import com.canoo.dp.impl.remoting.legacy.communication.Command;
 import com.canoo.dp.impl.remoting.legacy.communication.CreatePresentationModelCommand;
-import com.canoo.dp.impl.remoting.legacy.communication.EmptyCommand;
 import com.canoo.dp.impl.remoting.legacy.communication.ValueChangedCommand;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -275,14 +274,6 @@ public class TestOptimizedJsonCodec {
     }
 
     @Test
-    public void shouldDecodeSingleNamedCommand() {
-        final List<Command> commands = OptimizedJsonCodec.getInstance().decode("[" + createCommandJsonString() + "]");
-
-        assertThat(commands, hasSize(1));
-        assertThat(commands.get(0), Matchers.<Command>samePropertyValuesAs(createCommand()));
-    }
-
-    @Test
     public void shouldDecodeCallActionCommand() {
         //given:
         final String json = "[{\"c_id\":\"4711\",\"n\":\"action\",\"p\":[],\"id\":\"CallAction\"}]";
@@ -419,10 +410,10 @@ public class TestOptimizedJsonCodec {
     }
 
     private static Command createCommand() {
-        return new EmptyCommand();
+        return new ValueChangedCommand();
     }
 
     private static String createCommandJsonString() {
-        return "{\"id\":\"Empty\"}";
+        return "{\"a_id\":null,\"id\":\"ValueChanged\"}";
     }
 }
