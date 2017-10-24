@@ -10,5 +10,6 @@ import static org.apiguardian.api.API.Status.EXPERIMENTAL;
 public interface Toolkit {
 
     Executor getUiExecutor();
+	String getName(); /*method to allow logging for the toolkit*/
 
 }
