@@ -11,6 +11,7 @@ import static org.apiguardian.api.API.Status.EXPERIMENTAL;
 public class HeadlessToolkit implements Toolkit {
     private final static Executor executor = Executors.newSingleThreadExecutor();
 
+    @Override
     public String getName()
     {
     	return "";
