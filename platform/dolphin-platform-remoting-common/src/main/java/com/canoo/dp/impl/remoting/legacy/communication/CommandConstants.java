@@ -33,7 +33,6 @@ public interface CommandConstants {
     String CALL_ACTION_COMMAND_ID = "CallAction";
     String CHANGE_ATTRIBUTE_METADATA_COMMAND_ID = "ChangeAttributeMetadata";
     String ATTRIBUTE_METADATA_CHANGED_COMMAND_ID = "AttributeMetadataChanged";
-    String EMPTY_COMMAND_ID = "Empty";
     String PRESENTATION_MODEL_DELETED_COMMAND_ID = "PresentationModelDeleted";
     String DELETE_PRESENTATION_MODEL_COMMAND_ID = "DeletePresentationModelCommand";
 
