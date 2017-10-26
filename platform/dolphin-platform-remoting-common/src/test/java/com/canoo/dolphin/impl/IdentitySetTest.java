@@ -190,4 +190,47 @@ public class IdentitySetTest {
         Assert.assertFalse(identitySet.containsAll(Arrays.asList(date2, date1)));
     }
 
+    @Test
+    public void testAddSame() {
+        IdentitySet<Date> identitySet = new IdentitySet<>();
+
+        Date date1 = new Date();
+        Date date2 = date1;
+        Date date3 = new Date(date1.getTime() );
+
+        identitySet.add(date1);
+        Assert.assertFalse(identitySet.isEmpty());
+        Assert.assertEquals(identitySet.size(), 1);
+
+        boolean added = identitySet.add(date2);
+        Assert.assertFalse(added);
+        Assert.assertEquals(identitySet.size(), 1);
+
+        added = identitySet.add(date3);
+        Assert.assertTrue(added);
+        Assert.assertEquals(identitySet.size(), 2);
+    }
+
+    @Test
+    public void testRemove() {
+        IdentitySet<Date> identitySet = new IdentitySet<>();
+
+        Date date1 = new Date();
+        Date date2 = new Date(date1.getTime() );
+
+        identitySet.add(date1);
+        Assert.assertFalse(identitySet.isEmpty());
+        Assert.assertEquals(identitySet.size(), 1);
+
+        boolean remove = identitySet.remove(date2);
+        Assert.assertFalse(remove);
+        Assert.assertEquals(identitySet.size(), 1);
+        Assert.assertFalse(identitySet.isEmpty() );
+
+        remove = identitySet.remove(date1);
+        Assert.assertTrue(remove);
+        Assert.assertEquals(identitySet.size(), 0);
+        Assert.assertTrue(identitySet.isEmpty() );
+    }
+
 }

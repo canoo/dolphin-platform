@@ -17,7 +17,7 @@ package com.canoo.dolphin.samples.processmonitor;
 
 import com.canoo.platform.remoting.client.ClientContext;
 import com.canoo.platform.remoting.client.javafx.FXBinder;
-import com.canoo.platform.remoting.client.javafx.binding.FXWrapper;
+import com.canoo.platform.remoting.client.javafx.FXWrapper;
 import com.canoo.platform.remoting.client.javafx.view.AbstractViewController;
 import com.canoo.dolphin.samples.processmonitor.model.ProcessBean;
 import com.canoo.dolphin.samples.processmonitor.model.ProcessListBean;

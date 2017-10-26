@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.canoo.platform.remoting.client.javafx.binding;
+package com.canoo.platform.remoting.client.javafx;
 
 import com.canoo.platform.remoting.client.javafx.FXBinder;
 import com.canoo.platform.remoting.ListChangeEvent;

@@ -178,6 +178,11 @@ public class ObservableArrayList<E> implements ObservableList<E> {
         return batchRemove(c, false);
     }
 
+    @Override
+    public boolean retainAll(E... elements) {
+        return batchRemove(Arrays.asList(elements), false);
+    }
+
     private boolean batchRemove(final Collection<?> c, boolean isRemove){
         if (null != c && c.isEmpty()) {
             return false;
@@ -237,6 +242,15 @@ public class ObservableArrayList<E> implements ObservableList<E> {
         final E oldElement = list.remove(index);
         fireListChanged(new ListChangeEventImpl<>(this, index, index, Collections.singletonList(oldElement)));
         return oldElement;
+    }
+
+    @Override
+    public void remove(int from, int to)
+    {
+        final List<E> oldList = list.subList(from, to);
+        final List<E> copy = new ArrayList<>(oldList);
+        oldList.clear();
+        fireListChanged(new ListChangeEventImpl<>(this, from, to, Collections.unmodifiableList(copy)));
     }
 
     @Override

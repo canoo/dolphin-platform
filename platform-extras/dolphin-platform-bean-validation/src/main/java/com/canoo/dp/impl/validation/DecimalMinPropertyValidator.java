@@ -15,44 +15,44 @@
  */
 package com.canoo.dp.impl.validation;
 
-import javax.validation.ConstraintValidatorContext;
 import javax.validation.constraints.DecimalMin;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 /**
  * Validator that adds Dolphin Platform property support for the {@link DecimalMin} annotation.
  */
-public final class DecimalMinPropertyValidatorForNumber extends AbstractPropertyValidator<DecimalMin, Number> {
+public final class DecimalMinPropertyValidator extends AbstractNumberValidator<DecimalMin> {
 
-    private double minValue;
+    private BigDecimal minValue;
 
     private boolean inclusive;
 
-    /**
-     * constructor
-     */
-    public DecimalMinPropertyValidatorForNumber() {
-        super(Number.class);
-    }
-
     @Override
     public void initialize(DecimalMin minValue) {
-        try {
-            this.minValue = Double.parseDouble(minValue.value());
-        } catch (NumberFormatException nfe) {
-            throw new RuntimeException("TODO");
-        }
+        this.minValue = new BigDecimal(minValue.value() );
         this.inclusive = minValue.inclusive();
     }
 
     @Override
-    protected boolean checkValid(Number value, ConstraintValidatorContext context) {
-        if (inclusive) {
-            return value.doubleValue() >= minValue;
-        } else {
-            return value.doubleValue() > minValue;
-        }
+    protected boolean checkValidLong(Long value) {
+        return checkValidBigDecimal(BigDecimal.valueOf(value) );
     }
 
+    @Override
+    protected boolean checkValidCharSequence(CharSequence value) {
+        return checkValidBigDecimal(new BigDecimal(value.toString()) );
+    }
+
+    @Override
+    protected boolean checkValidBigInteger(BigInteger value) {
+        return checkValidBigDecimal(new BigDecimal(value) );
+    }
+
+    @Override
+    protected boolean checkValidBigDecimal(BigDecimal value) {
+        return inclusive ? value.compareTo(minValue) != -1 : value.compareTo(minValue) == 1;
+    }
 }
 
 

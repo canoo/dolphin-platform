@@ -17,7 +17,7 @@
 package com.canoo.dolphin.webdeployment.client;
 
 import com.canoo.platform.remoting.client.ClientContext;
-import com.canoo.platform.remoting.client.javafx.SimpleDolphinPlatformApplication;
+import com.canoo.platform.remoting.client.javafx.DolphinPlatformApplication;
 import com.canoo.dolphin.webdeployment.client.view.MyView;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -25,7 +25,7 @@ import javafx.stage.Stage;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class ClientApplication extends SimpleDolphinPlatformApplication {
+public class ClientApplication extends DolphinPlatformApplication {
 
     @Override
     protected URL getServerEndpoint() throws MalformedURLException {

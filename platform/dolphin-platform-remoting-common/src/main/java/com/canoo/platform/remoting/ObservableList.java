@@ -25,7 +25,7 @@ import java.util.List;
  * By adding a {@link ListChangeListener} (see {@link #onChanged(ListChangeListener)}) all mutations of the list can be observed.
  * In addition this class provides some convenience methods.
  * <p>
- * The {@link ObservableList} interface is part of teh Dolphin Platform model API. Since the lifecylce of models will be
+ * The {@link ObservableList} interface is part of the Dolphin Platform model API. Since the lifecylce of models will be
  * managed by the Dolphin Platform the API don't provide a public implementation for this interface. When defining models
  * a developer only need to use the interface like it is already descriped in the {@link Property}
  * class.
@@ -95,4 +95,20 @@ public interface ObservableList<E> extends List<E> {
      * @return <tt>true</tt> if the list changed as a result of the call
      */
     boolean removeAll(E... elements);
+
+    /**
+     * A var-arg convenience method for the retain method
+     * @param elements the elements to be retained
+     * @return <tt>true</tt> if list changed as a result of the call
+     */
+    boolean retainAll(E... elements);
+
+    /**
+     * Removes all elements from the list from {@param from} inclusive up to {@param to} exclusive;
+     * Essentially a convenience method for sublist(from, to).clear()
+     * @param from the start of the range to remove (inclusive)
+     * @param to the end of the range to remove (exclusive)
+     * @throws IndexOutofBoundsException if an illegal range is provided
+     */
+    void remove(int from, int to);
 }

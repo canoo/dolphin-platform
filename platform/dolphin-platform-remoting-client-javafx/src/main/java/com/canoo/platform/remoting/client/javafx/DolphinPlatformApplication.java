@@ -96,6 +96,9 @@ public abstract class DolphinPlatformApplication extends Application {
     @Override
     public final void init() throws Exception {
         FxToolkit.init();
+
+        applicationInit();
+
         PlatformClient.getClientConfiguration().setUncaughtExceptionHandler((Thread thread, Throwable exception) -> {
             PlatformClient.getClientConfiguration().getUiExecutor().execute(() -> {
                 Assert.requireNonNull(thread, "thread");
@@ -122,6 +125,10 @@ public abstract class DolphinPlatformApplication extends Application {
         } finally {
             connectInProgress.set(false);
         }
+    }
+
+    protected void applicationInit() throws Exception {
+
     }
 
     /**

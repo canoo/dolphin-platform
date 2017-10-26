@@ -62,7 +62,7 @@ public class IdentitySet<E> implements Set<E> {
     public boolean add(E e) {
         boolean ret = internalMap.keySet().contains(e);
         internalMap.put(e, e);
-        return ret;
+        return !ret;
     }
 
     @Override

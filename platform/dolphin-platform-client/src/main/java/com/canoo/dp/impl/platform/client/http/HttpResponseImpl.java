@@ -133,7 +133,7 @@ public class HttpResponseImpl implements HttpResponse {
 
         int responseCode = connection.getResponseCode();
         if (responseCode != HttpStatus.HTTP_OK) {
-            throw new DolphinRuntimeException("Bad response: " + responseCode);
+           // throw new DolphinRuntimeException("Bad response: " + responseCode);
         }
 
         for(HttpURLConnectionHandler handler : responseHandlers) {

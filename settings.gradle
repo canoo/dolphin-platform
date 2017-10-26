@@ -18,6 +18,10 @@ include 'platform/dolphin-platform-distributed-eventbus'
 
 include 'platform-extras/dolphin-platform-bean-validation'
 include 'platform-extras/dolphin-platform-reactive'
+include 'platform-extras/dolphin-platform-security-client'
+include 'platform-extras/dolphin-platform-security-server'
+include 'platform-extras/dolphin-platform-security-server-javaee'
+include 'platform-extras/dolphin-platform-security-server-spring'
 
 include 'documentation'
 include 'platform-integration-tests/integration-common'
