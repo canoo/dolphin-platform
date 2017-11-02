@@ -12,6 +12,12 @@ public class HeadlessToolkit implements Toolkit {
     private final static Executor executor = Executors.newSingleThreadExecutor();
 
     @Override
+    public String getName()
+    {
+    	return "";
+    }
+
+    @Override
     public Executor getUiExecutor() {
         return executor;
     }
