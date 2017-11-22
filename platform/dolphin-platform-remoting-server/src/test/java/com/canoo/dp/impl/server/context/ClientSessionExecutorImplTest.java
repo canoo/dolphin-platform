@@ -19,6 +19,7 @@ import com.canoo.platform.remoting.server.ClientSessionExecutor;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 
 public class ClientSessionExecutorImplTest {
@@ -68,6 +69,25 @@ public class ClientSessionExecutorImplTest {
         } catch (NullPointerException e) {
 
         }
+    }
+
+    @Test
+    public void testIfExceptionWillThrown() throws ExecutionException, InterruptedException {
+        final String message = "Test if this exception will thrown";
+        final ClientSessionExecutor executor = new ClientSessionExecutorImpl(Executors.newSingleThreadExecutor());
+
+        try {
+            executor.runLaterInClientSession(new Runnable() {
+                @Override
+                public void run() {
+                    throw new RuntimeException(message);
+                }
+            }).get();
+        } catch (ExecutionException e) {
+            Assert.assertTrue(e.getCause() instanceof RuntimeException);
+            Assert.assertEquals(e.getCause().getMessage(), message);
+        }
+
     }
 
 }

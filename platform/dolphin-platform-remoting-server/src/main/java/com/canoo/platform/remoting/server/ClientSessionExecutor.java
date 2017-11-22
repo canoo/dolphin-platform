@@ -20,7 +20,6 @@ import org.apiguardian.api.API;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
-import static org.apiguardian.api.API.Status.EXPERIMENTAL;
 import static org.apiguardian.api.API.Status.MAINTAINED;
 
 /**
@@ -33,7 +32,7 @@ public interface ClientSessionExecutor {
 
     /**
      * Executes the given task later in the given client session
-     * @param task the task
+     * @param runnable the task
      * @return a future that is finished once the task is finished.
      */
     Future<Void> runLaterInClientSession(final Runnable runnable);
