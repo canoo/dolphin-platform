@@ -1,6 +1,7 @@
 package com.canoo.dp.impl.server.security;
 
 import com.canoo.dp.impl.platform.core.Assert;
+import com.canoo.platform.core.DolphinRuntimeException;
 import com.canoo.platform.server.spi.AbstractBaseModule;
 import com.canoo.platform.server.spi.ModuleDefinition;
 import com.canoo.platform.server.spi.ModuleInitializationException;
@@ -24,7 +25,7 @@ public class SecurityModule extends AbstractBaseModule {
         Assert.requireNonNull(coreComponents, "coreComponents");
         final KeycloakConfiguration configuration = new KeycloakConfiguration(coreComponents.getConfiguration());
         final DolphinSecurityBootstrap bootstrap = DolphinSecurityBootstrap.getInstance();
-        bootstrap.init(coreComponents.getInstance(ServletContext.class), coreComponents.getConfiguration());
+        bootstrap.init(coreComponents.getInstance(ServletContext.class).orElseThrow(() -> new DolphinRuntimeException(ServletContext.class + " not found!")), coreComponents.getConfiguration());
     }
 
     @Override

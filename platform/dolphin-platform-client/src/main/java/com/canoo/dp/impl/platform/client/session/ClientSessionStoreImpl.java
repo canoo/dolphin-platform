@@ -10,13 +10,14 @@ import org.slf4j.LoggerFactory;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import static org.apiguardian.api.API.Status.INTERNAL;
 
 @API(since = "0.x", status = INTERNAL)
-public class ClientSessionStoreImpl implements ClientSessionStore{
+public class ClientSessionStoreImpl implements ClientSessionStore {
 
     private static final Logger LOG = LoggerFactory.getLogger(ClientSessionStoreImpl.class);
 
@@ -27,30 +28,26 @@ public class ClientSessionStoreImpl implements ClientSessionStore{
     private UrlToAppDomainConverter converter = new SimpleUrlToAppDomainConverter();
 
     @Override
-    public String getClientIdentifierForUrl(final URL url) {
+    public Optional<String> getClientIdentifierForUrl(final URL url) {
         Assert.requireNonNull(url, "url");
-        final String applicationDomain = converter.getApplicationDomain(url);
-        if(applicationDomain == null) {
-            throw new IllegalStateException("Can not define application domain for url " + url);
-        }
-        LOG.debug("searching for client id application domain: {}", applicationDomain);
-
-        mapLock.lock();
-        try {
-            final String clientId = domainToId.get(applicationDomain);
-            LOG.debug("found client id '{}' for application domain {}", clientId, applicationDomain);
-            return clientId;
-        } finally {
-            mapLock.unlock();
-        }
+        return converter.getApplicationDomain(url).map(applicationDomain -> {
+            LOG.debug("searching for client id application domain: {}", applicationDomain);
+            mapLock.lock();
+            try {
+                final String clientId = domainToId.get(applicationDomain);
+                LOG.debug("found client id '{}' for application domain {}", clientId, applicationDomain);
+                return clientId;
+            } finally {
+                mapLock.unlock();
+            }
+        });
     }
 
     public void setClientIdentifierForUrl(final URL url, final String clientId) {
         Assert.requireNonNull(url, "url");
-        final String applicationDomain = converter.getApplicationDomain(url);
-        if(applicationDomain == null) {
-            throw new IllegalStateException("Can not define application domain for url " + url);
-        }
+        final String applicationDomain = converter.getApplicationDomain(url).
+                orElseThrow(() -> new IllegalStateException("Can not define application domain for url " + url));
+
         LOG.debug("updating client id for application domain: {}", applicationDomain);
 
         mapLock.lock();
@@ -62,7 +59,7 @@ public class ClientSessionStoreImpl implements ClientSessionStore{
                 }
             } else {
                 LOG.debug("Defining client id '{}' for application domain {}", clientId, applicationDomain);
-                if(clientId == null) {
+                if (clientId == null) {
                     LOG.debug("Since client id for application domain {} is defined as 'null' it will be removed", applicationDomain);
                     domainToId.remove(applicationDomain);
                 } else {

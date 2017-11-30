@@ -45,7 +45,7 @@ public class TestController {
     public void init() {
         eventBus.subscribe(TEST_TOPIC, new MessageListener<String>() {
             @Override
-            public void onMessage(MessageEvent<String> message) {
+            public void accept(MessageEvent<String> message) {
                 model.setValue(message.getData());
             }
         });

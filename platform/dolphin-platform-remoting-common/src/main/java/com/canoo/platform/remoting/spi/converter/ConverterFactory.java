@@ -52,5 +52,4 @@ public interface ConverterFactory {
      * @return the converter
      */
     Converter getConverterForType(Class<?> cls);
-
 }

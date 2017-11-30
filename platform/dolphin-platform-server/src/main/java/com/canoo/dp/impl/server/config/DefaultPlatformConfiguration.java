@@ -57,6 +57,11 @@ public final class DefaultPlatformConfiguration implements PlatformConfiguration
         return internalProperties.containsKey(key);
     }
 
+    @Override
+    public Optional<String> property(String key) {
+        return Optional.ofNullable(internalProperties.getProperty(key));
+    }
+
     public boolean getBooleanProperty(final String key, final boolean defaultValue) {
         return Boolean.parseBoolean(internalProperties.getProperty(key, defaultValue + ""));
     }
@@ -87,6 +92,11 @@ public final class DefaultPlatformConfiguration implements PlatformConfiguration
 
     public String getProperty(final String key, final String defaultValue) {
         return internalProperties.getProperty(key, defaultValue);
+    }
+
+    @Override
+    public String getProperty(String key) {
+        return null;
     }
 
     public Set<String> getPropertyKeys() {

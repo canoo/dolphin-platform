@@ -1,6 +1,6 @@
 package com.canoo.dp.impl.server.security;
 
-import com.canoo.platform.server.spi.ConfigurationProviderAdapter;
+import com.canoo.platform.server.spi.ConfigurationProvider;
 import org.apiguardian.api.API;
 
 import java.util.Collections;
@@ -11,7 +11,7 @@ import java.util.Map;
 import static org.apiguardian.api.API.Status.INTERNAL;
 
 @API(since = "0.19.0", status = INTERNAL)
-public class SecurityDefaultValueProvider extends ConfigurationProviderAdapter {
+public class SecurityDefaultValueProvider implements ConfigurationProvider {
 
     @Override
     public Map<String, String> getStringProperties() {

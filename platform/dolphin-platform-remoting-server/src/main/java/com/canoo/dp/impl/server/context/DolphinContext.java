@@ -34,7 +34,6 @@ import com.canoo.dp.impl.remoting.commands.DestroyControllerCommand;
 import com.canoo.dp.impl.remoting.legacy.commands.InterruptLongPollCommand;
 import com.canoo.dp.impl.remoting.legacy.commands.StartLongPollCommand;
 import com.canoo.dp.impl.remoting.legacy.communication.Command;
-import com.canoo.platform.server.spi.components.ManagedBeanFactory;
 import com.canoo.dp.impl.server.client.ClientSessionProvider;
 import com.canoo.dp.impl.server.config.RemotingConfiguration;
 import com.canoo.dp.impl.server.controller.ControllerHandler;
@@ -56,10 +55,10 @@ import com.canoo.dp.impl.server.model.ServerControllerActionCallBean;
 import com.canoo.dp.impl.server.model.ServerEventDispatcher;
 import com.canoo.dp.impl.server.model.ServerPlatformBeanRepository;
 import com.canoo.dp.impl.server.model.ServerPresentationModelBuilderFactory;
-import com.canoo.platform.core.functional.Callback;
 import com.canoo.platform.core.functional.Subscription;
 import com.canoo.platform.remoting.BeanManager;
 import com.canoo.platform.server.client.ClientSession;
+import com.canoo.platform.server.spi.components.ManagedBeanFactory;
 import org.apiguardian.api.API;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,6 +70,7 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 import static org.apiguardian.api.API.Status.INTERNAL;
 
@@ -103,7 +103,7 @@ public class DolphinContext {
 
     private final DolphinContextMBeanRegistry mBeanRegistry;
 
-    private final Callback<DolphinContext> onDestroyCallback;
+    private final Consumer<DolphinContext> onDestroyCallback;
 
     private final Subscription mBeanSubscription;
 
@@ -115,7 +115,7 @@ public class DolphinContext {
 
     private boolean hasResponseCommands = false;
 
-    public DolphinContext(final RemotingConfiguration configuration, ClientSession clientSession, ClientSessionProvider clientSessionProvider, ManagedBeanFactory beanFactory, ControllerRepository controllerRepository, Callback<DolphinContext> onDestroyCallback) {
+    public DolphinContext(final RemotingConfiguration configuration, ClientSession clientSession, ClientSessionProvider clientSessionProvider, ManagedBeanFactory beanFactory, ControllerRepository controllerRepository, Consumer<DolphinContext> onDestroyCallback) {
         this.configuration = Assert.requireNonNull(configuration, "configuration");
         Assert.requireNonNull(beanFactory, "beanFactory");
         Assert.requireNonNull(controllerRepository, "controllerRepository");
@@ -172,7 +172,7 @@ public class DolphinContext {
         mBeanSubscription = mBeanRegistry.registerDolphinContext(clientSession, garbageCollector);
     }
 
-    private <T extends Command> void registerCommand(final ActionRegistry registry, final Class<T> commandClass, final Callback<T> handler) {
+    private <T extends Command> void registerCommand(final ActionRegistry registry, final Class<T> commandClass, final Consumer<T> handler) {
         Assert.requireNonNull(registry, "registry");
         Assert.requireNonNull(commandClass, "commandClass");
         Assert.requireNonNull(handler, "handler");
@@ -180,7 +180,7 @@ public class DolphinContext {
             @Override
             public void handleCommand(final Command command, final List response) {
                 LOG.trace("Handling {} for DolphinContext {}", commandClass.getSimpleName(), getId());
-                handler.call((T) command);
+                handler.accept((T) command);
             }
         });
     }
@@ -190,49 +190,49 @@ public class DolphinContext {
             @Override
             public void registerIn(ActionRegistry registry) {
 
-                registerCommand(registry, CreateContextCommand.class, new Callback<CreateContextCommand>() {
+                registerCommand(registry, CreateContextCommand.class, new Consumer<CreateContextCommand>() {
                     @Override
-                    public void call(final CreateContextCommand createContextCommand) {
+                    public void accept(final CreateContextCommand createContextCommand) {
                         onInitContext();
                     }
                 });
 
-                registerCommand(registry, DestroyContextCommand.class, new Callback<DestroyContextCommand>() {
+                registerCommand(registry, DestroyContextCommand.class, new Consumer<DestroyContextCommand>() {
                     @Override
-                    public void call(final DestroyContextCommand destroyContextCommand) {
+                    public void accept(final DestroyContextCommand destroyContextCommand) {
                         onDestroyContext();
                     }
                 });
 
 
-                registerCommand(registry, CreateControllerCommand.class, new Callback<CreateControllerCommand>() {
+                registerCommand(registry, CreateControllerCommand.class, new Consumer<CreateControllerCommand>() {
                     @Override
-                    public void call(final CreateControllerCommand createControllerCommand) {
+                    public void accept(final CreateControllerCommand createControllerCommand) {
                         Assert.requireNonNull(createControllerCommand, "createControllerCommand");
                         onCreateController(createControllerCommand.getControllerName(), createControllerCommand.getParentControllerId());
                     }
                 });
 
 
-                registerCommand(registry, DestroyControllerCommand.class, new Callback<DestroyControllerCommand>() {
+                registerCommand(registry, DestroyControllerCommand.class, new Consumer<DestroyControllerCommand>() {
                     @Override
-                    public void call(final DestroyControllerCommand destroyControllerCommand) {
+                    public void accept(final DestroyControllerCommand destroyControllerCommand) {
                         Assert.requireNonNull(destroyControllerCommand, "destroyControllerCommand");
                         onDestroyController(destroyControllerCommand.getControllerId());
                     }
                 });
 
-                registerCommand(registry, CallActionCommand.class, new Callback<CallActionCommand>() {
+                registerCommand(registry, CallActionCommand.class, new Consumer<CallActionCommand>() {
                     @Override
-                    public void call(final CallActionCommand callActionCommand) {
+                    public void accept(final CallActionCommand callActionCommand) {
                         Assert.requireNonNull(callActionCommand, "callActionCommand");
                         onCallControllerAction(callActionCommand.getControllerId(), callActionCommand.getActionName(), callActionCommand.getParams());
                     }
                 });
 
-                registerCommand(registry, StartLongPollCommand.class, new Callback<StartLongPollCommand>() {
+                registerCommand(registry, StartLongPollCommand.class, new Consumer<StartLongPollCommand>() {
                     @Override
-                    public void call(final StartLongPollCommand startLongPollCommand) {
+                    public void accept(final StartLongPollCommand startLongPollCommand) {
                         if (configuration.isUseGc()) {
                             LOG.trace("Handling GarbageCollection for DolphinContext {}", getId());
                             onGarbageCollection();
@@ -241,9 +241,9 @@ public class DolphinContext {
                     }
                 });
 
-                registerCommand(registry, InterruptLongPollCommand.class, new Callback<InterruptLongPollCommand>() {
+                registerCommand(registry, InterruptLongPollCommand.class, new Consumer<InterruptLongPollCommand>() {
                     @Override
-                    public void call(final InterruptLongPollCommand interruptLongPollCommand) {
+                    public void accept(final InterruptLongPollCommand interruptLongPollCommand) {
                         interrupt();
                     }
                 });
@@ -267,7 +267,7 @@ public class DolphinContext {
             mBeanSubscription.unsubscribe();
         }
 
-        onDestroyCallback.call(this);
+        onDestroyCallback.accept(this);
     }
 
     private void onCreateController(final String controllerName, final String parentControllerId) {

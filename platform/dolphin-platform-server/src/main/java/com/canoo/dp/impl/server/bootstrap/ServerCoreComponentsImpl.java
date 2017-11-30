@@ -15,6 +15,7 @@
  */
 package com.canoo.dp.impl.server.bootstrap;
 
+import com.canoo.platform.core.DolphinRuntimeException;
 import com.canoo.platform.core.PlatformThreadFactory;
 import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.platform.server.spi.components.ManagedBeanFactory;
@@ -26,6 +27,7 @@ import org.apiguardian.api.API;
 import javax.servlet.ServletContext;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.apiguardian.api.API.Status.INTERNAL;
 
@@ -48,12 +50,8 @@ public class ServerCoreComponentsImpl implements ServerCoreComponents {
         provideInstance(ManagedBeanFactory.class, managedBeanFactory);
     }
 
-    public ServletContext getServletContext() {
-        return getInstance(ServletContext.class);
-    }
-
     public PlatformConfiguration getConfiguration() {
-        return getInstance(PlatformConfiguration.class);
+        return getInstance(PlatformConfiguration.class).orElseThrow(() -> new DolphinRuntimeException("Internal error. No configuration provided!"));
     }
 
     public <T> void provideInstance(Class<T> cls, T instance) {
@@ -66,8 +64,8 @@ public class ServerCoreComponentsImpl implements ServerCoreComponents {
         instances.put(cls, instance);
     }
 
-    public <T> T getInstance(Class<T> cls) {
+    public <T> Optional<T> getInstance(Class<T> cls) {
         Assert.requireNonNull(cls, "cls");
-        return (T) instances.get(cls);
+        return Optional.ofNullable((T) instances.get(cls));
     }
 }

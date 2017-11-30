@@ -6,6 +6,7 @@ import org.apiguardian.api.API;
 
 import java.net.CookieStore;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 
@@ -63,6 +64,8 @@ public interface ClientConfiguration extends PlatformConfiguration {
     <T> void setObjectProperty(final String key, T value);
 
     <T> T getObjectProperty(final String key);
+
+    <T> Optional<T> objectProperty(final String key);
 
     <T> T getObjectProperty(final String key, final T defaultValue);
 }

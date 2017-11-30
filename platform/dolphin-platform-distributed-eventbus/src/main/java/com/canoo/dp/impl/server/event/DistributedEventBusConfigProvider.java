@@ -15,7 +15,7 @@
  */
 package com.canoo.dp.impl.server.event;
 
-import com.canoo.platform.server.spi.ConfigurationProviderAdapter;
+import com.canoo.platform.server.spi.ConfigurationProvider;
 import org.apiguardian.api.API;
 
 import java.util.HashMap;
@@ -24,7 +24,7 @@ import java.util.Map;
 import static org.apiguardian.api.API.Status.INTERNAL;
 
 @API(since = "0.x", status = INTERNAL)
-public class DistributedEventBusConfigProvider extends ConfigurationProviderAdapter {
+public class DistributedEventBusConfigProvider implements ConfigurationProvider {
 
     public static final String HAZELCAST_SERVER_NAME = "hazelcast.server.name";
 

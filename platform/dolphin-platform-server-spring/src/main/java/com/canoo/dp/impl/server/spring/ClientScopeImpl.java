@@ -19,6 +19,7 @@ package com.canoo.dp.impl.server.spring;
 import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.dp.impl.server.bootstrap.PlatformBootstrap;
 import com.canoo.dp.impl.server.client.ClientSessionProvider;
+import com.canoo.platform.core.DolphinRuntimeException;
 import com.canoo.platform.server.client.ClientSession;
 import org.apiguardian.api.API;
 import org.springframework.beans.factory.ObjectFactory;
@@ -85,8 +86,7 @@ public class ClientScopeImpl implements Scope {
     }
 
     protected ClientSession getClientSession() {
-        final ClientSessionProvider clientSessionProvider = PlatformBootstrap.getServerCoreComponents().getInstance(ClientSessionProvider.class);
-        Assert.requireNonNull(clientSessionProvider, "clientSessionProvider");
+        final ClientSessionProvider clientSessionProvider = PlatformBootstrap.getServerCoreComponents().getInstance(ClientSessionProvider.class).orElseThrow(() -> new DolphinRuntimeException(ClientSessionProvider.class.getName() + " not found!"));
         return clientSessionProvider.getCurrentClientSession();
     }
 }

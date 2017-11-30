@@ -16,10 +16,11 @@
 package com.canoo.dp.impl.server.bootstrap.modules;
 
 import com.canoo.dp.impl.server.servlet.HttpSessionTimeoutListener;
+import com.canoo.platform.core.DolphinRuntimeException;
+import com.canoo.platform.core.PlatformConfiguration;
 import com.canoo.platform.server.spi.AbstractBaseModule;
 import com.canoo.platform.server.spi.ModuleDefinition;
 import com.canoo.platform.server.spi.ModuleInitializationException;
-import com.canoo.platform.core.PlatformConfiguration;
 import com.canoo.platform.server.spi.ServerCoreComponents;
 import org.apiguardian.api.API;
 
@@ -42,7 +43,8 @@ public class HttpTimeoutModule extends AbstractBaseModule {
 
     @Override
     public void initialize(ServerCoreComponents coreComponents) throws ModuleInitializationException {
-        final ServletContext servletContext = coreComponents.getInstance(ServletContext.class);
+        final ServletContext servletContext = coreComponents.getInstance(ServletContext.class).
+                orElseThrow(() -> new DolphinRuntimeException("Can not start " + HttpTimeoutModule.class.getName()));
         final PlatformConfiguration configuration = coreComponents.getConfiguration();
 
         HttpSessionTimeoutListener sessionCleaner = new HttpSessionTimeoutListener(configuration);

@@ -25,5 +25,4 @@ public interface DolphinBeanRepo {
      * @return the id
      */
     String getDolphinId(Object bean);
-
 }

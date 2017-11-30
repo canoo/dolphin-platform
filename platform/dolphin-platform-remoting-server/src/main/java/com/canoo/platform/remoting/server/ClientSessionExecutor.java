@@ -18,6 +18,7 @@ package com.canoo.platform.remoting.server;
 import org.apiguardian.api.API;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 import static org.apiguardian.api.API.Status.EXPERIMENTAL;
@@ -36,7 +37,7 @@ public interface ClientSessionExecutor {
      * @param task the task
      * @return a future that is finished once the task is finished.
      */
-    Future<Void> runLaterInClientSession(final Runnable runnable);
+    CompletableFuture<Void> runLaterInClientSession(final Runnable runnable);
 
     /**
      * Executes the given task later in the given client session
@@ -44,6 +45,6 @@ public interface ClientSessionExecutor {
      * @param <T> the return type of the task
      * @return a future that can be used to check the result of the task
      */
-    <T> Future<T> callLaterInClientSession(final Callable<T> callable);
+    <T> CompletableFuture<T> callLaterInClientSession(final Callable<T> callable);
 
 }

@@ -16,12 +16,12 @@
 package com.canoo.impl.server;
 
 import com.canoo.dp.impl.server.config.DefaultModuleConfig;
-import com.canoo.platform.server.spi.ConfigurationProviderAdapter;
+import com.canoo.platform.server.spi.ConfigurationProvider;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class TestConfigurationProvider extends ConfigurationProviderAdapter {
+public class TestConfigurationProvider implements ConfigurationProvider {
 
     public final static String PROPERTY_1_NAME = "testProperty1";
 

@@ -29,6 +29,7 @@ import static org.apiguardian.api.API.Status.EXPERIMENTAL;
  * @author Hendrik Ebbers
  */
 @API(since = "0.x", status = EXPERIMENTAL)
+@FunctionalInterface
 public interface PropertyBinder {
 
     /**

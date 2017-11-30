@@ -15,7 +15,7 @@
  */
 package com.canoo.dp.impl.server.config;
 
-import com.canoo.platform.server.spi.ConfigurationProviderAdapter;
+import com.canoo.platform.server.spi.ConfigurationProvider;
 import org.apiguardian.api.API;
 
 import java.util.Collections;
@@ -25,7 +25,7 @@ import java.util.Map;
 import static org.apiguardian.api.API.Status.INTERNAL;
 
 @API(since = "0.x", status = INTERNAL)
-public class RemotingDefaultValueProvider extends ConfigurationProviderAdapter {
+public class RemotingDefaultValueProvider implements ConfigurationProvider {
 
     @Override
     public Map<String, String> getStringProperties() {

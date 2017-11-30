@@ -33,12 +33,10 @@ public class DolphinRuntimeException extends RuntimeException {
 
     private final transient Thread thread;
 
-
     public DolphinRuntimeException(final String s) {
         super(s);
         this.thread = Thread.currentThread();
     }
-
 
     /**
      * Constructor

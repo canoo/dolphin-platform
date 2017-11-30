@@ -1,6 +1,5 @@
 package com.canoo.dp.impl.server.event;
 
-import com.canoo.platform.server.spi.components.ManagedBeanFactory;
 import com.canoo.dp.impl.server.beans.PostConstructInterceptor;
 import com.canoo.dp.impl.server.client.ClientSessionLifecycleHandlerImpl;
 import com.canoo.dp.impl.server.client.ClientSessionProvider;
@@ -11,18 +10,19 @@ import com.canoo.dp.impl.server.context.DolphinContextProvider;
 import com.canoo.dp.impl.server.controller.ControllerRepository;
 import com.canoo.dp.impl.server.scanner.DefaultClasspathScanner;
 import com.canoo.impl.server.util.HttpSessionMock;
-import com.canoo.platform.core.functional.Callback;
 import com.canoo.platform.core.functional.Subscription;
-import com.canoo.platform.remoting.server.event.RemotingEventBus;
-import com.canoo.platform.server.client.ClientSession;
 import com.canoo.platform.remoting.server.event.MessageEvent;
 import com.canoo.platform.remoting.server.event.MessageListener;
+import com.canoo.platform.remoting.server.event.RemotingEventBus;
 import com.canoo.platform.remoting.server.event.Topic;
+import com.canoo.platform.server.client.ClientSession;
+import com.canoo.platform.server.spi.components.ManagedBeanFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import javax.servlet.ServletContext;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
 
 public class DefaultDolphinEventBusTest {
 
@@ -39,7 +39,7 @@ public class DefaultDolphinEventBusTest {
         RemotingEventBus eventBus = create(null);
         eventBus.subscribe(TEST_TOPIC, new MessageListener<String>() {
             @Override
-            public void onMessage(MessageEvent<String> message) {
+            public void accept(MessageEvent<String> message) {
             }
         });
         Assert.fail();
@@ -59,7 +59,7 @@ public class DefaultDolphinEventBusTest {
         RemotingEventBus eventBus = create(createContext());
         eventBus.subscribe(TEST_TOPIC, new MessageListener<String>() {
             @Override
-            public void onMessage(MessageEvent<String> message) {
+            public void accept(MessageEvent<String> message) {
                 calledCheck.set(true);
             }
         });
@@ -78,7 +78,7 @@ public class DefaultDolphinEventBusTest {
         RemotingEventBus eventBus = create(createContext());
         Subscription subscription = eventBus.subscribe(TEST_TOPIC, new MessageListener<String>() {
             @Override
-            public void onMessage(MessageEvent<String> message) {
+            public void accept(MessageEvent<String> message) {
                 calledCheck.set(true);
             }
         });
@@ -131,10 +131,10 @@ public class DefaultDolphinEventBusTest {
         }
     }
 
-    private class DestroyCallbackMock implements Callback<DolphinContext> {
+    private class DestroyCallbackMock implements Consumer<DolphinContext> {
 
         @Override
-        public void call(DolphinContext dolphinContext) {
+        public void accept(DolphinContext dolphinContext) {
 
         }
     }

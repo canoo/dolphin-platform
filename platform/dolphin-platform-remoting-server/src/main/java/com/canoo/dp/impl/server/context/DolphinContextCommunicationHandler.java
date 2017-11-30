@@ -15,14 +15,13 @@
  */
 package com.canoo.dp.impl.server.context;
 
+import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.dp.impl.remoting.codec.OptimizedJsonCodec;
 import com.canoo.dp.impl.remoting.commands.CreateContextCommand;
-import com.canoo.dp.impl.platform.core.Assert;
-import com.canoo.platform.core.functional.Callback;
-import com.canoo.dp.impl.server.client.ClientSessionProvider;
-import com.canoo.platform.server.client.ClientSession;
 import com.canoo.dp.impl.remoting.legacy.communication.Codec;
 import com.canoo.dp.impl.remoting.legacy.communication.Command;
+import com.canoo.dp.impl.server.client.ClientSessionProvider;
+import com.canoo.platform.server.client.ClientSession;
 import org.apiguardian.api.API;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +34,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static org.apiguardian.api.API.Status.INTERNAL;
 
@@ -142,9 +142,9 @@ public class DolphinContextCommunicationHandler {
             return context;
         }
         if (containsInitCommand(commands)) {
-            final Callback<DolphinContext> onDestroyCallback = new Callback<DolphinContext>() {
+            final Consumer<DolphinContext> onDestroyCallback = new Consumer<DolphinContext>() {
                 @Override
-                public void call(DolphinContext dolphinContext) {
+                public void accept(DolphinContext dolphinContext) {
                     Assert.requireNonNull(dolphinContext, "dolphinContext");
                     LOG.trace("Destroying DolphinContext {}", dolphinContext.getId());
                     remove(clientSession);

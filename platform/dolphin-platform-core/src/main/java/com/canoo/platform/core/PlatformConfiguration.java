@@ -19,6 +19,7 @@ import org.apiguardian.api.API;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.apiguardian.api.API.Status.MAINTAINED;
@@ -37,6 +38,8 @@ public interface PlatformConfiguration extends Serializable {
      */
     boolean containsProperty(final String key);
 
+    Optional<String> property(final String key);
+
     /**
      * Returns the value of the property with the given name. If the configuration do not contain such a property the given default value will be returned.
      *
@@ -45,6 +48,8 @@ public interface PlatformConfiguration extends Serializable {
      * @return value of the property or the default value if the property is not defined
      */
     String getProperty(final String key, final String defaultValue);
+
+    String getProperty(final String key);
 
     /**
      * Returns the value of the property with the given name. If the configuration do not contain such a property the given default value will be returned.

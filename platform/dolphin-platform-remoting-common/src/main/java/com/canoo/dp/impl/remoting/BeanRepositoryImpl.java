@@ -36,7 +36,7 @@ import static org.apiguardian.api.API.Status.INTERNAL;
  */
 // TODO mapDolphinToObject() does not really fit here, we should probably move it to Converters, but first we need to fix scopes
 @API(since = "0.x", status = INTERNAL)
-public class BeanRepositoryImpl implements BeanRepository{
+public class BeanRepositoryImpl implements BeanRepository {
 
     private final Map<Object, PresentationModel> objectPmToDolphinPm = new IdentityHashMap<>();
     private final Map<String, Object> dolphinIdToObjectPm = new HashMap<>();
@@ -181,6 +181,4 @@ public class BeanRepositoryImpl implements BeanRepository{
             }
         }
     }
-
-
 }

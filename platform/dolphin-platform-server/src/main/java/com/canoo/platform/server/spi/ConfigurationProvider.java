@@ -18,6 +18,7 @@ package com.canoo.platform.server.spi;
 import com.canoo.platform.core.PlatformConfiguration;
 import org.apiguardian.api.API;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -37,30 +38,30 @@ public interface ConfigurationProvider {
      * Returns a map of property value pairs. All values are string based.
      * @return a map of property value pairs
      */
-    Map<String, String> getStringProperties();
+    default Map<String, String> getStringProperties() {return Collections.emptyMap();}
 
     /**
      * Returns a map of property value pairs. All values are a list of string values.
      * @return a map of property value pairs
      */
-    Map<String, List<String>> getListProperties();
+    default Map<String, List<String>> getListProperties() {return Collections.emptyMap();}
 
     /**
      * Returns a map of property value pairs. All values are boolean based.
      * @return a map of property value pairs
      */
-    Map<String, Boolean> getBooleanProperties();
+    default Map<String, Boolean> getBooleanProperties() {return Collections.emptyMap();}
 
     /**
      * Returns a map of property value pairs. All values are int based.
      * @return a map of property value pairs
      */
-    Map<String, Integer> getIntegerProperties();
+    default Map<String, Integer> getIntegerProperties() {return Collections.emptyMap();}
 
     /**
      * Returns a map of property value pairs. All values are long based.
      * @return a map of property value pairs
      */
-    Map<String, Long> getLongProperties();
+    default Map<String, Long> getLongProperties() {return Collections.emptyMap();}
 
 }

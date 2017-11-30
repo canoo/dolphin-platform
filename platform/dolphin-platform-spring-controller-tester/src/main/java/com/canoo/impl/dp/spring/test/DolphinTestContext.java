@@ -15,18 +15,18 @@
  */
 package com.canoo.impl.dp.spring.test;
 
-import com.canoo.platform.server.spi.components.ManagedBeanFactory;
+import com.canoo.dp.impl.remoting.legacy.communication.Command;
 import com.canoo.dp.impl.server.client.ClientSessionProvider;
 import com.canoo.dp.impl.server.client.HttpClientSessionImpl;
 import com.canoo.dp.impl.server.config.RemotingConfiguration;
 import com.canoo.dp.impl.server.context.DolphinContext;
 import com.canoo.dp.impl.server.controller.ControllerRepository;
-import com.canoo.platform.core.functional.Callback;
-import com.canoo.dp.impl.remoting.legacy.communication.Command;
+import com.canoo.platform.server.spi.components.ManagedBeanFactory;
 import org.apiguardian.api.API;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static org.apiguardian.api.API.Status.INTERNAL;
 
@@ -37,10 +37,10 @@ public class DolphinTestContext extends DolphinContext {
         super(configuration, new HttpClientSessionImpl(httpSession), dolphinSessionProvider, managedBeanFactory, controllerRepository, createEmptyCallback());
     }
 
-    private static Callback<DolphinContext> createEmptyCallback() {
-        return new Callback<DolphinContext>() {
+    private static Consumer<DolphinContext> createEmptyCallback() {
+        return new Consumer<DolphinContext>() {
             @Override
-            public void call(DolphinContext context) {
+            public void accept(DolphinContext context) {
 
             }
         };

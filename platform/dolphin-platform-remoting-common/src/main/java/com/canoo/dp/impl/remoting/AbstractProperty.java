@@ -22,6 +22,7 @@ import com.canoo.platform.remoting.Property;
 import org.apiguardian.api.API;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static org.apiguardian.api.API.Status.INTERNAL;
@@ -30,6 +31,11 @@ import static org.apiguardian.api.API.Status.INTERNAL;
 public abstract class AbstractProperty<T> implements Property<T> {
 
     private final List<ValueChangeListener<? super T>> listeners = new CopyOnWriteArrayList<>();
+
+    @Override
+    public Optional<T> value() {
+        return Optional.ofNullable(get());
+    }
 
     @Override
     public Subscription onChanged(final ValueChangeListener<? super T> listener) {

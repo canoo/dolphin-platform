@@ -71,8 +71,8 @@ public class EventFilterFactory {
         return new EventFilter<T>() {
 
             @Override
-            public boolean shouldHandleEvent(final MessageEventContext<T> context) {
-                return !filter.shouldHandleEvent(context);
+            public boolean test(final MessageEventContext<T> context) {
+                return !filter.test(context);
             }
         };
     }
@@ -85,9 +85,9 @@ public class EventFilterFactory {
     public static <T extends Serializable> EventFilter<T> and(final EventFilter<T>... filters) {
         return new EventFilter<T>() {
             @Override
-            public boolean shouldHandleEvent(final MessageEventContext<T> context) {
+            public boolean test(final MessageEventContext<T> context) {
                 for(EventFilter filter : filters) {
-                    if(!filter.shouldHandleEvent(context)) {
+                    if(!filter.test(context)) {
                         return false;
                     }
                 }
@@ -104,9 +104,9 @@ public class EventFilterFactory {
     public static <T extends Serializable> EventFilter<T> or(final EventFilter<T>... filters) {
         return new EventFilter<T>() {
             @Override
-            public boolean shouldHandleEvent(final MessageEventContext<T> context) {
+            public boolean test(final MessageEventContext<T> context) {
                 for(EventFilter filter : filters) {
-                    if(filter.shouldHandleEvent(context)) {
+                    if(filter.test(context)) {
                         return true;
                     }
                 }

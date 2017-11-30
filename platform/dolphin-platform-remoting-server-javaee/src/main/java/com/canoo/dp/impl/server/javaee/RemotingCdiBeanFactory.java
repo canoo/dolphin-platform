@@ -17,10 +17,10 @@ package com.canoo.dp.impl.server.javaee;
 
 import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.dp.impl.server.bootstrap.PlatformBootstrap;
-import com.canoo.dp.impl.server.context.DolphinContext;
 import com.canoo.dp.impl.server.context.DolphinContextProvider;
 import com.canoo.dp.impl.server.context.RemotingContextImpl;
 import com.canoo.dp.impl.server.event.LazyEventBusInvocationHandler;
+import com.canoo.platform.core.DolphinRuntimeException;
 import com.canoo.platform.remoting.BeanManager;
 import com.canoo.platform.remoting.server.RemotingContext;
 import com.canoo.platform.remoting.server.binding.PropertyBinder;
@@ -53,15 +53,11 @@ public class RemotingCdiBeanFactory {
     @Produces
     @ClientScoped
     public RemotingContext createRemotingContext(RemotingEventBus eventBus) {
-        Assert.requireNonNull(eventBus, "eventBus");
-
-        final DolphinContextProvider contextProvider = PlatformBootstrap.getServerCoreComponents().getInstance(DolphinContextProvider.class);
-        Assert.requireNonNull(contextProvider, "contextProvider");
-
-        final DolphinContext context =contextProvider.getCurrentDolphinContext();
-        Assert.requireNonNull(context, "context");
-
-        return new RemotingContextImpl(context, eventBus);
+        return PlatformBootstrap.getServerCoreComponents().
+                getInstance(DolphinContextProvider.class).
+                map(p -> p.getCurrentDolphinContext()).
+                map(c -> new RemotingContextImpl(c, eventBus)).
+                orElseThrow(() -> new DolphinRuntimeException(RemotingContext.class + " can not be provided!"));
     }
 
     @Produces

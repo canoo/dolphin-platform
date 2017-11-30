@@ -17,25 +17,25 @@ package com.canoo.dp.impl.server.client;
 
 import com.canoo.platform.core.functional.Subscription;
 import com.canoo.platform.server.client.ClientSession;
-import com.canoo.platform.core.functional.Callback;
 import org.apiguardian.api.API;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Consumer;
 
 import static org.apiguardian.api.API.Status.INTERNAL;
 
 @API(since = "0.x", status = INTERNAL)
 public final class ClientSessionLifecycleHandlerImpl implements ClientSessionLifecycleHandler {
 
-    private final List<Callback<ClientSession>> onCreateCallbacks = new CopyOnWriteArrayList<>();
+    private final List<Consumer<ClientSession>> onCreateCallbacks = new CopyOnWriteArrayList<>();
 
-    private final List<Callback<ClientSession>> onDestroyCallbacks = new CopyOnWriteArrayList<>();
+    private final List<Consumer<ClientSession>> onDestroyCallbacks = new CopyOnWriteArrayList<>();
 
     private final ThreadLocal<ClientSession> currentClientSession = new ThreadLocal<>();
 
     @Override
-    public Subscription addSessionCreatedListener(final Callback<ClientSession> listener) {
+    public Subscription addSessionCreatedListener(final Consumer<ClientSession> listener) {
         onCreateCallbacks.add(listener);
         return new Subscription() {
             @Override
@@ -46,7 +46,7 @@ public final class ClientSessionLifecycleHandlerImpl implements ClientSessionLif
     }
 
     @Override
-    public Subscription addSessionDestroyedListener(final Callback<ClientSession> listener) {
+    public Subscription addSessionDestroyedListener(final Consumer<ClientSession> listener) {
         onDestroyCallbacks.add(listener);
         return new Subscription() {
             @Override
@@ -58,9 +58,9 @@ public final class ClientSessionLifecycleHandlerImpl implements ClientSessionLif
 
     @Override
     public void onSessionCreated(final ClientSession session) {
-        for (Callback<ClientSession> listener : onCreateCallbacks) {
+        for (Consumer<ClientSession> listener : onCreateCallbacks) {
             try {
-                listener.call(session);
+                listener.accept(session);
             } catch (Exception e) {
                 throw new RuntimeException("Error while handling onSessionCreated listener", e);
             }
@@ -69,9 +69,9 @@ public final class ClientSessionLifecycleHandlerImpl implements ClientSessionLif
 
     @Override
     public void onSessionDestroyed(final ClientSession session) {
-        for (Callback<ClientSession> listener : onDestroyCallbacks) {
+        for (Consumer<ClientSession> listener : onDestroyCallbacks) {
             try {
-                listener.call(session);
+                listener.accept(session);
             } catch (Exception e) {
                 throw new RuntimeException("Error while handling onSessionDestroyed listener", e);
             }

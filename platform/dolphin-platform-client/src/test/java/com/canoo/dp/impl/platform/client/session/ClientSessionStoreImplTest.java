@@ -17,7 +17,7 @@ public class ClientSessionStoreImplTest {
         clientID = "dolphin";
         implement.setClientIdentifierForUrl(url, clientID);
         //when
-        final String result = implement.getClientIdentifierForUrl(url);
+        final String result = implement.getClientIdentifierForUrl(url).orElseThrow(() -> new RuntimeException("ERROR"));
         //then
         Assert.assertEquals(result, clientID);
     }
@@ -31,7 +31,7 @@ public class ClientSessionStoreImplTest {
         String clientID = "dolphin";
         implement.setClientIdentifierForUrl(url, clientID);
         //then
-        final String setUrl = implement.getClientIdentifierForUrl(url);
+        final String setUrl = implement.getClientIdentifierForUrl(url).orElseThrow(() -> new RuntimeException("ERROR"));
         Assert.assertEquals(setUrl, clientID);
     }
 
@@ -49,8 +49,8 @@ public class ClientSessionStoreImplTest {
         implement.setClientIdentifierForUrl(url1, clientID1);
 
         //when
-        final String result = implement.getClientIdentifierForUrl(url);
-        final String result1 = implement.getClientIdentifierForUrl(url1);
+        final String result = implement.getClientIdentifierForUrl(url).orElseThrow(() -> new RuntimeException("ERROR"));
+        final String result1 = implement.getClientIdentifierForUrl(url1).orElseThrow(() -> new RuntimeException("ERROR"));
         //then
         Assert.assertEquals(result, clientID);
         Assert.assertEquals(result1, clientID1);
@@ -71,8 +71,8 @@ public class ClientSessionStoreImplTest {
         implement.setClientIdentifierForUrl(url1, clientID1);
 
         //then
-        final String setUrl = implement.getClientIdentifierForUrl(url);
-        final String setUrl1 = implement.getClientIdentifierForUrl(url1);
+        final String setUrl = implement.getClientIdentifierForUrl(url).orElseThrow(() -> new RuntimeException("ERROR"));
+        final String setUrl1 = implement.getClientIdentifierForUrl(url1).orElseThrow(() -> new RuntimeException("ERROR"));
 
         Assert.assertEquals(setUrl, clientID);
         Assert.assertEquals(setUrl1, clientID1);
@@ -117,16 +117,16 @@ public class ClientSessionStoreImplTest {
 
 
         //when
-        final String result = implement.getClientIdentifierForUrl(url);
-        final String result1 = implement.getClientIdentifierForUrl(url1);
-        final String result2 = implement.getClientIdentifierForUrl(url2);
-        final String result3 = implement.getClientIdentifierForUrl(url3);
-        final String result4 = implement.getClientIdentifierForUrl(url4);
-        final String result5 = implement.getClientIdentifierForUrl(url5);
-        final String result6 = implement.getClientIdentifierForUrl(url6);
-        final String result7 = implement.getClientIdentifierForUrl(url7);
-        final String result8 = implement.getClientIdentifierForUrl(url8);
-        final String result9 = implement.getClientIdentifierForUrl(url9);
+        final String result = implement.getClientIdentifierForUrl(url).orElseThrow(() -> new RuntimeException("ERROR"));
+        final String result1 = implement.getClientIdentifierForUrl(url1).orElseThrow(() -> new RuntimeException("ERROR"));
+        final String result2 = implement.getClientIdentifierForUrl(url2).orElseThrow(() -> new RuntimeException("ERROR"));
+        final String result3 = implement.getClientIdentifierForUrl(url3).orElseThrow(() -> new RuntimeException("ERROR"));
+        final String result4 = implement.getClientIdentifierForUrl(url4).orElseThrow(() -> new RuntimeException("ERROR"));
+        final String result5 = implement.getClientIdentifierForUrl(url5).orElseThrow(() -> new RuntimeException("ERROR"));
+        final String result6 = implement.getClientIdentifierForUrl(url6).orElseThrow(() -> new RuntimeException("ERROR"));
+        final String result7 = implement.getClientIdentifierForUrl(url7).orElseThrow(() -> new RuntimeException("ERROR"));
+        final String result8 = implement.getClientIdentifierForUrl(url8).orElseThrow(() -> new RuntimeException("ERROR"));
+        final String result9 = implement.getClientIdentifierForUrl(url9).orElseThrow(() -> new RuntimeException("ERROR"));
         //then
         Assert.assertEquals(result, clientID);
         Assert.assertEquals(result1, clientID1);
@@ -179,16 +179,16 @@ public class ClientSessionStoreImplTest {
         implement.setClientIdentifierForUrl(url9, clientID9);
 
         //then
-        final String set = implement.getClientIdentifierForUrl(url);
-        final String set1 = implement.getClientIdentifierForUrl(url1);
-        final String set2 = implement.getClientIdentifierForUrl(url2);
-        final String set3 = implement.getClientIdentifierForUrl(url3);
-        final String set4 = implement.getClientIdentifierForUrl(url4);
-        final String set5 = implement.getClientIdentifierForUrl(url5);
-        final String set6 = implement.getClientIdentifierForUrl(url6);
-        final String set7 = implement.getClientIdentifierForUrl(url7);
-        final String set8 = implement.getClientIdentifierForUrl(url8);
-        final String set9 = implement.getClientIdentifierForUrl(url9);
+        final String set = implement.getClientIdentifierForUrl(url).orElseThrow(() -> new RuntimeException("ERROR"));
+        final String set1 = implement.getClientIdentifierForUrl(url1).orElseThrow(() -> new RuntimeException("ERROR"));
+        final String set2 = implement.getClientIdentifierForUrl(url2).orElseThrow(() -> new RuntimeException("ERROR"));
+        final String set3 = implement.getClientIdentifierForUrl(url3).orElseThrow(() -> new RuntimeException("ERROR"));
+        final String set4 = implement.getClientIdentifierForUrl(url4).orElseThrow(() -> new RuntimeException("ERROR"));
+        final String set5 = implement.getClientIdentifierForUrl(url5).orElseThrow(() -> new RuntimeException("ERROR"));
+        final String set6 = implement.getClientIdentifierForUrl(url6).orElseThrow(() -> new RuntimeException("ERROR"));
+        final String set7 = implement.getClientIdentifierForUrl(url7).orElseThrow(() -> new RuntimeException("ERROR"));
+        final String set8 = implement.getClientIdentifierForUrl(url8).orElseThrow(() -> new RuntimeException("ERROR"));
+        final String set9 = implement.getClientIdentifierForUrl(url9).orElseThrow(() -> new RuntimeException("ERROR"));
 
         Assert.assertEquals(set, clientID);
         Assert.assertEquals(set1, clientID1);
@@ -212,7 +212,7 @@ public class ClientSessionStoreImplTest {
         implement.resetSession(url);
 
         //then
-        final String setUrl = implement.getClientIdentifierForUrl(url);
+        final String setUrl = implement.getClientIdentifierForUrl(url).orElse(null);
         Assert.assertEquals(setUrl, null);
 
     }
@@ -234,11 +234,11 @@ public class ClientSessionStoreImplTest {
         implement.resetSession(url4);
         implement.resetSession(url5);
 
-        final String reset1 = implement.getClientIdentifierForUrl(url1);
-        final String reset2 = implement.getClientIdentifierForUrl(url2);
-        final String reset3 = implement.getClientIdentifierForUrl(url3);
-        final String reset4 = implement.getClientIdentifierForUrl(url4);
-        final String reset5 = implement.getClientIdentifierForUrl(url5);
+        final String reset1 = implement.getClientIdentifierForUrl(url1).orElse(null);
+        final String reset2 = implement.getClientIdentifierForUrl(url2).orElse(null);
+        final String reset3 = implement.getClientIdentifierForUrl(url3).orElse(null);
+        final String reset4 = implement.getClientIdentifierForUrl(url4).orElse(null);
+        final String reset5 = implement.getClientIdentifierForUrl(url5).orElse(null);
 
         Assert.assertEquals(reset1, null);
         Assert.assertEquals(reset2, null);

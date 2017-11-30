@@ -17,6 +17,7 @@ package com.canoo.dp.impl.server.bootstrap.modules;
 
 import com.canoo.dp.impl.server.config.DefaultModuleConfig;
 import com.canoo.dp.impl.server.servlet.CrossSiteOriginFilter;
+import com.canoo.platform.core.DolphinRuntimeException;
 import com.canoo.platform.server.spi.AbstractBaseModule;
 import com.canoo.platform.server.spi.ModuleDefinition;
 import com.canoo.platform.server.spi.ModuleInitializationException;
@@ -49,7 +50,7 @@ public class CorsModule extends AbstractBaseModule {
 
     @Override
     public void initialize(ServerCoreComponents coreComponents) throws ModuleInitializationException {
-        final ServletContext servletContext = coreComponents.getInstance(ServletContext.class);
+        final ServletContext servletContext = coreComponents.getInstance(ServletContext.class).orElseThrow(() -> new DolphinRuntimeException("Can not start " + CorsModule.class.getName()));
         final PlatformConfiguration configuration = coreComponents.getConfiguration();
         final List<String> endpointList = DefaultModuleConfig.getCorsEndpoints(configuration);
 

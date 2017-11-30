@@ -16,18 +16,19 @@
 package com.canoo.dp.impl.server.client;
 
 import com.canoo.platform.core.functional.Subscription;
-import com.canoo.platform.core.functional.Callback;
 import com.canoo.platform.server.client.ClientSession;
 import org.apiguardian.api.API;
+
+import java.util.function.Consumer;
 
 import static org.apiguardian.api.API.Status.INTERNAL;
 
 @API(since = "0.x", status = INTERNAL)
 public interface ClientSessionLifecycleHandler {
 
-    Subscription addSessionCreatedListener(final Callback<ClientSession> listener);
+    Subscription addSessionCreatedListener(final Consumer<ClientSession> listener);
 
-    Subscription addSessionDestroyedListener(final Callback<ClientSession> listener);
+    Subscription addSessionDestroyedListener(final Consumer<ClientSession> listener);
 
     void onSessionCreated(final ClientSession session);
 

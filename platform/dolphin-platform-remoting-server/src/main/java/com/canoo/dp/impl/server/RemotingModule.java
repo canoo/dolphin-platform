@@ -15,6 +15,7 @@
  */
 package com.canoo.dp.impl.server;
 
+import com.canoo.platform.core.DolphinRuntimeException;
 import com.canoo.platform.server.spi.components.ManagedBeanFactory;
 import com.canoo.dp.impl.server.bootstrap.modules.ClientSessionModule;
 import com.canoo.dp.impl.server.client.ClientSessionLifecycleHandler;
@@ -73,11 +74,15 @@ public class RemotingModule implements ServerModule {
     public void initialize(ServerCoreComponents coreComponents) throws ModuleInitializationException {
         LOG.info("Starting Dolphin Platform");
         try{
-            final ServletContext servletContext = coreComponents.getInstance(ServletContext.class);
-            final ClasspathScanner classpathScanner = coreComponents.getInstance(ClasspathScanner.class);
-            final ManagedBeanFactory beanFactory = coreComponents.getInstance(ManagedBeanFactory.class);
+            final ServletContext servletContext = coreComponents.getInstance(ServletContext.class).
+                    orElseThrow(() -> new DolphinRuntimeException("Can not create " + RemotingModule.class));
+            final ClasspathScanner classpathScanner = coreComponents.getInstance(ClasspathScanner.class).
+                    orElseThrow(() -> new DolphinRuntimeException("Can not create " + RemotingModule.class));
+            final ManagedBeanFactory beanFactory = coreComponents.getInstance(ManagedBeanFactory.class).
+                    orElseThrow(() -> new DolphinRuntimeException("Can not create " + RemotingModule.class));
             final RemotingConfiguration configuration = new RemotingConfiguration(coreComponents.getConfiguration());
-            final ClientSessionProvider sessionProvider = coreComponents.getInstance(ClientSessionProvider.class);
+            final ClientSessionProvider sessionProvider = coreComponents.getInstance(ClientSessionProvider.class).
+                    orElseThrow(() -> new DolphinRuntimeException("Can not create " + RemotingModule.class));
             final DolphinContextFactory dolphinContextFactory = new DefaultDolphinContextFactory(configuration, sessionProvider, beanFactory, classpathScanner);
             final DolphinContextCommunicationHandler communicationHandler = new DolphinContextCommunicationHandler(sessionProvider, dolphinContextFactory);
             final DolphinContextProvider contextProvider = new DolphinContextProvider() {
@@ -98,7 +103,8 @@ public class RemotingModule implements ServerModule {
             };
             coreComponents.provideInstance(DolphinContextProvider.class, contextProvider);
 
-            final ClientSessionLifecycleHandler lifecycleHandler = coreComponents.getInstance(ClientSessionLifecycleHandler.class);
+            final ClientSessionLifecycleHandler lifecycleHandler = coreComponents.getInstance(ClientSessionLifecycleHandler.class).
+                    orElseThrow(() -> new DolphinRuntimeException("Can not create " + RemotingModule.class));
 
             servletContext.addServlet(DOLPHIN_SERVLET_NAME, new DolphinPlatformServlet(communicationHandler)).addMapping(configuration.getDolphinPlatformServletMapping());
 

@@ -26,7 +26,7 @@ public class ClientSessionRequestHandler implements HttpURLConnectionHandler {
     @Override
     public void handle(final HttpURLConnection request) {
         Assert.requireNonNull(request, "request");
-        final String clientId = clientSessionStore.getClientIdentifierForUrl(request.getURL());
+        final String clientId = clientSessionStore.getClientIdentifierForUrl(request.getURL()).orElse(null);
         if (clientId != null) {
             LOG.debug("Adding client id {} to http request at {}", clientId, request.getURL());
             request.setRequestProperty(PlatformConstants.CLIENT_ID_HTTP_HEADER_NAME, clientId);

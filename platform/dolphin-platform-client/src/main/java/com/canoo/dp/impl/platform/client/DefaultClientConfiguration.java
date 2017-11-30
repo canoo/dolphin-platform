@@ -11,6 +11,7 @@ import org.apiguardian.api.API;
 import java.net.CookieManager;
 import java.net.CookieStore;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.Executor;
@@ -45,6 +46,11 @@ public class DefaultClientConfiguration implements ClientConfiguration {
     }
 
     @Override
+    public <T> Optional<T> objectProperty(String key) {
+        return Optional.ofNullable((T) internalProperties.get(key));
+    }
+
+    @Override
     public <T> T getObjectProperty(final String key, final T defaultValue) {
         if (containsProperty(key)) {
             return getObjectProperty(key);
@@ -61,6 +67,11 @@ public class DefaultClientConfiguration implements ClientConfiguration {
     @Override
     public boolean containsProperty(final String key) {
         return internalProperties.containsKey(key);
+    }
+
+    @Override
+    public Optional<String> property(String key) {
+        return Optional.ofNullable(internalProperties.getProperty(key));
     }
 
     @Override
@@ -156,6 +167,11 @@ public class DefaultClientConfiguration implements ClientConfiguration {
     @Override
     public String getProperty(final String key, final String defaultValue) {
         return getObjectProperty(key, defaultValue);
+    }
+
+    @Override
+    public String getProperty(String key) {
+        return null;
     }
 
     @Override

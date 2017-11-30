@@ -21,6 +21,7 @@ import com.canoo.platform.remoting.server.event.Topic;
 import org.apiguardian.api.API;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 import static org.apiguardian.api.API.Status.INTERNAL;
 
@@ -43,6 +44,11 @@ public class DolphinEvent<T extends Serializable> implements MessageEvent<T> {
     @Override
     public T getData() {
         return data;
+    }
+
+    @Override
+    public Optional<T> data() {
+        return Optional.ofNullable(data);
     }
 
     @Override

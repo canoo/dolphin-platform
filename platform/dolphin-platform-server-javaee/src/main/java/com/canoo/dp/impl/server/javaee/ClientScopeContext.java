@@ -15,9 +15,9 @@
  */
 package com.canoo.dp.impl.server.javaee;
 
-import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.dp.impl.server.bootstrap.PlatformBootstrap;
 import com.canoo.dp.impl.server.client.ClientSessionProvider;
+import com.canoo.platform.core.DolphinRuntimeException;
 import com.canoo.platform.server.client.ClientSession;
 import com.canoo.platform.server.javaee.ClientScoped;
 import org.apache.deltaspike.core.util.context.AbstractContext;
@@ -73,9 +73,9 @@ public class ClientScopeContext extends AbstractContext {
     }
 
     private ClientSession getDolphinSession() {
-        final ClientSessionProvider provider = PlatformBootstrap.getServerCoreComponents().getInstance(ClientSessionProvider.class);
-        Assert.requireNonNull(provider, "provider");
-        return provider.getCurrentClientSession();
+        return PlatformBootstrap.getServerCoreComponents().getInstance(ClientSessionProvider.class).
+                map(p -> p.getCurrentClientSession()).
+                orElseThrow(() -> new DolphinRuntimeException("Can not provide ClientSession"));
     }
 
     public void destroy() {

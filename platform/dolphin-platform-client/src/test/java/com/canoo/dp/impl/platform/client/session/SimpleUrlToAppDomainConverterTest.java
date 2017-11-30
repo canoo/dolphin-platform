@@ -25,7 +25,7 @@ public class SimpleUrlToAppDomainConverterTest {
         URL url = new URL(PROTOCOL, HOST, PORT, "");
 
         // WHEN
-        String result = simpleUrlToAppDomainConverter.getApplicationDomain(url);
+        String result = simpleUrlToAppDomainConverter.getApplicationDomain(url).orElseThrow(() -> new RuntimeException("ERROR"));
 
         // THEN
         Assert.assertEquals(result, HOST + ":" + PORT);

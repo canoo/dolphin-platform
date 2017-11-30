@@ -15,12 +15,12 @@
  */
 package com.canoo.impl.server;
 
-import com.canoo.platform.server.spi.ConfigurationProviderAdapter;
+import com.canoo.platform.server.spi.ConfigurationProvider;
 
 import java.util.Collections;
 import java.util.Map;
 
-public class AdditionalTestConfigurationProvider extends ConfigurationProviderAdapter {
+public class AdditionalTestConfigurationProvider implements ConfigurationProvider {
 
     public final static String PROPERTY_NAME = "someTestProperty";
 

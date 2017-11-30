@@ -35,6 +35,7 @@ import com.canoo.dp.impl.remoting.legacy.util.Function;
 import com.canoo.dp.impl.remoting.legacy.util.Provider;
 import com.canoo.platform.client.ClientConfiguration;
 import com.canoo.platform.client.session.ClientSessionStore;
+import com.canoo.platform.core.DolphinRuntimeException;
 import com.canoo.platform.remoting.BeanManager;
 import com.canoo.platform.remoting.DolphinRemotingException;
 import com.canoo.platform.remoting.client.ClientContext;
@@ -44,6 +45,7 @@ import com.canoo.platform.remoting.client.ControllerProxy;
 import org.apiguardian.api.API;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiFunction;
 
@@ -173,6 +175,11 @@ public class ClientContextImpl implements ClientContext {
 
     @Override
     public String getClientId() {
+        return clientId().orElseThrow(() -> new DolphinRuntimeException("No client id defined!"));
+    }
+
+    @Override
+    public Optional<String> clientId() {
         return clientSessionStore.getClientIdentifierForUrl(endpoint);
     }
 

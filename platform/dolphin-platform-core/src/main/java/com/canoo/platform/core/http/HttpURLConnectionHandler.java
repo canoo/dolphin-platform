@@ -26,6 +26,7 @@ import static org.apiguardian.api.API.Status.EXPERIMENTAL;
  * An implemntation can add header values for example.
  */
 @API(since = "0.x", status = EXPERIMENTAL)
+@FunctionalInterface
 public interface HttpURLConnectionHandler {
 
     void handle(HttpURLConnection connection);

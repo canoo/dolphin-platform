@@ -16,6 +16,7 @@
 package com.canoo.dp.impl.remoting.server.spring;
 
 import com.canoo.dp.impl.remoting.BeanManagerImpl;
+import com.canoo.platform.core.DolphinRuntimeException;
 import com.canoo.platform.remoting.BeanManager;
 import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.dp.impl.server.bootstrap.PlatformBootstrap;
@@ -48,12 +49,10 @@ public class RemotingSpringBeanFactory {
     protected RemotingContext createRemotingContext(RemotingEventBus eventBus) {
         Assert.requireNonNull(eventBus, "eventBus");
 
-        final DolphinContextProvider contextProvider = PlatformBootstrap.getServerCoreComponents().getInstance(DolphinContextProvider.class);
-        Assert.requireNonNull(contextProvider, "contextProvider");
-
-        final DolphinContext context = contextProvider.getCurrentDolphinContext();
-        Assert.requireNonNull(context, "context");
-
+        final DolphinContext context = PlatformBootstrap.getServerCoreComponents().
+                getInstance(DolphinContextProvider.class).
+                map(p -> p.getCurrentDolphinContext()).
+                orElseThrow(() -> new DolphinRuntimeException(DolphinContextProvider.class + " not provided!"));
         return new RemotingContextImpl(context, eventBus);
     }
 

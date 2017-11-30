@@ -13,7 +13,7 @@ import java.util.Map;
 import static org.apiguardian.api.API.Status.INTERNAL;
 
 @API(since = "0.x", status = INTERNAL)
-public class HttpSessionEventFilter implements EventFilter {
+public class HttpSessionEventFilter<T extends Serializable> implements EventFilter<T> {
 
     private final List<String> sessionIds;
 
@@ -22,7 +22,7 @@ public class HttpSessionEventFilter implements EventFilter {
     }
 
     @Override
-    public boolean shouldHandleEvent(final MessageEventContext context) {
+    public boolean test(final MessageEventContext<T> context) {
         Assert.requireNonNull(context, "context");
 
         final Map<String, Serializable> metadata = context.getMetadata();

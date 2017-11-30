@@ -19,7 +19,7 @@ public class LazyEventBusInvocationHandler implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         final ServerCoreComponents serverCoreComponents = PlatformBootstrap.getServerCoreComponents();
         if(serverCoreComponents != null) {
-            final RemotingEventBus instance = serverCoreComponents.getInstance(RemotingEventBus.class);
+            final RemotingEventBus instance = serverCoreComponents.getInstance(RemotingEventBus.class).orElse(null);
             if (instance != null) {
                 return method.invoke(instance, args);
             }

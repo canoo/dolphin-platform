@@ -16,19 +16,25 @@
 package com.canoo.dp.impl.server.bootstrap.modules;
 
 import com.canoo.dp.impl.platform.core.Assert;
-import com.canoo.platform.core.functional.Callback;
-import com.canoo.platform.server.spi.components.ManagedBeanFactory;
-import com.canoo.dp.impl.server.client.*;
+import com.canoo.dp.impl.server.client.ClientSessionFilter;
+import com.canoo.dp.impl.server.client.ClientSessionLifecycleHandler;
+import com.canoo.dp.impl.server.client.ClientSessionLifecycleHandlerImpl;
+import com.canoo.dp.impl.server.client.ClientSessionManager;
+import com.canoo.dp.impl.server.client.ClientSessionMutextHolder;
+import com.canoo.dp.impl.server.client.ClientSessionProvider;
+import com.canoo.dp.impl.server.client.HttpSessionCleanerListener;
 import com.canoo.dp.impl.server.config.DefaultModuleConfig;
+import com.canoo.platform.core.DolphinRuntimeException;
+import com.canoo.platform.core.PlatformConfiguration;
 import com.canoo.platform.server.ServerListener;
 import com.canoo.platform.server.client.ClientSession;
 import com.canoo.platform.server.client.ClientSessionListener;
 import com.canoo.platform.server.spi.AbstractBaseModule;
-import com.canoo.platform.server.spi.components.ClasspathScanner;
 import com.canoo.platform.server.spi.ModuleDefinition;
 import com.canoo.platform.server.spi.ModuleInitializationException;
-import com.canoo.platform.core.PlatformConfiguration;
 import com.canoo.platform.server.spi.ServerCoreComponents;
+import com.canoo.platform.server.spi.components.ClasspathScanner;
+import com.canoo.platform.server.spi.components.ManagedBeanFactory;
 import org.apiguardian.api.API;
 
 import javax.servlet.DispatcherType;
@@ -37,6 +43,7 @@ import javax.servlet.ServletContext;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import static org.apiguardian.api.API.Status.INTERNAL;
 
@@ -59,14 +66,17 @@ public class ClientSessionModule extends AbstractBaseModule {
     public void initialize(final ServerCoreComponents coreComponents) throws ModuleInitializationException {
         Assert.requireNonNull(coreComponents, "coreComponents");
 
-        final ServletContext servletContext = coreComponents.getInstance(ServletContext.class);
+        final ServletContext servletContext = coreComponents.getInstance(ServletContext.class).
+                orElseThrow(() -> new DolphinRuntimeException("Can not start " + ClientSessionModule.class.getName()));
         final PlatformConfiguration configuration = coreComponents.getConfiguration();
-        final ClasspathScanner classpathScanner = coreComponents.getInstance(ClasspathScanner.class);
-        final ManagedBeanFactory beanFactory = coreComponents.getInstance(ManagedBeanFactory.class);
+        final ClasspathScanner classpathScanner = coreComponents.getInstance(ClasspathScanner.class).
+                orElseThrow(() -> new DolphinRuntimeException("Can not start " + ClientSessionModule.class.getName()));
+        final ManagedBeanFactory beanFactory = coreComponents.getInstance(ManagedBeanFactory.class).
+                orElseThrow(() -> new DolphinRuntimeException("Can not start " + ClientSessionModule.class.getName()));
 
         final ClientSessionLifecycleHandlerImpl lifecycleHandler = new ClientSessionLifecycleHandlerImpl();
         coreComponents.provideInstance(ClientSessionLifecycleHandler.class, lifecycleHandler);
-                coreComponents.provideInstance(ClientSessionProvider.class, new ClientSessionProvider() {
+        coreComponents.provideInstance(ClientSessionProvider.class, new ClientSessionProvider() {
             @Override
             public ClientSession getCurrentClientSession() {
                 return lifecycleHandler.getCurrentDolphinSession();
@@ -90,15 +100,15 @@ public class ClientSessionModule extends AbstractBaseModule {
             if (ClientSessionListener.class.isAssignableFrom(listenerClass)) {
                 final ClientSessionListener listener = (ClientSessionListener) beanFactory.createDependentInstance(listenerClass);
 
-                lifecycleHandler.addSessionDestroyedListener(new Callback<ClientSession>() {
+                lifecycleHandler.addSessionDestroyedListener(new Consumer<ClientSession>() {
                     @Override
-                    public void call(ClientSession clientSession) {
+                    public void accept(ClientSession clientSession) {
                         listener.sessionDestroyed(clientSession);
                     }
                 });
-                lifecycleHandler.addSessionCreatedListener(new Callback<ClientSession>() {
+                lifecycleHandler.addSessionCreatedListener(new Consumer<ClientSession>() {
                     @Override
-                    public void call(ClientSession clientSession) {
+                    public void accept(ClientSession clientSession) {
                         listener.sessionCreated(clientSession);
                     }
                 });
@@ -106,15 +116,15 @@ public class ClientSessionModule extends AbstractBaseModule {
         }
 
         final ClientSessionMutextHolder mutextHolder = new ClientSessionMutextHolder();
-        lifecycleHandler.addSessionDestroyedListener(new Callback<ClientSession>() {
+        lifecycleHandler.addSessionDestroyedListener(new Consumer<ClientSession>() {
             @Override
-            public void call(ClientSession clientSession) {
+            public void accept(ClientSession clientSession) {
                 mutextHolder.sessionDestroyed(clientSession);
             }
         });
-        lifecycleHandler.addSessionCreatedListener(new Callback<ClientSession>() {
+        lifecycleHandler.addSessionCreatedListener(new Consumer<ClientSession>() {
             @Override
-            public void call(ClientSession clientSession) {
+            public void accept(ClientSession clientSession) {
                 mutextHolder.sessionCreated(clientSession);
             }
         });

@@ -18,6 +18,7 @@ package com.canoo.platform.remoting.server.event;
 import org.apiguardian.api.API;
 
 import java.io.Serializable;
+import java.util.function.Consumer;
 
 import static org.apiguardian.api.API.Status.MAINTAINED;
 
@@ -28,11 +29,7 @@ import static org.apiguardian.api.API.Status.MAINTAINED;
  * @author Hendrik Ebbers
  */
 @API(since = "0.x", status = MAINTAINED)
-public interface MessageListener<T extends Serializable> {
+@FunctionalInterface
+public interface MessageListener<T extends Serializable> extends Consumer<MessageEvent<T>> {
 
-    /**
-     * Method will be called whenever a message is received
-     * @param message the new message
-     */
-    void onMessage(MessageEvent<T> message);
 }

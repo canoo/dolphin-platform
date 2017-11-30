@@ -18,6 +18,8 @@ package com.canoo.platform.server.spi;
 import com.canoo.platform.core.PlatformConfiguration;
 import org.apiguardian.api.API;
 
+import java.util.Optional;
+
 import static org.apiguardian.api.API.Status.EXPERIMENTAL;
 
 /**
@@ -55,5 +57,5 @@ public interface ServerCoreComponents {
      * @see ServerModule
      * @see #provideInstance(Class, Object)
      */
-    <T> T getInstance(Class<T> cls);
+    <T> Optional<T> getInstance(Class<T> cls);
 }

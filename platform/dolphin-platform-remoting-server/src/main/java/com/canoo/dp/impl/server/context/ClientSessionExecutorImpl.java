@@ -17,12 +17,11 @@ package com.canoo.dp.impl.server.context;
 
 import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.platform.remoting.server.ClientSessionExecutor;
-import com.google.common.util.concurrent.SettableFuture;
 import org.apiguardian.api.API;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
-import java.util.concurrent.Future;
 
 import static org.apiguardian.api.API.Status.INTERNAL;
 
@@ -36,7 +35,7 @@ public class ClientSessionExecutorImpl implements ClientSessionExecutor {
     }
 
     @Override
-    public Future<Void> runLaterInClientSession(final Runnable task) {
+    public CompletableFuture<Void> runLaterInClientSession(final Runnable task) {
         Assert.requireNonNull(task, "task");
         return callLaterInClientSession(new Callable<Void>() {
             @Override
@@ -48,17 +47,17 @@ public class ClientSessionExecutorImpl implements ClientSessionExecutor {
     }
 
     @Override
-    public <T> Future<T> callLaterInClientSession(final Callable<T> task) {
+    public <T> CompletableFuture<T> callLaterInClientSession(final Callable<T> task) {
         Assert.requireNonNull(task, "task");
-        final SettableFuture<T> future = SettableFuture.<T>create();
+        final CompletableFuture<T> future = new CompletableFuture();
         runLaterExecutor.execute(new Runnable() {
             @Override
             public void run() {
                 try {
-                    T result = task.call();
-                    future.set(result);
+                    final T result = task.call();
+                    future.complete(result);
                 } catch (Exception e) {
-                    future.setException(e);
+                    future.completeExceptionally(e);
                 }
             }
         });

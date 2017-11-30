@@ -17,6 +17,7 @@ package com.canoo.dp.impl.server.bootstrap.modules;
 
 import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.dp.impl.server.servlet.HttpSessionMutexHolder;
+import com.canoo.platform.core.DolphinRuntimeException;
 import com.canoo.platform.server.spi.AbstractBaseModule;
 import com.canoo.platform.server.spi.ModuleDefinition;
 import com.canoo.platform.server.spi.ModuleInitializationException;
@@ -43,8 +44,8 @@ public class HttpMutexModule extends AbstractBaseModule {
     @Override
     public void initialize(final ServerCoreComponents coreComponents) throws ModuleInitializationException {
         Assert.requireNonNull(coreComponents, "coreComponents");
-        final ServletContext servletContext = coreComponents.getInstance(ServletContext.class);
-        Assert.requireNonNull(servletContext, "servletContext");
+        final ServletContext servletContext = coreComponents.getInstance(ServletContext.class).
+                orElseThrow(() -> new DolphinRuntimeException("Can not start " + HttpMutexModule.class.getName()));
 
         final HttpSessionMutexHolder mutexHolder = new HttpSessionMutexHolder();
         servletContext.addListener(mutexHolder);

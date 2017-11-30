@@ -16,15 +16,16 @@
 package com.canoo.dp.impl.server.context;
 
 import com.canoo.dp.impl.platform.core.Assert;
-import com.canoo.platform.server.spi.components.ManagedBeanFactory;
 import com.canoo.dp.impl.server.client.ClientSessionProvider;
 import com.canoo.dp.impl.server.config.RemotingConfiguration;
 import com.canoo.dp.impl.server.controller.ControllerRepository;
 import com.canoo.dp.impl.server.controller.ControllerValidationException;
-import com.canoo.platform.core.functional.Callback;
 import com.canoo.platform.server.client.ClientSession;
 import com.canoo.platform.server.spi.components.ClasspathScanner;
+import com.canoo.platform.server.spi.components.ManagedBeanFactory;
 import org.apiguardian.api.API;
+
+import java.util.function.Consumer;
 
 import static org.apiguardian.api.API.Status.INTERNAL;
 
@@ -48,7 +49,7 @@ public class DefaultDolphinContextFactory implements DolphinContextFactory {
     }
 
     @Override
-    public DolphinContext create(final ClientSession clientSession, final Callback<DolphinContext> onDestroyCallback) {
+    public DolphinContext create(final ClientSession clientSession, final Consumer<DolphinContext> onDestroyCallback) {
         Assert.requireNonNull(clientSession, "clientSession");
         return new DolphinContext(configuration, clientSession, sessionProvider, beanFactory, controllerRepository, onDestroyCallback);
     }

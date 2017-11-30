@@ -27,6 +27,7 @@ import static org.apiguardian.api.API.Status.EXPERIMENTAL;
  * Factory interface to create a url connection
  */
 @API(since = "0.x", status = EXPERIMENTAL)
+@FunctionalInterface
 public interface HttpURLConnectionFactory {
 
     /**
