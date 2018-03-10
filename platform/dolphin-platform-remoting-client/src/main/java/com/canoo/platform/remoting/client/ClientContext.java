@@ -16,10 +16,12 @@
 package com.canoo.platform.remoting.client;
 
 import com.canoo.dp.impl.client.ClientContextFactoryImpl;
+import com.canoo.platform.core.functional.Subscription;
 import com.canoo.platform.remoting.BeanManager;
 import org.apiguardian.api.API;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 import static org.apiguardian.api.API.Status.MAINTAINED;
 
@@ -55,4 +57,9 @@ public interface ClientContext extends ControllerFactory {
 
     String getClientId();
 
+    Subscription addRemotingExceptionHandler(RemotingExceptionHandler exceptionHandler);
+
+    boolean isConnected();
+
+    Subscription addConnectionListener(final Consumer<Boolean> listener);
 }

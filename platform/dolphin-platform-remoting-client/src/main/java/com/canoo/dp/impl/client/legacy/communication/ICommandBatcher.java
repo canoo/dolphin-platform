@@ -29,4 +29,6 @@ public interface ICommandBatcher {
 	boolean isEmpty();
 
     DataflowQueue<List<CommandAndHandler>> getWaitingBatches();
+
+    void clear();
 }

@@ -15,10 +15,9 @@
  */
 package com.canoo.dp.impl.platform.client;
 
-import com.canoo.dp.impl.platform.core.http.DefaultHttpURLConnectionFactory;
 import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.dp.impl.platform.core.SimpleDolphinPlatformThreadFactory;
-import com.canoo.dp.impl.platform.core.SimpleUncaughtExceptionHandler;
+import com.canoo.dp.impl.platform.core.http.DefaultHttpURLConnectionFactory;
 import com.canoo.platform.client.ClientConfiguration;
 import com.canoo.platform.core.http.HttpURLConnectionFactory;
 import org.apiguardian.api.API;
@@ -40,9 +39,6 @@ public class DefaultClientConfiguration implements ClientConfiguration {
     private final Properties internalProperties = new Properties();
 
     public DefaultClientConfiguration() {
-        setUncaughtExceptionHandler(new SimpleUncaughtExceptionHandler());
-        setUiUncaughtExceptionHandler(new SimpleUncaughtExceptionHandler());
-
         setBackgroundExecutor(Executors.newCachedThreadPool(new SimpleDolphinPlatformThreadFactory()));
         setCookieStore(new CookieManager().getCookieStore());
         setHttpURLConnectionFactory(new DefaultHttpURLConnectionFactory());
@@ -94,16 +90,6 @@ public class DefaultClientConfiguration implements ClientConfiguration {
     }
 
     @Override
-    public Thread.UncaughtExceptionHandler getUncaughtExceptionHandler() {
-        return getObjectProperty(UNCAUGHT_EXCEPTION_HANDLER);
-    }
-
-    @Override
-    public Thread.UncaughtExceptionHandler getUiUncaughtExceptionHandler() {
-        return getObjectProperty(UI_UNCAUGHT_EXCEPTION_HANDLER);
-    }
-
-    @Override
     public CookieStore getCookieStore() {
         return getObjectProperty(COOKIE_STORE);
     }
@@ -121,16 +107,6 @@ public class DefaultClientConfiguration implements ClientConfiguration {
     @Override
     public void setBackgroundExecutor(final ExecutorService service) {
         internalProperties.put(BACKGROUND_EXECUTOR, service);
-    }
-
-    @Override
-    public void setUncaughtExceptionHandler(Thread.UncaughtExceptionHandler uncaughtExceptionHandler) {
-        setObjectProperty(UNCAUGHT_EXCEPTION_HANDLER, uncaughtExceptionHandler);
-    }
-
-    @Override
-    public void setUiUncaughtExceptionHandler(Thread.UncaughtExceptionHandler uncaughtExceptionHandler) {
-        setObjectProperty(UI_UNCAUGHT_EXCEPTION_HANDLER, uncaughtExceptionHandler);
     }
 
     @Override

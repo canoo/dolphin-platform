@@ -76,6 +76,10 @@ include 'platform-examples/lazy-loading-sample/lazy-loading-common'
 include 'platform-examples/lazy-loading-sample/lazy-loading-client-javafx'
 include 'platform-examples/lazy-loading-sample/lazy-loading-server-spring'
 
+include 'platform-examples/reconnect-sample/reconnect-common'
+include 'platform-examples/reconnect-sample/reconnect-client-javafx'
+include 'platform-examples/reconnect-sample/reconnect-server-spring'
+
 include 'platform-examples/security-sample/security-client-javafx'
 include 'platform-examples/security-sample/security-server-spring'
 

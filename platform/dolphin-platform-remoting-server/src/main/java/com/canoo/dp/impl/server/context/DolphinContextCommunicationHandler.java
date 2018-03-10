@@ -17,7 +17,6 @@ package com.canoo.dp.impl.server.context;
 
 import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.dp.impl.remoting.codec.OptimizedJsonCodec;
-import com.canoo.dp.impl.remoting.commands.CreateContextCommand;
 import com.canoo.dp.impl.remoting.legacy.communication.Codec;
 import com.canoo.dp.impl.remoting.legacy.communication.Command;
 import com.canoo.dp.impl.server.client.ClientSessionProvider;
@@ -32,6 +31,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
@@ -83,33 +83,42 @@ public class DolphinContextCommunicationHandler {
             return;
         }
         LOG.trace("Request for DolphinContext {} in http session {} contains {} commands", clientSession.getId(), httpSession.getId(), commands.size());
-
-        try {
-            DolphinContext context = getOrCreateContext(clientSession, commands);
-
-            final List<Command> results = new ArrayList<>();
+        if (!commands.isEmpty()) {
             try {
-                results.addAll(handle(context, commands));
+                DolphinContext context = getOrCreateContext(clientSession, commands);
+
+                final List<Command> results = new ArrayList<>();
+                try {
+                    results.addAll(handle(context, commands));
+                } catch (final Exception e) {
+                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    LOG.error("Can not withoutResult the the received commands (DolphinContext " + context.getId() + ")", e);
+                    return;
+                }
+
+                LOG.trace("Sending RPM response for client session {} in http session {} from client with user-agent {}", context.getId(), httpSession.getId(), userAgent);
+                LOG.trace("RPM response for client session {} in http session {} contains {} commands", context.getId(), httpSession.getId(), results.size());
+
+                try {
+                    writeCommands(results, response);
+                } catch (final Exception e) {
+                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    LOG.error("Can not writeRequestContent response!", e);
+                    return;
+                }
             } catch (final Exception e) {
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                LOG.error("Can not withoutResult the the received commands (DolphinContext " + context.getId() + ")", e);
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                LOG.error("Can not find or create matching dolphin context in session " + httpSession.getId(), e);
                 return;
             }
-
-            LOG.trace("Sending RPM response for client session {} in http session {} from client with user-agent {}", context.getId(), httpSession.getId(), userAgent);
-            LOG.trace("RPM response for client session {} in http session {} contains {} commands", context.getId(), httpSession.getId(), results.size());
-
+        } else {
             try {
-                writeCommands(results, response);
-            } catch (final Exception e) {
+                writeCommands(Collections.emptyList(), response);
+            } catch (IOException e) {
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 LOG.error("Can not writeRequestContent response!", e);
                 return;
             }
-        } catch (final Exception e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            LOG.error("Can not find or create matching dolphin context in session " + httpSession.getId(), e);
-            return;
         }
     }
 
@@ -141,26 +150,14 @@ public class DolphinContextCommunicationHandler {
         if (context != null) {
             return context;
         }
-        if (containsInitCommand(commands)) {
-            final Consumer<DolphinContext> onDestroyCallback = (dolphinContext) -> {
-                Assert.requireNonNull(dolphinContext, "dolphinContext");
-                LOG.trace("Destroying DolphinContext {}", dolphinContext.getId());
-                remove(clientSession);
-            };
-            DolphinContext createdContext = contextFactory.create(clientSession, onDestroyCallback);
-            add(clientSession, createdContext);
-            return createdContext;
-        }
-        throw new IllegalStateException("No dolphin context is defined and no init command is send.");
-    }
-
-    private boolean containsInitCommand(final List<Command> commands) {
-        for (Command command : commands) {
-            if (command instanceof CreateContextCommand) {
-                return true;
-            }
-        }
-        return false;
+        final Consumer<DolphinContext> onDestroyCallback = (dolphinContext) -> {
+            Assert.requireNonNull(dolphinContext, "dolphinContext");
+            LOG.trace("Destroying DolphinContext {}", dolphinContext.getId());
+            remove(clientSession);
+        };
+        DolphinContext createdContext = contextFactory.create(clientSession, onDestroyCallback);
+        add(clientSession, createdContext);
+        return createdContext;
     }
 
     private List<Command> readCommands(final HttpServletRequest request) throws IOException {

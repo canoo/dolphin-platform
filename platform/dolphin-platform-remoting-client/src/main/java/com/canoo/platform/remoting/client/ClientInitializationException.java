@@ -15,6 +15,7 @@
  */
 package com.canoo.platform.remoting.client;
 
+import com.canoo.platform.core.DolphinRuntimeException;
 import org.apiguardian.api.API;
 
 import static org.apiguardian.api.API.Status.MAINTAINED;
@@ -23,7 +24,7 @@ import static org.apiguardian.api.API.Status.MAINTAINED;
  * This exception is thrown if a error occurs while creating the {@link ClientContext}
  */
 @API(since = "0.x", status = MAINTAINED)
-public class ClientInitializationException extends RuntimeException {
+public class ClientInitializationException extends DolphinRuntimeException {
 
     private static final long serialVersionUID = -2590161524286922625L;
 

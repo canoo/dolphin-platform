@@ -31,11 +31,7 @@ public interface ClientConfiguration extends PlatformConfiguration {
 
     String BACKGROUND_EXECUTOR = "platform.background.executor";
 
-    String UNCAUGHT_EXCEPTION_HANDLER = "platform.background.uncaughtExceptionHandler";
-
     String UI_EXECUTOR = "platform.ui.executor";
-
-    String UI_UNCAUGHT_EXCEPTION_HANDLER = "platform.ui.uncaughtExceptionHandler";
 
     String COOKIE_STORE = "platform.http.cookieStore";
 
@@ -44,10 +40,6 @@ public interface ClientConfiguration extends PlatformConfiguration {
     Executor getUiExecutor();
 
     ExecutorService getBackgroundExecutor();
-
-    Thread.UncaughtExceptionHandler getUncaughtExceptionHandler();
-
-    Thread.UncaughtExceptionHandler getUiUncaughtExceptionHandler();
 
     CookieStore getCookieStore();
 
@@ -58,10 +50,6 @@ public interface ClientConfiguration extends PlatformConfiguration {
     void setUiExecutor(Executor executor);
 
     void setBackgroundExecutor(ExecutorService service);
-
-    void setUncaughtExceptionHandler(Thread.UncaughtExceptionHandler uncaughtExceptionHandler);
-
-    void setUiUncaughtExceptionHandler(Thread.UncaughtExceptionHandler uncaughtExceptionHandler);
 
     void setHttpURLConnectionFactory(HttpURLConnectionFactory httpURLConnectionFactory);
 

@@ -33,7 +33,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URI;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -65,12 +64,7 @@ public class DolphinPlatformHttpClientConnector extends AbstractClientConnector 
     public List<Command> transmit(final List<Command> commands) throws DolphinRemotingException {
         Assert.requireNonNull(commands, "commands");
 
-        if (disconnecting.get()) {
-            LOG.warn("Canceled communication based on disconnect");
-            return Collections.emptyList();
-        }
-
-        //block if diconnect is called in other thread (poll / release)
+        //block if diconnect is called in other thread (poll / interruptLongPoll)
         for (Command command : commands) {
             if (command instanceof DestroyContextCommand) {
                 disconnecting.set(true);

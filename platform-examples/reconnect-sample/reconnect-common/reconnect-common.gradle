@@ -13,13 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.canoo.dp.impl.client.legacy.communication;
 
-import org.apiguardian.api.API;
-
-import static org.apiguardian.api.API.Status.DEPRECATED;
-
-@API(since = "0.x", status = DEPRECATED)
-public enum HandlerType {
-    UI, BACKGROUND;
+dependencies {
+  compile project(':dolphin-platform-remoting-common')
 }

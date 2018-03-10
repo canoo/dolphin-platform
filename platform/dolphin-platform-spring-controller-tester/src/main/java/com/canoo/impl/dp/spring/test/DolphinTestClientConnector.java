@@ -46,35 +46,16 @@ public class DolphinTestClientConnector extends AbstractClientConnector {
     }
 
     @Override
-    protected void commandProcessing() {
-        /* do nothing! */
-    }
+    protected void commandProcessing() {}
 
     @Override
-    public void connect() {
-        /* do nothing! */
-    }
-
-    @Override
-    public void disconnect() {
-         /* do nothing! */
-    }
+    public void disconnect() {}
 
     @Override
     public void send(Command command, OnFinishedHandler callback) {
         List<Command> answer = transmit(new ArrayList<>(Arrays.asList(command)));
         CommandAndHandler handler = new CommandAndHandler(command, callback);
-        processResults(answer, new ArrayList<>(Arrays.asList(handler)));
-    }
-
-    @Override
-    public void send(Command command) {
-        send(command, null);
-    }
-
-    @Override
-    protected void listen() {
-        //TODO: no implementation since EventBus is used in a different way for this tests. Should be refactored in parent class.
+        processResponse(answer, new ArrayList<>(Arrays.asList(handler)));
     }
 
     @Override

@@ -28,5 +28,6 @@ public interface DataflowQueue<T> {
 
     int length();
 
+    void clear();
 
 }

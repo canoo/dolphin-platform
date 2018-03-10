@@ -43,4 +43,8 @@ public class CommandBatcher implements ICommandBatcher {
         return waitingBatches;
     }
 
+    @Override
+    public void clear() {
+        waitingBatches.clear();
+    }
 }

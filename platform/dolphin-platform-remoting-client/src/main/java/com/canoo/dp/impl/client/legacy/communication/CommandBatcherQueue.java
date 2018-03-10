@@ -17,9 +17,9 @@ package com.canoo.dp.impl.client.legacy.communication;
 
 import org.apiguardian.api.API;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -32,17 +32,12 @@ public class CommandBatcherQueue implements DataflowQueue<List<CommandAndHandler
 
     private final Lock queueLock = new ReentrantLock();
 
-    private final Condition emptyCondition = queueLock.newCondition();
-
     @Override
     public List<CommandAndHandler> getVal() throws InterruptedException {
         queueLock.lock();
         try {
             if (internalQueue.isEmpty()) {
-                emptyCondition.await();
-            }
-            if (internalQueue.isEmpty()) {
-                return null;
+                return Collections.emptyList();
             }
             return internalQueue.remove(0);
         } finally {
@@ -55,7 +50,6 @@ public class CommandBatcherQueue implements DataflowQueue<List<CommandAndHandler
         queueLock.lock();
         try {
             internalQueue.add(value);
-            emptyCondition.signal();
         } finally {
             queueLock.unlock();
         }
@@ -66,6 +60,16 @@ public class CommandBatcherQueue implements DataflowQueue<List<CommandAndHandler
         queueLock.lock();
         try {
             return internalQueue.size();
+        } finally {
+            queueLock.unlock();
+        }
+    }
+
+    @Override
+    public void clear() {
+        queueLock.lock();
+        try {
+            internalQueue.clear();
         } finally {
             queueLock.unlock();
         }

@@ -15,11 +15,9 @@
  */
 package com.canoo.dp.impl.client;
 
-import com.canoo.dp.impl.client.legacy.ClientModelStore;
-import com.canoo.dp.impl.client.legacy.communication.AbstractClientConnector;
+import com.canoo.dp.impl.client.legacy.communication.SimpleExceptionHandler;
 import com.canoo.dp.impl.platform.client.session.StrictClientSessionResponseHandler;
 import com.canoo.dp.impl.platform.core.Assert;
-import com.canoo.dp.impl.remoting.codec.OptimizedJsonCodec;
 import com.canoo.platform.client.ClientConfiguration;
 import com.canoo.platform.client.PlatformClient;
 import com.canoo.platform.client.session.ClientSessionStore;
@@ -32,40 +30,29 @@ import org.apiguardian.api.API;
 
 import java.net.URI;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Function;
 
+import static com.canoo.dp.impl.client.RemotingConfigurationConstants.DEFAULT_EXCEPTION_HANDLER_ACTIVE;
 import static org.apiguardian.api.API.Status.INTERNAL;
 
-/**
- * Factory to create a {@link ClientContext}. Normally you will create a {@link ClientContext} at the bootstrap of your
- * client by using the {@link #create(ClientConfiguration, URI)} method and use this context as a singleton in your client.
- * The {@link ClientContext} defines the connection between the client and the Dolphin Platform server endpoint.
- */
+
 @API(since = "0.x", status = INTERNAL)
 public class ClientContextFactoryImpl implements ClientContextFactory {
 
     public ClientContextFactoryImpl() {
     }
 
-    /**
-     * Create a {@link ClientContext} based on the given configuration. This method doesn't block and returns a
-     * {@link CompletableFuture} to receive its result. If the {@link ClientContext} can't be created the
-     * {@link CompletableFuture#get()} will throw a {@link ClientInitializationException}.
-     *
-     * @param clientConfiguration the configuration
-     * @return the future
-     */
-    public ClientContext create(final ClientConfiguration clientConfiguration, final URI endpoint) {
-        Assert.requireNonNull(clientConfiguration, "clientConfiguration");
+
+    public ClientContext create(final ClientConfiguration configuration, final URI endpoint) {
+        Assert.requireNonNull(configuration, "clientConfiguration");
         final HttpClient httpClient = PlatformClient.getService(HttpClient.class);
         final HttpURLConnectionHandler clientSessionCheckResponseHandler = new StrictClientSessionResponseHandler(endpoint);
         httpClient.addResponseHandler(clientSessionCheckResponseHandler);
-        final Function<ClientModelStore, AbstractClientConnector> connectionProvider = s -> {
-            return new DolphinPlatformHttpClientConnector(endpoint, clientConfiguration, s, OptimizedJsonCodec.getInstance(), e -> {}, httpClient);
-        };
-
-
-        return new ClientContextImpl(clientConfiguration, endpoint, connectionProvider, PlatformClient.getService(ClientSessionStore.class));
+        final ClientSessionStore sessionStore = PlatformClient.getService(ClientSessionStore.class);
+        final ClientContext context =  new ClientContextImpl(configuration, endpoint, httpClient, sessionStore);
+        if(configuration.getBooleanProperty(DEFAULT_EXCEPTION_HANDLER_ACTIVE, true)) {
+            context.addRemotingExceptionHandler(new SimpleExceptionHandler());
+        }
+        return context;
     }
 
 }

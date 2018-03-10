@@ -28,19 +28,12 @@ public class CommandAndHandler {
 
     private final OnFinishedHandler handler;
 
-    private final HandlerType handlerType;
-
     @Deprecated
     public CommandAndHandler(final Command command) {
-        this(command, null, HandlerType.UI);
+        this(command, null);
     }
 
-    @Deprecated
     public CommandAndHandler(final Command command, final OnFinishedHandler handler) {
-        this(command, handler, HandlerType.UI);
-    }
-
-    public CommandAndHandler(final Command command, final OnFinishedHandler handler, final HandlerType handlerType) {
 
         //TODO: null in several groovy tests. Tests need to be reacftored....
         //this.command = Objects.requireNonNull(command, "Command should bot be null");
@@ -50,7 +43,6 @@ public class CommandAndHandler {
         //}
         this.command = command;
         this.handler = handler;
-        this.handlerType = handlerType;
     }
 
     /**
