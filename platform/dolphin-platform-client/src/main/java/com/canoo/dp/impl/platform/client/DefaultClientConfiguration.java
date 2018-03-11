@@ -15,10 +15,10 @@
  */
 package com.canoo.dp.impl.platform.client;
 
-import com.canoo.dp.impl.platform.core.http.DefaultHttpURLConnectionFactory;
 import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.dp.impl.platform.core.SimpleDolphinPlatformThreadFactory;
 import com.canoo.dp.impl.platform.core.SimpleUncaughtExceptionHandler;
+import com.canoo.dp.impl.platform.core.http.DefaultHttpURLConnectionFactory;
 import com.canoo.platform.client.ClientConfiguration;
 import com.canoo.platform.core.http.HttpURLConnectionFactory;
 import org.apiguardian.api.API;
@@ -180,7 +180,11 @@ public class DefaultClientConfiguration implements ClientConfiguration {
 
     @Override
     public boolean getBooleanProperty(final String key, final boolean defaultValue) {
-        return getObjectProperty(key, defaultValue);
+        if (containsProperty(key)) {
+            return Boolean.valueOf(internalProperties.get(key).toString());
+        } else {
+            return defaultValue;
+        }
     }
 
     @Override

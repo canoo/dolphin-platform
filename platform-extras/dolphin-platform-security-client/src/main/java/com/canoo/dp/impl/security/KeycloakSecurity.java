@@ -75,6 +75,8 @@ public class KeycloakSecurity implements Security {
     private KeycloakOpenidConnectResult connectResult;
 
     private long tokenCreation;
+    private String realm;
+    private String app;
 
     public KeycloakSecurity(final ClientConfiguration configuration) {
         Assert.requireNonNull(configuration, "configuration");
@@ -132,14 +134,14 @@ public class KeycloakSecurity implements Security {
 
     @Override
     public Future<Void> login(final String user, final String password, final String... args) {
-        final String realm = Arrays.asList(args)
+        realm = Arrays.asList(args)
                 .stream()
                 .filter(s -> s.startsWith(REALM_ARG_PREFIX))
                 .map(s -> s.substring(REALM_ARG_PREFIX.length()))
                 .findAny()
                 .orElse(defaultRealmName);
 
-        final String app = Arrays.asList(args)
+        app = Arrays.asList(args)
                 .stream()
                 .filter(s -> s.startsWith(APP_ARG_PREFIX))
                 .map(s -> s.substring(APP_ARG_PREFIX.length()))
@@ -178,6 +180,16 @@ public class KeycloakSecurity implements Security {
                     throw new DolphinRuntimeException("Can not refresh security token!", e);
                 }
             });
+    }
+
+    @Override
+    public String getRealm() {
+        return realm;
+    }
+
+    @Override
+    public String getApp() {
+        return app;
     }
 
     public long tokenExpiresAt() {

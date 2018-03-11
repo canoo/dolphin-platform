@@ -25,8 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import java.net.HttpURLConnection;
 
-import static com.canoo.dp.impl.security.SecurityHttpHeader.AUTHORIZATION_HEADER;
-import static com.canoo.dp.impl.security.SecurityHttpHeader.BEARER;
+import static com.canoo.dp.impl.security.SecurityHttpHeader.*;
 import static org.apiguardian.api.API.Status.INTERNAL;
 
 @API(since = "0.19.0", status = INTERNAL)
@@ -47,7 +46,10 @@ public class KeycloakRequestHandler implements HttpURLConnectionHandler {
         //No redirect, can not be handled in Java
         connection.setRequestProperty(SecurityHttpHeader.BEARER_ONLY_HEADER, "true");
 
-        if(security.isAuthorized()) {
+        connection.setRequestProperty(REALM_NAME_HEADER, security.getRealm());
+        connection.setRequestProperty(APPLICATION_NAME_HEADER, security.getApp());
+
+        if (security.isAuthorized()) {
             long tokenLifetime = security.tokenExpiresAt() - System.currentTimeMillis();
             LOG.debug("security token will expire in " + tokenLifetime + " ms");
             if (tokenLifetime < MIN_TOKEN_LIFETIME) {
@@ -60,7 +62,7 @@ public class KeycloakRequestHandler implements HttpURLConnectionHandler {
             }
         }
         String accessToken = security.getAccessToken();
-        if(accessToken != null && !accessToken.isEmpty()) {
+        if (accessToken != null && !accessToken.isEmpty()) {
             LOG.debug("Adding security access token to request");
             connection.setRequestProperty(AUTHORIZATION_HEADER, BEARER + accessToken);
         }

@@ -35,8 +35,8 @@ public class UserView extends AbstractViewController<UserBean> {
 
     @Override
     protected void init() {
-        FXBinder.bind(userField.textProperty()).to(getModel().userNameProperty());
-        FXBinder.bind(mailField.textProperty()).to(getModel().mailAddressProperty());
+        FXBinder.bind(userField.textProperty()).bidirectionalTo(getModel().userNameProperty());
+        FXBinder.bind(mailField.textProperty()).bidirectionalTo(getModel().mailAddressProperty());
     }
 
     @Override

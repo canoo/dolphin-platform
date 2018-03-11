@@ -22,5 +22,13 @@ public class UserController {
     public void init() {
         model.setUserName(securityContext.getUser().getUserName());
         model.setMailAddress(securityContext.getUser().getEmail());
+
+        model.userNameProperty().onChanged(evt -> {
+            System.out.println("cahnged");
+        });
+
+        model.mailAddressProperty().onChanged(evt -> {
+            System.out.println("cahnged");
+        });
     }
 }

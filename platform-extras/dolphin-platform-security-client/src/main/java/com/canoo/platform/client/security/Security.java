@@ -36,4 +36,8 @@ public interface Security {
 
     @Deprecated
     Future<Void> refreshToken();
+
+    String getRealm();
+
+    String getApp();
 }

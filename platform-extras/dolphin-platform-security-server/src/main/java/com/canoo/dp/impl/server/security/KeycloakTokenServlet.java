@@ -87,6 +87,8 @@ public class KeycloakTokenServlet extends HttpServlet {
             }
             LOG.debug("sending auth token to client");
             final byte[] responseContent = clientConnection.readResponseContent();
+            resp.setHeader(REALM_NAME_HEADER, realmName);
+            resp.setHeader(APPLICATION_NAME_HEADER, appName);
             ConnectionUtils.writeContent(resp.getOutputStream(), responseContent);
         } catch (final Exception e) {
             resp.sendError(SC_HTTP_UNAUTHORIZED, "Can not authorize");
