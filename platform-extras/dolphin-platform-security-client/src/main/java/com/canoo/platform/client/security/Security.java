@@ -22,7 +22,7 @@ import java.util.concurrent.Future;
 @API(since = "0.19.0", status = API.Status.EXPERIMENTAL)
 public interface Security {
 
-    Future<Void> login(String user, String password);
+    Future<Void> login(String user, String password, String... args);
 
     Future<Void> logout();
 

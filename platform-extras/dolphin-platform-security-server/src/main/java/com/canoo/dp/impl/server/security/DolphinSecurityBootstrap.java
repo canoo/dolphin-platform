@@ -59,13 +59,13 @@ public class DolphinSecurityBootstrap {
                 });
             }
             this.extractFilter = new KeycloakSecurityContextExtractFilter();
-            DolphinKeycloakConfigResolver.setConfiguration(keycloakConfiguration);
-
-            final FilterRegistration.Dynamic keycloakSecurityFilter = servletContext.addFilter(FILTER_NAME, new KeycloakOIDCFilter());
-            keycloakSecurityFilter.setInitParameter(KEYCLOAK_CONFIG_RESOLVER_PROPERTY_NAME, DolphinKeycloakConfigResolver.class.getName());
-            keycloakSecurityFilter.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, keycloakConfiguration.getSecureEndpointsArray());
             final FilterRegistration.Dynamic keycloakExtractorFilter = servletContext.addFilter(EXTRACTOR_FILTER_NAME, extractFilter);
             keycloakExtractorFilter.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
+
+            final DolphinKeycloakConfigResolver resolver = new DolphinKeycloakConfigResolver(keycloakConfiguration);
+            final FilterRegistration.Dynamic keycloakSecurityFilter = servletContext.addFilter(FILTER_NAME, new KeycloakOIDCFilter(resolver));
+            keycloakSecurityFilter.setInitParameter(KEYCLOAK_CONFIG_RESOLVER_PROPERTY_NAME, DolphinKeycloakConfigResolver.class.getName());
+            keycloakSecurityFilter.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, keycloakConfiguration.getSecureEndpointsArray());
         }
     }
 

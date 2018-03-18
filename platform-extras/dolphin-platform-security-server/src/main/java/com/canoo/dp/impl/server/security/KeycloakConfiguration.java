@@ -24,11 +24,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.canoo.dp.impl.security.SecurityConfiguration.ALLOWED_APPLICATIONS_PROPERTY_NAME;
+import static com.canoo.dp.impl.security.SecurityConfiguration.ALLOWED_REALMS_PROPERTY_NAME;
 import static com.canoo.dp.impl.security.SecurityConfiguration.APPLICATION_PROPERTY_DEFAULT_VALUE;
 import static com.canoo.dp.impl.security.SecurityConfiguration.APPLICATION_PROPERTY_NAME;
 import static com.canoo.dp.impl.security.SecurityConfiguration.AUTH_ENDPOINT_PROPERTY_DEFAULT_VALUE;
 import static com.canoo.dp.impl.security.SecurityConfiguration.AUTH_ENDPOINT_PROPERTY_NAME;
-import static com.canoo.dp.impl.security.SecurityConfiguration.REALM_PROPERTY_DEFAULT_VALUE;
 import static com.canoo.dp.impl.security.SecurityConfiguration.REALM_PROPERTY_NAME;
 import static org.apiguardian.api.API.Status.INTERNAL;
 
@@ -53,6 +54,8 @@ public class KeycloakConfiguration implements Serializable {
 
     private final List<String> realmNames;
 
+    private final List<String> applicationNames;
+
     private final boolean securityActive;
 
     private final boolean loginEndpointActive;
@@ -68,18 +71,24 @@ public class KeycloakConfiguration implements Serializable {
 
     public KeycloakConfiguration(final PlatformConfiguration platformConfiguration) {
         Assert.requireNonNull(platformConfiguration, "platformConfiguration");
+
         this.realmName = platformConfiguration.getProperty(REALM_PROPERTY_NAME);
-        this.realmNames = platformConfiguration.getListProperty(REALM_PROPERTY_NAME, Collections.emptyList());
+        this.realmNames = platformConfiguration.getListProperty(ALLOWED_REALMS_PROPERTY_NAME, Collections.emptyList());
         if(this.realmName != null && !this.realmName.isEmpty()){
             this.realmNames.add(this.realmName);
         }
+
         this.applicationName = platformConfiguration.getProperty(APPLICATION_PROPERTY_NAME, APPLICATION_PROPERTY_DEFAULT_VALUE) ;
+        this.applicationNames = platformConfiguration.getListProperty(ALLOWED_APPLICATIONS_PROPERTY_NAME, Collections.emptyList());
+        if(this.applicationName != null && !this.applicationName.isEmpty()){
+            this.applicationNames.add(this.applicationName);
+        }
+
         this.authEndpoint = platformConfiguration.getProperty(AUTH_ENDPOINT_PROPERTY_NAME, AUTH_ENDPOINT_PROPERTY_DEFAULT_VALUE) + "/auth";
         this.secureEndpoints.addAll(platformConfiguration.getListProperty(SECURE_ENDPOINTS_PROPERTY_NAME, Collections.emptyList()));
         this.securityActive = platformConfiguration.getBooleanProperty(SECURITY_ACTIVE_PROPERTY_NAME, false);
         this.loginEndpointActive = platformConfiguration.getBooleanProperty(LOGIN_ENDPOINTS_ACTIVE_PROPERTY_NAME, true);
         this.loginEndpoint = platformConfiguration.getProperty(LOGIN_ENDPOINTS_PROPERTY_NAME, LOGIN_ENDPOINTS_PROPERTY_DEFAULT_VALUE);
-
     }
 
     public String getRealmName() {
@@ -122,5 +131,19 @@ public class KeycloakConfiguration implements Serializable {
 
     public String getLoginEndpoint() {
         return loginEndpoint;
+    }
+
+    public List<String> getApplicationNames() {
+        return applicationNames;
+    }
+
+    public boolean isRealmAllowed(final String realmName){
+        Assert.requireNonNull(realmName, "realmName");
+        return getRealmNames().contains(realmName);
+    }
+
+    public boolean isApplicationAllowed(final String applicationName) {
+        Assert.requireNonNull(applicationName, "applicationName");
+        return getApplicationNames().contains(realmName);
     }
 }

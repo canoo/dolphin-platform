@@ -27,7 +27,9 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -38,9 +40,11 @@ public class KeycloakSecurityContextExtractFilter implements Filter, AccessDenie
 
     private final static Logger LOG = LoggerFactory.getLogger(KeycloakSecurityContextExtractFilter.class);
 
-    private final ThreadLocal<KeycloakSecurityContext> contextHolder = new ThreadLocal<KeycloakSecurityContext>();
+    private final ThreadLocal<KeycloakSecurityContext> contextHolder = new ThreadLocal<>();
 
-    private final ThreadLocal<Boolean> accessDenied = new ThreadLocal<Boolean>();
+    private final ThreadLocal<Boolean> accessDenied = new ThreadLocal<>();
+
+    private final ThreadLocal<HttpSession> sessionThreadLocal = new ThreadLocal<>();
 
     private final KeyCloakSecurityExtractor keyCloakSecurityExtractor = new KeyCloakSecurityExtractor();
 
@@ -50,6 +54,7 @@ public class KeycloakSecurityContextExtractFilter implements Filter, AccessDenie
         Assert.requireNonNull(chain, "chain");
         contextHolder.set(keyCloakSecurityExtractor.extractContext(request));
         accessDenied.set(false);
+        sessionThreadLocal.set(((HttpServletRequest)request).getSession());
         try {
             chain.doFilter(request, response);
         }catch (Exception e) {
@@ -59,6 +64,7 @@ public class KeycloakSecurityContextExtractFilter implements Filter, AccessDenie
                 LOG.error("SecurityContext error in request", e);
             }
         } finally {
+            sessionThreadLocal.set(null);
             contextHolder.set(null);
             boolean sendAccessDenied = accessDenied.get();
             accessDenied.set(false);

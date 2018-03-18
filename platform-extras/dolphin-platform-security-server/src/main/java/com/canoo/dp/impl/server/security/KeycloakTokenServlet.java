@@ -20,6 +20,7 @@ import com.canoo.dp.impl.platform.core.http.ConnectionUtils;
 import com.canoo.dp.impl.platform.core.http.HttpClientConnection;
 import com.canoo.platform.core.DolphinRuntimeException;
 import com.canoo.platform.core.http.RequestMethod;
+import com.canoo.platform.server.security.SecurityException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,11 +54,25 @@ public class KeycloakTokenServlet extends HttpServlet {
     protected void doPost(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
         try {
             LOG.debug("open-id endpoint called");
-            final String realmName = Optional.ofNullable(req.getHeader(REALM_NAME_HEADER)).orElse(configuration.getRealmName());
-            final String appName = Optional.ofNullable(req.getHeader(APPLICATION_NAME_HEADER)).orElse(configuration.getApplicationName());
+            final String realmName = Optional.ofNullable(req.getHeader(REALM_NAME_HEADER))
+                    .orElse(configuration.getRealmName());
+            Assert.requireNonNull(realmName, "realmName");
+            if(!configuration.isRealmAllowed(realmName)) {
+                throw new SecurityException("Access Denied! The given realm is not allowed.");
+            }
+
+            final String appName = Optional.ofNullable(req.getHeader(APPLICATION_NAME_HEADER))
+                    .orElse(configuration.getApplicationName());
+            Assert.requireNonNull(appName, "appName");
+            if(!configuration.isApplicationAllowed(appName)) {
+                throw new SecurityException("Access Denied! The given application is not allowed.");
+            }
+
+            req.getSession().setAttribute(SecurityServerConstants.REALM_SESSION_ATTRIBUTE_NAME, realmName);
+            req.getSession().setAttribute(SecurityServerConstants.APP_SESSION_ATTRIBUTE_NAME, appName);
+
             final String authEndPoint = configuration.getAuthEndpoint();
             final String content = ConnectionUtils.readUTF8Content(req.getInputStream()) + "&client_id=" + appName;
-
 
             LOG.debug("Calling Keycloak");
             final URI url = new URI(authEndPoint + "/realms/" + realmName + "/protocol/openid-connect/token");
