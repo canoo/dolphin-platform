@@ -28,6 +28,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static com.canoo.dp.impl.platform.core.http.HttpHeaderConstants.CHARSET;
@@ -86,6 +87,26 @@ public class HttpClientConnection {
             addRequestHeader(CONTENT_LENGHT_HEADER, content.length + "");
             setDoOutput(true);
             ConnectionUtils.writeContent(connection, content);
+        }
+    }
+
+    public void setConnectTimeout(final long value, final TimeUnit timeUnit) {
+        Assert.requireNonNull(timeUnit, "timeUnit");
+        if (value <= 0) {
+            connection.setConnectTimeout(0);
+        } else {
+            final long ms = timeUnit.toMillis(value);
+            connection.setConnectTimeout((int) ms);
+        }
+    }
+
+    public void setReadTimeout(final long value, final TimeUnit timeUnit) {
+        Assert.requireNonNull(timeUnit, "timeUnit");
+        if (value <= 0) {
+            connection.setReadTimeout(0);
+        } else {
+            final long ms = timeUnit.toMillis(value);
+            connection.setReadTimeout((int) ms);
         }
     }
 

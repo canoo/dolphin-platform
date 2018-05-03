@@ -1,0 +1,352 @@
+package io.micrometer.prometheus;
+
+import com.canoo.dp.impl.platform.client.metrics.MetricsPush;
+import com.canoo.dp.impl.platform.core.Assert;
+import io.micrometer.core.instrument.Clock;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.DistributionSummary;
+import io.micrometer.core.instrument.FunctionCounter;
+import io.micrometer.core.instrument.FunctionTimer;
+import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.LongTaskTimer;
+import io.micrometer.core.instrument.Measurement;
+import io.micrometer.core.instrument.Meter;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.cumulative.CumulativeFunctionCounter;
+import io.micrometer.core.instrument.cumulative.CumulativeFunctionTimer;
+import io.micrometer.core.instrument.distribution.CountAtBucket;
+import io.micrometer.core.instrument.distribution.DistributionStatisticConfig;
+import io.micrometer.core.instrument.distribution.HistogramSnapshot;
+import io.micrometer.core.instrument.distribution.ValueAtPercentile;
+import io.micrometer.core.instrument.distribution.pause.PauseDetector;
+import io.micrometer.core.instrument.internal.DefaultGauge;
+import io.micrometer.core.instrument.internal.DefaultLongTaskTimer;
+import io.micrometer.core.instrument.internal.DefaultMeter;
+import io.micrometer.core.lang.Nullable;
+import io.prometheus.client.Collector;
+import io.prometheus.client.CollectorRegistry;
+
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.TimeUnit;
+import java.util.function.ToDoubleFunction;
+import java.util.function.ToLongFunction;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.StreamSupport.stream;
+
+public class PrometheusPushMeterRegistry extends MeterRegistry {
+
+    private CollectorRegistry registry;
+
+    private final ConcurrentMap<String, MicrometerCollector> collectorMap = new ConcurrentHashMap<>();
+
+    private final PrometheusConfig prometheusConfig;
+
+    private final MetricsPush push;
+
+    private final String job;
+
+    public PrometheusPushMeterRegistry(final String job, final MetricsPush push) {
+        super(Clock.SYSTEM);
+        this.job = Assert.requireNonBlank(job, "job");
+        this.registry = new CollectorRegistry();
+        this.push = Assert.requireNonNull(push, "push");
+        this.config().namingConvention(new PrometheusNamingConvention());
+        this.prometheusConfig = PrometheusConfig.DEFAULT;
+    }
+
+    public synchronized void push() throws IOException {
+        push.pushAdd(registry, job);
+        collectorMap.clear();
+        registry = new CollectorRegistry();
+    }
+
+    @Override
+    public Counter newCounter(Meter.Id id) {
+        MicrometerCollector collector = collectorByName(id, Collector.Type.COUNTER);
+        PrometheusCounter counter = new PrometheusCounter(id);
+        List<String> tagValues = tagValues(id);
+
+        collector.add((conventionName, tagKeys) -> Stream.of(
+                new Collector.MetricFamilySamples.Sample(conventionName, tagKeys, tagValues, counter.count())
+        ));
+
+        return counter;
+    }
+
+    @Override
+    public DistributionSummary newDistributionSummary(Meter.Id id, DistributionStatisticConfig distributionStatisticConfig, double scale) {
+        MicrometerCollector collector = collectorByName(id, Collector.Type.SUMMARY);
+        PrometheusDistributionSummary summary = new PrometheusDistributionSummary(id, clock, distributionStatisticConfig, scale);
+        List<String> tagValues = tagValues(id);
+
+        collector.add((conventionName, tagKeys) -> {
+            Stream.Builder<Collector.MetricFamilySamples.Sample> samples = Stream.builder();
+
+            final HistogramSnapshot snapshot = summary.takeSnapshot(false);
+            final ValueAtPercentile[] percentileValues = snapshot.percentileValues();
+            final CountAtBucket[] histogramCounts = summary.histogramCounts();
+
+            if (percentileValues.length > 0) {
+                List<String> quantileKeys = new LinkedList<>(tagKeys);
+                quantileKeys.add("quantile");
+
+                // satisfies https://prometheus.io/docs/concepts/metric_types/#summary
+                for (ValueAtPercentile v : percentileValues) {
+                    List<String> quantileValues = new LinkedList<>(tagValues);
+                    quantileValues.add(Collector.doubleToGoString(v.percentile()));
+                    samples.add(new Collector.MetricFamilySamples.Sample(
+                            conventionName, quantileKeys, quantileValues, v.value()));
+                }
+            }
+
+            if (histogramCounts.length > 0) {
+                // Prometheus doesn't balk at a metric being BOTH a histogram and a summary
+                collector.setType(Collector.Type.HISTOGRAM);
+
+                List<String> histogramKeys = new LinkedList<>(tagKeys);
+                histogramKeys.add("le");
+
+                // satisfies https://prometheus.io/docs/concepts/metric_types/#histogram
+                for (CountAtBucket c : histogramCounts) {
+                    List<String> histogramValues = new LinkedList<>(tagValues);
+                    final long bucket = c.bucket();
+                    if (bucket == Long.MAX_VALUE) {
+                        histogramValues.add("+Inf");
+                    } else {
+                        histogramValues.add(Collector.doubleToGoString(bucket));
+                    }
+
+                    samples.add(new Collector.MetricFamilySamples.Sample(
+                            conventionName + "_bucket", histogramKeys, histogramValues, c.count()));
+                }
+            }
+
+            samples.add(new Collector.MetricFamilySamples.Sample(
+                    conventionName + "_count", tagKeys, tagValues, snapshot.count()));
+
+            samples.add(new Collector.MetricFamilySamples.Sample(
+                    conventionName + "_sum", tagKeys, tagValues, snapshot.total()));
+
+            samples.add(new Collector.MetricFamilySamples.Sample(
+                    conventionName + "_max", tagKeys, tagValues, snapshot.max()));
+
+            return samples.build();
+        });
+
+        return summary;
+    }
+
+    @Override
+    protected io.micrometer.core.instrument.Timer newTimer(Meter.Id id, DistributionStatisticConfig distributionStatisticConfig, PauseDetector pauseDetector) {
+        MicrometerCollector collector = collectorByName(id, distributionStatisticConfig.isPublishingHistogram() ? Collector.Type.HISTOGRAM : Collector.Type.SUMMARY);
+        PrometheusTimer timer = new PrometheusTimer(id, clock, distributionStatisticConfig, pauseDetector);
+        List<String> tagValues = tagValues(id);
+
+        collector.add((conventionName, tagKeys) -> {
+            Stream.Builder<Collector.MetricFamilySamples.Sample> samples = Stream.builder();
+
+            final HistogramSnapshot snapshot = timer.takeSnapshot(false);
+            final ValueAtPercentile[] percentileValues = snapshot.percentileValues();
+            final CountAtBucket[] histogramCounts = timer.histogramCounts();
+
+            if (percentileValues.length > 0) {
+                List<String> quantileKeys = new LinkedList<>(tagKeys);
+                quantileKeys.add("quantile");
+
+                // satisfies https://prometheus.io/docs/concepts/metric_types/#summary
+                for (ValueAtPercentile v : percentileValues) {
+                    List<String> quantileValues = new LinkedList<>(tagValues);
+                    quantileValues.add(Collector.doubleToGoString(v.percentile()));
+                    samples.add(new Collector.MetricFamilySamples.Sample(
+                            conventionName, quantileKeys, quantileValues, v.value(TimeUnit.SECONDS)));
+                }
+            }
+
+            if (histogramCounts.length > 0) {
+                // Prometheus doesn't balk at a metric being BOTH a histogram and a summary
+                collector.setType(Collector.Type.HISTOGRAM);
+
+                List<String> histogramKeys = new LinkedList<>(tagKeys);
+                histogramKeys.add("le");
+
+                // satisfies https://prometheus.io/docs/concepts/metric_types/#histogram
+                for (CountAtBucket c : histogramCounts) {
+                    final List<String> histogramValues = new LinkedList<>(tagValues);
+                    histogramValues.add(Collector.doubleToGoString(c.bucket(TimeUnit.SECONDS)));
+                    samples.add(new Collector.MetricFamilySamples.Sample(
+                            conventionName + "_bucket", histogramKeys, histogramValues, c.count()));
+                }
+
+                // the +Inf bucket should always equal `count`
+                final List<String> histogramValues = new LinkedList<>(tagValues);
+                histogramValues.add("+Inf");
+                samples.add(new Collector.MetricFamilySamples.Sample(
+                        conventionName + "_bucket", histogramKeys, histogramValues, snapshot.count()));
+            }
+
+            samples.add(new Collector.MetricFamilySamples.Sample(
+                    conventionName + "_count", tagKeys, tagValues, snapshot.count()));
+
+            samples.add(new Collector.MetricFamilySamples.Sample(
+                    conventionName + "_sum", tagKeys, tagValues, snapshot.total(TimeUnit.SECONDS)));
+
+            samples.add(new Collector.MetricFamilySamples.Sample(
+                    conventionName + "_max", tagKeys, tagValues, snapshot.max(TimeUnit.SECONDS)));
+
+            return samples.build();
+        });
+
+        return timer;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    protected <T> io.micrometer.core.instrument.Gauge newGauge(Meter.Id id, @Nullable T obj, ToDoubleFunction<T> valueFunction) {
+        MicrometerCollector collector = collectorByName(id, Collector.Type.GAUGE);
+        Gauge gauge = new DefaultGauge(id, obj, valueFunction);
+        List<String> tagValues = tagValues(id);
+
+        collector.add((conventionName, tagKeys) -> Stream.of(
+                new Collector.MetricFamilySamples.Sample(conventionName, tagKeys, tagValues, gauge.value())
+        ));
+
+        return gauge;
+    }
+
+    @Override
+    protected LongTaskTimer newLongTaskTimer(Meter.Id id) {
+        MicrometerCollector collector = collectorByName(id, Collector.Type.UNTYPED);
+        LongTaskTimer ltt = new DefaultLongTaskTimer(id, clock);
+        List<String> tagValues = tagValues(id);
+
+        collector.add((conventionName, tagKeys) -> Stream.of(
+                new Collector.MetricFamilySamples.Sample(conventionName + "_active_count", tagKeys, tagValues, ltt.activeTasks()),
+                new Collector.MetricFamilySamples.Sample(conventionName + "_duration_sum", tagKeys, tagValues, ltt.duration(TimeUnit.SECONDS))
+        ));
+
+        return ltt;
+    }
+
+    @Override
+    protected <T> FunctionTimer newFunctionTimer(Meter.Id id, T obj, ToLongFunction<T> countFunction, ToDoubleFunction<T> totalTimeFunction, TimeUnit totalTimeFunctionUnits) {
+        MicrometerCollector collector = collectorByName(id, Collector.Type.SUMMARY);
+        FunctionTimer ft = new CumulativeFunctionTimer<>(id, obj, countFunction, totalTimeFunction, totalTimeFunctionUnits, getBaseTimeUnit());
+        List<String> tagValues = tagValues(id);
+
+        collector.add((conventionName, tagKeys) -> Stream.of(
+                new Collector.MetricFamilySamples.Sample(conventionName + "_count", tagKeys, tagValues, ft.count()),
+                new Collector.MetricFamilySamples.Sample(conventionName + "_sum", tagKeys, tagValues, ft.totalTime(TimeUnit.SECONDS))
+        ));
+
+        return ft;
+    }
+
+    @Override
+    protected <T> FunctionCounter newFunctionCounter(Meter.Id id, T obj, ToDoubleFunction<T> countFunction) {
+        MicrometerCollector collector = collectorByName(id, Collector.Type.COUNTER);
+        FunctionCounter fc = new CumulativeFunctionCounter<>(id, obj, countFunction);
+        List<String> tagValues = tagValues(id);
+
+        collector.add((conventionName, tagKeys) -> Stream.of(
+                new Collector.MetricFamilySamples.Sample(conventionName, tagKeys, tagValues, fc.count())
+        ));
+
+        return fc;
+    }
+
+    @Override
+    protected Meter newMeter(Meter.Id id, Meter.Type type, Iterable<Measurement> measurements) {
+        Collector.Type promType = Collector.Type.UNTYPED;
+        switch (type) {
+            case COUNTER:
+                promType = Collector.Type.COUNTER;
+                break;
+            case GAUGE:
+                promType = Collector.Type.GAUGE;
+                break;
+            case DISTRIBUTION_SUMMARY:
+            case TIMER:
+                promType = Collector.Type.SUMMARY;
+                break;
+        }
+
+        MicrometerCollector collector = collectorByName(id, promType);
+        List<String> tagValues = tagValues(id);
+
+        collector.add((conventionName, tagKeys) -> {
+            List<String> statKeys = new LinkedList<>(tagKeys);
+            statKeys.add("statistic");
+
+            return stream(measurements.spliterator(), false)
+                    .map(m -> {
+                        List<String> statValues = new LinkedList<>(tagValues);
+                        statValues.add(m.getStatistic().toString());
+
+                        String name = conventionName;
+                        switch (m.getStatistic()) {
+                            case TOTAL:
+                            case TOTAL_TIME:
+                                name += "_sum";
+                                break;
+                            case MAX:
+                                name += "_max";
+                                break;
+                            case ACTIVE_TASKS:
+                                name += "_active_count";
+                                break;
+                            case DURATION:
+                                name += "_duration_sum";
+                                break;
+                        }
+
+                        return new Collector.MetricFamilySamples.Sample(name, tagKeys, tagValues, m.getValue());
+                    });
+        });
+
+        return new DefaultMeter(id, type, measurements);
+    }
+
+    @Override
+    protected TimeUnit getBaseTimeUnit() {
+        return TimeUnit.SECONDS;
+    }
+
+    private static List<String> tagValues(Meter.Id id) {
+        return stream(id.getTags().spliterator(), false).map(Tag::getValue).collect(toList());
+    }
+
+    private synchronized MicrometerCollector collectorByName(Meter.Id id, Collector.Type type) {
+        return collectorMap.compute(getConventionName(id), (name, existingCollector) -> {
+            if(existingCollector == null) {
+                return new MicrometerCollector(id, type, config().namingConvention(), prometheusConfig).register(registry);
+            }
+
+            List<String> tagKeys = getConventionTags(id).stream().map(Tag::getKey).collect(toList());
+            if(existingCollector.getTagKeys().equals(tagKeys)) {
+                return existingCollector;
+            }
+
+            throw new IllegalArgumentException("Prometheus requires that all meters with the same name have the same" +
+                    " set of tag keys. There is already an existing meter containing tag keys [" +
+                    existingCollector.getTagKeys().stream().collect(joining(", ")) + "]. The meter you are attempting to register" +
+                    " has keys [" + tagKeys.stream().collect(joining(", ")) + "].");
+        });
+    }
+
+    @Override
+    protected DistributionStatisticConfig defaultHistogramConfig() {
+        return DistributionStatisticConfig.builder()
+                .expiry(prometheusConfig.step())
+                .build()
+                .merge(DistributionStatisticConfig.DEFAULT);
+    }
+}
+

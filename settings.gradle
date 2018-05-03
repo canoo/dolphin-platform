@@ -32,6 +32,7 @@ include 'platform-extras/dolphin-platform-crud'
 include 'platform-extras/dolphin-platform-crud-jpa'
 
 include 'platform-extras/dolphin-platform-metrics'
+include 'platform-extras/dolphin-platform-metrics-client'
 include 'platform-extras/dolphin-platform-metrics-server'
 include 'platform-extras/dolphin-platform-metrics-server-spring'
 include 'platform-extras/dolphin-platform-metrics-server-javaee'
