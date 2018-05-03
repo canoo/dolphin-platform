@@ -16,6 +16,7 @@
 package com.canoo.impl.dp.logging;
 
 import com.canoo.dp.impl.platform.core.Assert;
+import com.canoo.platform.core.DolphinRuntimeException;
 import org.slf4j.event.Level;
 
 public class DolphinLoggerUtils {
@@ -31,5 +32,25 @@ public class DolphinLoggerUtils {
     public static boolean isLevelEnabled(final Level baseLevel, final String level) {
         Assert.requireNonNull(level, "level");
         return isLevelEnabled(baseLevel, Level.valueOf(level));
+    }
+
+    public static Level getLevel(final String name) {
+        Assert.requireNonNull(name, "name");
+        if(name.trim().toLowerCase().equals("error")) {
+            return Level.ERROR;
+        }
+        if(name.trim().toLowerCase().equals("warn")) {
+            return Level.WARN;
+        }
+        if(name.trim().toLowerCase().equals("info")) {
+            return Level.INFO;
+        }
+        if(name.trim().toLowerCase().equals("debug")) {
+            return Level.DEBUG;
+        }
+        if(name.trim().toLowerCase().equals("trace")) {
+            return Level.TRACE;
+        }
+        throw new DolphinRuntimeException("'" + name + "' is not a logging level");
     }
 }

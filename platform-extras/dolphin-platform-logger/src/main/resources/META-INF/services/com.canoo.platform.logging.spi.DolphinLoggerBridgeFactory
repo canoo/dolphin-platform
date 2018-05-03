@@ -1,2 +1,1 @@
-com.canoo.impl.dp.logging.bridges.RemoteLoggerFactory
 com.canoo.impl.dp.logging.bridges.SimpleDolphinLoggerFactory

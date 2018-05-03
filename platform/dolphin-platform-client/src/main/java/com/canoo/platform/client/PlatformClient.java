@@ -53,9 +53,10 @@ public class PlatformClient {
     private AtomicBoolean isToolkitSet =  new AtomicBoolean(false);
 
     private PlatformClient() {
-        PlatformLogo.printLogo();
         this.clientConfiguration = ConfigurationFileLoader.loadConfiguration(DEFAULT_LOCATION);
         Assert.requireNonNull(clientConfiguration, "clientConfiguration");
+        PlatformLogo.printLogo(clientConfiguration);
+
 
         ContextManagerImpl.getInstance().addGlobalContext(APPLICATION_CONTEXT, clientConfiguration.getProperty(APPLICATION_NAME_PROPERTY, APPLICATION_NAME_DEFAULT));
 

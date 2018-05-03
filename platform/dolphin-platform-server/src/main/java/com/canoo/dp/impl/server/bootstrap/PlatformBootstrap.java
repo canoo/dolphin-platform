@@ -64,7 +64,7 @@ public class PlatformBootstrap {
         ContextManagerImpl.getInstance().addGlobalContext(APPLICATION_CONTEXT, configuration.getProperty(APPLICATION_NAME_PROPERTY));
 
         if(configuration.getBooleanProperty(PLATFORM_ACTIVE)) {
-            PlatformLogo.printLogo();
+            PlatformLogo.printLogo(configuration);
             try {
                 LOG.info("Will boot Dolphin Plaform now");
 

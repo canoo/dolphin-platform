@@ -422,7 +422,6 @@ public class DolphinLogger implements Logger {
             }
             final List<String> currentMarkers = new ArrayList<>();
             currentMarkers.addAll(addMarkers(tempMarkers));
-            currentMarkers.addAll(loggerFactory.getMarkers());
             try {
                 final LogMessage logMessage = new LogMessage();
                 logMessage.setLoggerName(name);
@@ -467,29 +466,6 @@ public class DolphinLogger implements Logger {
         }
     }
 
-    public static void addMarker(final Logger logger, final String marker) {
-        if(Objects.requireNonNull(logger) instanceof DolphinLogger) {
-            ((DolphinLogger) logger).addMarker(marker);
-        } else {
-            throw new IllegalArgumentException("Only Logger of type " + DolphinLogger.class + " allowed");
-        }
-    }
-
-    public static void removeMarker(final Logger logger, final String marker) {
-        if(Objects.requireNonNull(logger) instanceof DolphinLogger) {
-            ((DolphinLogger) logger).removeMarker(marker);
-        } else {
-            throw new IllegalArgumentException("Only Logger of type " + DolphinLogger.class + " allowed");
-        }
-    }
-
-    public static void setLevel(final Logger logger, final Level level) {
-        if(Objects.requireNonNull(logger) instanceof DolphinLogger) {
-            ((DolphinLogger) logger).setLevel(level);
-        } else {
-            throw new IllegalArgumentException("Only Logger of type " + DolphinLogger.class + " allowed");
-        }
-    }
 
     public static Marker createMarker(final String name) {
         return MarkerFactory.getMarker(name);

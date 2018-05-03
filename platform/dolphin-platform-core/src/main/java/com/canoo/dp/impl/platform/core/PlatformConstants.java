@@ -38,6 +38,10 @@ public interface PlatformConstants {
 
     String APPLICATION_NAME_PROPERTY = "application.name";
 
+    String ANSI_PROPERTY = "console.ansi";
+
+    boolean ANSI_DEFAULT_VALUE = true;
+
     String APPLICATION_NAME_DEFAULT = "app";
 
     String REMOTING_DATE_FORMAT_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";

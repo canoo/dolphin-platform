@@ -15,6 +15,8 @@
  */
 package com.canoo.impl.dp.logging.bridges;
 
+import com.canoo.dp.impl.platform.core.Assert;
+import com.canoo.dp.impl.platform.core.PlatformConstants;
 import com.canoo.dp.impl.platform.core.ansi.AnsiOut;
 import com.canoo.platform.logging.DolphinLoggerConfiguration;
 import com.canoo.platform.logging.spi.DolphinLoggerBridge;
@@ -23,15 +25,20 @@ import org.slf4j.event.Level;
 
 import java.text.DateFormat;
 import java.util.Date;
-import java.util.Objects;
 import java.util.Optional;
 
 public class SimpleDolphinLogger implements DolphinLoggerBridge {
 
     private final DateFormat dateFormat;
 
+    private final DolphinLoggerConfiguration configuration;
+
+    private final boolean ansiSupport;
+
     public SimpleDolphinLogger(final DolphinLoggerConfiguration configuration) {
-        this.dateFormat = Objects.requireNonNull(configuration.getDateFormat());
+        this.configuration = Assert.requireNonNull(configuration, "configuration");
+        this.dateFormat = Assert.requireNonNull(configuration.getDateFormat(), "dateFormat");
+        ansiSupport = configuration.getBooleanProperty(PlatformConstants.ANSI_PROPERTY, PlatformConstants.ANSI_DEFAULT_VALUE);
     }
 
     @Override
@@ -98,6 +105,6 @@ public class SimpleDolphinLogger implements DolphinLoggerBridge {
 
 
     private synchronized void print(final String message) {
-        System.out.println(message);
+        AnsiOut.print(message, ansiSupport);
     }
 }
