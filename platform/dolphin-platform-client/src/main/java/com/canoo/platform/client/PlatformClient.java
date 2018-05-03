@@ -16,6 +16,7 @@
 package com.canoo.platform.client;
 
 import com.canoo.dp.impl.platform.client.config.ConfigurationFileLoader;
+import com.canoo.dp.impl.platform.client.http.url.ExtendableURLStreamHandlerFactory;
 import com.canoo.dp.impl.platform.core.Assert;
 import com.canoo.dp.impl.platform.core.ansi.PlatformLogo;
 import com.canoo.dp.impl.platform.core.context.ContextManagerImpl;
@@ -23,6 +24,7 @@ import com.canoo.platform.client.spi.ServiceProvider;
 import com.canoo.platform.core.DolphinRuntimeException;
 import org.apiguardian.api.API;
 
+import java.net.URL;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
@@ -73,6 +75,8 @@ public class PlatformClient {
             }
         }
         initImpl(new HeadlessToolkit());
+
+        URL.setURLStreamHandlerFactory(new ExtendableURLStreamHandlerFactory(clientConfiguration));
     }
 
     private void initImpl(Toolkit toolkit) {

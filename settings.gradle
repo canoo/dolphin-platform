@@ -48,6 +48,9 @@ include 'platform-extras/dolphin-platform-projector-common'
 include 'platform-extras/dolphin-platform-projector-client'
 include 'platform-extras/dolphin-platform-projector-server'
 
+include 'platform-extras/dolphin-platform-kubernetes-discovery-server'
+include 'platform-extras/dolphin-platform-kubernetes-discovery-client'
+
 include 'documentation'
 include 'platform-integration-tests/integration-common'
 include 'platform-integration-tests/integration-server'
